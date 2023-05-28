@@ -27,6 +27,25 @@ export default {
                 secondaryButtonDark: "#1a1a1a",
                 accentDark: "#bd73e8",
             },
+            animation: {
+                "spin-once": "spin 1s linear 1",
+                translate: "translate 1s ease-in-out 1 forwards",
+                translateDark: "translateDark 1s ease-in-out 1 forwards",
+            },
+            keyframes: {
+                translate: {
+                    "0%": { left: "0" },
+                    "50%": { width: "100%" },
+                    "100%": {
+                        right: "0",
+                    },
+                },
+                translateDark: {
+                    "0%": { right: "0" },
+                    "50%": { width: "100%" },
+                    "100%": { left: "0" },
+                },
+            },
         },
     },
     darkMode: "class",

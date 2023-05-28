@@ -17,14 +17,34 @@ use Inertia\Inertia;
 |
 */
 
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
+// });
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return Inertia::render('Main/Home', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name("home");
+Route::get('/profil',fn()=>
+    Inertia::render("Main/Profil")
+)->name("profil");
+Route::get('/kepengurusan',fn()=>
+    Inertia::render("Main/Kepengurusan")
+)->name("kepengurusan");
+Route::get('/buku',fn()=>
+    Inertia::render("Main/Buku")
+)->name("buku");
+Route::get('/store',fn()=>
+    Inertia::render("Main/Store")
+)->name("store");
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

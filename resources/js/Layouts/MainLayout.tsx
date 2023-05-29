@@ -6,6 +6,8 @@ export default function Main({ children }: HTMLAttributes<HTMLDivElement>) {
     useEffect(() => {
         if (localStorage.getItem("mode")) {
             document.body.classList.add(localStorage.getItem("mode")!);
+        } else {
+            localStorage.setItem("mode", "light");
         }
     });
     return (

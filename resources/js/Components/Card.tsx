@@ -1,6 +1,6 @@
 import { FaCircle } from "react-icons/fa";
 
-export default function Card() {
+export default function Card({ childClassName }: { childClassName?: string }) {
     return (
         <div className="flex flex-col rounded-md bg-primaryDark shadow-md dark:bg-secondaryButtonDark">
             <div className="">
@@ -10,8 +10,12 @@ export default function Card() {
                     alt="dummy"
                 />
             </div>
-            <div className="pt-3 px-2 h-44 flex flex-col justify-between">
-                <h5 className="font-semibold">
+            <div className="pt-3 px-2 min-h-[11rem] flex flex-col justify-between">
+                <h5
+                    className={
+                        `font-semibold md:text-base text-xl ` + childClassName
+                    }
+                >
                     Mahasiswa itera Raih gelar winner di pemilihan putra putri
                     lampung
                 </h5>

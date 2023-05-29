@@ -1,17 +1,24 @@
 import { Link } from "@inertiajs/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GiHamburgerMenu, VscAccount } from "react-icons/all";
 import ChangeTheme from "./ChangeTheme";
 import NavLink from "./NavLinkMain";
 import PrimaryButton from "./PrimaryButton";
 import SecondaryButton from "./SecondaryButton";
+import { useWindowSize } from "@/hooks/useWindowSize";
 
 export default function Navbar() {
     const [account, setAccount] = useState<boolean>(false);
     const [sidebarActive, setSidebarActive] = useState<boolean>(false);
-
+    const windowSize = useWindowSize();
+    useEffect(() => {
+        if (windowSize.width! > 768) {
+            setSidebarActive(false);
+            document.body.style.overflow = "auto";
+        }
+    }, [windowSize.width]);
     return (
-        <nav className="w-full h-fit bg-secondary dark:bg-secondaryDark text-primary dark:text-primaryDark transition-all duration-1000 z-10">
+        <nav className="w-full h-fit bg-secondary dark:bg-secondaryDark text-primary dark:text-primaryDark transition-all duration-1000 z-10 sticky top-0">
             <div className="container mx-auto flex flex-wrap items-center justify-between p-4">
                 <Link href={route("home")}>
                     <img src="img/logo-himatekia.png" alt="" className="w-10" />

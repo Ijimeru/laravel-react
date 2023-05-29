@@ -1,9 +1,8 @@
-import Card from "@/Components/Card";
-import SecondaryButton from "@/Components/SecondaryButton";
+import Cards from "@/Components/Cards";
 import Main from "@/Layouts/MainLayout";
-import { useScroll } from "@/hooks/useScroll";
 import { Head, Link } from "@inertiajs/react";
-import React, { useEffect } from "react";
+import React from "react";
+import { AiOutlineSearch } from "react-icons/ai";
 import { BsNewspaper } from "react-icons/bs";
 import { FaArrowRight, FaCircle } from "react-icons/fa";
 import { HiOutlineAcademicCap } from "react-icons/hi";
@@ -120,22 +119,7 @@ const Home = () => {
                     </h2>
                 </span>
                 <div className="mt-6 flex md:flex-row gap-x-4 flex-col gap-y-4 ">
-                    <div className="flex flex-col gap-y-3">
-                        <div className="grid xl:grid-cols-4 gap-3 md:grid-cols-2 grid-cols-1">
-                            {[1, 2, 3, 4, 5, 6, 7].map((num) => (
-                                <Link href={route("home")} key={num}>
-                                    <Card />
-                                </Link>
-                            ))}
-                        </div>
-                        <Link
-                            href={route("home")}
-                            className="bg-primaryDark py-2 px-4 rounded-md mt-3 w-fit border-2 border-secondaryButton text-accent flex flex-row gap-x-2 items-center hover:bg-accent transition-colors hover:text-secondary dark:bg-secondaryButtonDark dark:text-accentDark dark:border-accentDark hover:dark:bg-accentDark dark:hover:text-primaryDark"
-                        >
-                            Lihat semua Berita
-                            <FaArrowRight />
-                        </Link>
-                    </div>
+                    <Cards />
                     <div className="bg-secondaryButton dark:bg-secondaryButtonDark h-full p-[35px] rounded-md md:w-3/4 sticky top-20 w-full">
                         <h2 className="font-semibold text-2xl text-primary dark:text-primaryButton">
                             Kategori Informasi
@@ -178,6 +162,118 @@ const Home = () => {
                             </Link>
                         </ul>
                     </div>
+                </div>
+            </section>
+            <section className="py-10 container m-auto px-3 grid grid-cols-1 md:grid-cols-2 gap-y-6 md:gap-y-0">
+                <div className="md:p-[10px_40px_10px_10px]">
+                    <span className="after:content-[''] after:border-t-[3px] after:border-accent  after:w-full after:block flex items-center flex-row gap-x-2">
+                        <h2 className="text-3xl font-semibold flex-shrink-0">
+                            Pengumuman
+                        </h2>
+                    </span>
+                    <div className="mt-6 flex md:flex-row gap-x-4 flex-col gap-y-4 ">
+                        <Cards
+                            className="grid-cols-2"
+                            childClassName="text-[15px]"
+                            btnText="Lihat Semua"
+                        />
+                    </div>
+                </div>
+                <div className="md:p-[10px_10px_10px_40px]">
+                    <span className="after:content-[''] after:border-t-[3px] after:border-accentDark  after:w-full after:block flex items-center flex-row gap-x-2">
+                        <h2 className="text-3xl font-semibold flex-shrink-0">
+                            Akademik
+                        </h2>
+                    </span>
+                    <div className="mt-6 flex md:flex-row gap-x-4 flex-col gap-y-4 ">
+                        <Cards
+                            className="grid-cols-2"
+                            childClassName="text-[15px]"
+                            btnText="Lihat Semua"
+                        />
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div className="bg-[url('/img/hero-img.jpg')] min-h-[24rem] bg-cover bg-center bg-no-repeat bg-white relative flex justify-center items-center flex-col text-center py-20">
+                    <section className="h-full w-full bg-[#680000] opacity-30 absolute"></section>
+                    <h3 className="font-extrabold text-[14px] text-primaryDark z-10 flex flex-row items-center gap-x-1">
+                        <FaCircle className="text-[6px]" />
+                        Tautan Cepat
+                    </h3>
+                    <h6 className="text-[#F6DF0C] font-extrabold text-2xl z-10 w-2/5">
+                        Jelajahi Lebih Jauh Tentang Himpunan Teknik Kimia ITERA
+                    </h6>
+                    <section className="flex md:flex-row flex-col w-full justify-center p-3 md:gap-x-4 gap-y-3 container m-auto z-10">
+                        {cards.map((card, index) => (
+                            <Link
+                                href={card.href}
+                                className="w-full"
+                                key={index}
+                            >
+                                <div className="flex-1 bg-primaryDark dark:bg-secondaryButtonDark shadow-sm p-4 rounded-md flex flex-row md:gap-x-2 gap-x-5 hover:shadow-2xl hover:scale-110 transition-all cursor-pointer">
+                                    <span>{card.icon}</span>
+                                    <div>
+                                        <div className="font-semibold">
+                                            {card.title}
+                                        </div>
+                                        <div>{card.desc}</div>
+                                    </div>
+                                </div>
+                            </Link>
+                        ))}
+                    </section>
+                </div>
+            </section>
+            <section className="py-10 container m-auto flex flex-col justify-center px-3 gap-y-3">
+                <div className="flex flex-row items-center gap-x-1 justify-center">
+                    <span>
+                        <FaCircle className="text-[6px] text-accent dark:text-accentDark" />
+                    </span>
+                    <span className="self-center text-sm">Dokumentasi</span>
+                </div>
+                <div className="flex justify-center">
+                    <h2 className="text-center text-3xl font-semibold text-accent dark:text-accentDark">
+                        Galeri & Dokumentasi Himatekia ITERA
+                    </h2>
+                </div>
+                <div className="flex justify-center gap-x-3">
+                    {["Kampus", "Kemahasiswaan", "Akademik", "Kegiatan"].map(
+                        (val, key) => (
+                            <Link
+                                href={route("home")}
+                                key={key}
+                                className={`text-sm md:text-base p-[5px_13px] rounded-3xl  ${
+                                    val == "Kampus"
+                                        ? "bg-secondaryButton text-accent"
+                                        : ""
+                                }`}
+                            >
+                                {val}
+                            </Link>
+                        )
+                    )}
+                </div>
+                <div className="grid md:grid-cols-4 grid-cols-2 gap-4">
+                    {[1, 2, 3, 4, 5].map((val, key) => (
+                        <div
+                            className="overflow-hidden rounded-lg group relative"
+                            key={key}
+                        >
+                            <img
+                                src="/img/dummy.jpg"
+                                alt="dummy"
+                                className="rounded-lg hover:scale-110 transition-transform duration-300 group-hover:scale-110"
+                            />
+                            <Link
+                                href={route("home")}
+                                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl text-primaryDark opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200 z-10"
+                            >
+                                <AiOutlineSearch />
+                            </Link>
+                            <section className="bg-[#680000] h-full w-full absolute opacity-0 group-hover:opacity-30 transition-opacity top-0"></section>
+                        </div>
+                    ))}
                 </div>
             </section>
         </Main>

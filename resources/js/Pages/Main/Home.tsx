@@ -1,4 +1,5 @@
 import Card from "@/Components/Card";
+import SecondaryButton from "@/Components/SecondaryButton";
 import Main from "@/Layouts/MainLayout";
 import { useScroll } from "@/hooks/useScroll";
 import { Head, Link } from "@inertiajs/react";
@@ -96,7 +97,7 @@ const Home = () => {
                     <br />
                     <Link
                         href={route("profil")}
-                        className="bg-secondaryButton py-2 px-5 rounded-md font-semibold flex flex-row w-fit items-center gap-x-3 dark:bg-primaryButtonDark"
+                        className="bg-primaryDark py-2 px-4 rounded-md mt-3 w-fit border-2 border-secondaryButton text-accent flex flex-row gap-x-2 items-center hover:bg-accent transition-colors hover:text-secondary dark:bg-secondaryButtonDark dark:text-accentDark dark:border-accentDark hover:dark:bg-accentDark dark:hover:text-primaryDark"
                     >
                         Selengkapnya
                         <span>
@@ -118,15 +119,24 @@ const Home = () => {
                         Berita Terbaru
                     </h2>
                 </span>
-                <div className="mt-6 flex flex-row gap-x-4">
-                    <div className="grid grid-cols-2 xl:grid-cols-4 gap-3">
-                        {[1, 2, 3, 4].map((num) => (
-                            <Link href={route("home")} key={num}>
-                                <Card />
-                            </Link>
-                        ))}
+                <div className="mt-6 flex md:flex-row gap-x-4 flex-col gap-y-4 ">
+                    <div className="flex flex-col gap-y-3">
+                        <div className="grid xl:grid-cols-4 gap-3 md:grid-cols-2 grid-cols-1">
+                            {[1, 2, 3, 4, 5, 6, 7].map((num) => (
+                                <Link href={route("home")} key={num}>
+                                    <Card />
+                                </Link>
+                            ))}
+                        </div>
+                        <Link
+                            href={route("home")}
+                            className="bg-primaryDark py-2 px-4 rounded-md mt-3 w-fit border-2 border-secondaryButton text-accent flex flex-row gap-x-2 items-center hover:bg-accent transition-colors hover:text-secondary dark:bg-secondaryButtonDark dark:text-accentDark dark:border-accentDark hover:dark:bg-accentDark dark:hover:text-primaryDark"
+                        >
+                            Lihat semua Berita
+                            <FaArrowRight />
+                        </Link>
                     </div>
-                    <div className="bg-secondaryButton dark:bg-secondaryButtonDark h-full w-[35%] p-[35px] rounded-md">
+                    <div className="bg-secondaryButton dark:bg-secondaryButtonDark h-full p-[35px] rounded-md md:w-3/4 sticky top-20 w-full">
                         <h2 className="font-semibold text-2xl text-primary dark:text-primaryButton">
                             Kategori Informasi
                         </h2>

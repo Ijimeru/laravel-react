@@ -2,7 +2,7 @@ import { FaCircle } from "react-icons/fa";
 
 export default function Card() {
     return (
-        <div className="flex flex-col rounded-md bg-primaryDark shadow-md">
+        <div className="flex flex-col rounded-md bg-primaryDark shadow-md dark:bg-secondaryButtonDark">
             <div className="">
                 <img
                     className="rounded-t-md"
@@ -15,7 +15,7 @@ export default function Card() {
                     Mahasiswa itera Raih gelar winner di pemilihan putra putri
                     lampung
                 </h5>
-                <span className="text-xs text-accent font-medium flex flex-row items-center gap-x-1 h-12">
+                <span className="text-xs text-accent font-medium flex flex-row items-center gap-x-1 h-12 dark:text-accentDark">
                     <FaCircle />4 May 2023
                 </span>
             </div>

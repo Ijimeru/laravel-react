@@ -1,20 +1,26 @@
 import { useState } from "react";
 import { CiDark, CiLight } from "react-icons/ci";
 
-export default function ChangeTheme() {
+export default function ChangeTheme({ className }: { className?: string }) {
     const [mode, setMode] = useState<string | null>(
         localStorage.getItem("mode") ? localStorage.getItem("mode") : "light"
     );
     const [click, setClick] = useState<boolean>(false);
     return (
         <div
-            className={`text-2xl dark:border-secondary border-2 rounded-full border-secondaryDark  dark:bg-slate-800 hidden md:flex flex-row gap-x-4 relative after:content-[''] after:absolute after:bg-slate-400 dark:after:bg-black after:rounded-full after:top-1/2 after:-translate-y-1/2 after:w-6 after:h-full transition-all after:transition-all ${
-                mode == "light" ? "after:right-0" : ""
-            } ${mode === "dark" ? "" : "after:dark:left-0"} ${
-                mode === "light" ? "after:animate-translate" : ""
-            } ${mode === "dark" ? "after:dark:animate-translateDark" : ""} ${
-                click ? "" : "after:animate-nothing after:dark:animate-nothing"
-            }`}
+            className={
+                `text-2xl dark:border-secondary border-2 rounded-full border-secondaryDark  dark:bg-slate-800 flex-row gap-x-4 relative after:content-[''] after:absolute after:bg-slate-400 dark:after:bg-black after:rounded-full after:top-1/2 after:-translate-y-1/2 after:w-6 after:h-full transition-all after:transition-all ${
+                    mode == "light" ? "after:right-0" : ""
+                } ${mode === "dark" ? "" : "after:dark:left-0"} ${
+                    mode === "light" ? "after:animate-translate" : ""
+                } ${
+                    mode === "dark" ? "after:dark:animate-translateDark" : ""
+                } ${
+                    click
+                        ? ""
+                        : "after:animate-nothing after:dark:animate-nothing"
+                } ` + className
+            }
             title="Change theme"
             id="theme"
             onClick={(e) => {

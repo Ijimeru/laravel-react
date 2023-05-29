@@ -28,11 +28,16 @@ export default {
                 accentDark: "#bd73e8",
             },
             animation: {
+                nothing: "nothing 1s ease-in-out 1 forwards",
                 "spin-once": "spin 1s linear 1",
                 translate: "translate 1s ease-in-out 1 forwards",
                 translateDark: "translateDark 1s ease-in-out 1 forwards",
             },
             keyframes: {
+                nothing: {
+                    "0%": {},
+                    "100%": {},
+                },
                 translate: {
                     "0%": { left: "0" },
                     "50%": { width: "100%" },

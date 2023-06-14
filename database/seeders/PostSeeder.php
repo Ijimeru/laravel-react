@@ -14,6 +14,14 @@ class PostSeeder extends Seeder
     {
         //
 
-        \App\Models\Post::factory(30)->create();
+        \App\Models\Post::factory(29)->create();
+        $categories = \App\Models\Category::all();
+
+// Populate the pivot table
+        \App\Models\Post::all()->each(function ($post) use ($categories) { 
+            $post->categories()->attach(
+                $categories->random(rand(1, 3))->pluck('id')->toArray()
+            ); 
+        });
     }
 }

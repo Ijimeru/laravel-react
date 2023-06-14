@@ -9,17 +9,8 @@ export default function ChangeTheme({ className }: { className?: string }) {
     return (
         <div
             className={
-                `text-2xl dark:border-secondary border-2 rounded-full border-secondaryDark  dark:bg-slate-800 flex-row gap-x-4 relative after:content-[''] after:absolute after:bg-slate-400 dark:after:bg-black after:rounded-full after:top-1/2 after:-translate-y-1/2 after:w-6 after:h-full transition-all after:transition-all ${
-                    mode == "light" ? "after:right-0" : ""
-                } ${mode === "dark" ? "" : "after:dark:left-0"} ${
-                    mode === "light" ? "after:animate-translate" : ""
-                } ${
-                    mode === "dark" ? "after:dark:animate-translateDark" : ""
-                } ${
-                    click
-                        ? ""
-                        : "after:animate-nothing after:dark:animate-nothing"
-                } ` + className
+                `text-2xl dark:border-secondary border-2 rounded-full border-secondaryDark  dark:bg-slate-800 flex-row gap-x-4 relative transition-all ` +
+                className
             }
             title="Change theme"
             id="theme"
@@ -32,6 +23,14 @@ export default function ChangeTheme({ className }: { className?: string }) {
                 }
             }}
         >
+            <span
+                className={`absolute bg-slate-400 dark:bg-black rounded-full top-1/2 -translate-y-1/2 w-6 h-full  transition-all ${
+                    mode == "light" ? "right-0" : ""
+                } ${mode === "dark" ? "" : "dark:left-0"} ${
+                    mode === "light" ? "animate-translate" : ""
+                } ${mode === "dark" ? "dark:animate-translateDark" : ""}`}
+                style={click ? undefined : { animation: "none" }}
+            ></span>
             <CiDark
                 id="dark"
                 className="z-10 cursor-pointer hover:text-blue-700 dark:text-blue-700"

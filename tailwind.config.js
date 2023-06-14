@@ -32,6 +32,8 @@ export default {
                 "spin-once": "spin 1s linear 1",
                 translate: "translate 1s ease-in-out 1 forwards",
                 translateDark: "translateDark 1s ease-in-out 1 forwards",
+                opacity: "opacity 0.3s ease-in-out 1 forwards",
+                opacityOff: "opacityOff 0.3s ease-in-out 1 forwards",
             },
             keyframes: {
                 nothing: {
@@ -49,6 +51,14 @@ export default {
                     "0%": { right: "0" },
                     "50%": { width: "100%" },
                     "100%": { left: "0" },
+                },
+                opacity: {
+                    "0%": { opacity: "0" },
+                    "100%": { opacity: "100" },
+                },
+                opacityOff: {
+                    "0%": { opacity: "100" },
+                    "100%": { opacity: "0" },
                 },
             },
         },

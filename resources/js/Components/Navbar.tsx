@@ -1,16 +1,22 @@
 import { Link } from "@inertiajs/react";
 import { useEffect, useState } from "react";
-import { GiHamburgerMenu, VscAccount } from "react-icons/all";
+import {
+    GiHamburgerMenu,
+    RiArrowDropDownLine,
+    VscAccount,
+} from "react-icons/all";
 import ChangeTheme from "./ChangeTheme";
 import NavLink from "./NavLinkMain";
 import PrimaryButton from "./PrimaryButton";
 import SecondaryButton from "./SecondaryButton";
 import { useWindowSize } from "@/hooks/useWindowSize";
+import MainNavList from "./MainNavList";
 
 export default function Navbar() {
     const [account, setAccount] = useState<boolean>(false);
     const [sidebarActive, setSidebarActive] = useState<boolean>(false);
     const windowSize = useWindowSize();
+
     useEffect(() => {
         if (windowSize.width! > 768) {
             setSidebarActive(false);
@@ -21,42 +27,14 @@ export default function Navbar() {
         <nav className="w-full h-fit bg-secondary dark:bg-secondaryDark text-primary dark:text-primaryDark transition-all duration-1000 z-[11] sticky top-0">
             <div className="container mx-auto flex flex-wrap items-center justify-between p-4">
                 <Link href={route("home")}>
-                    <img src="img/logo-himatekia.png" alt="" className="w-10" />
+                    <img
+                        src="/img/logo-himatekia.png"
+                        alt=""
+                        className="w-10"
+                    />
                 </Link>
-                <div className=" font-semibold">
-                    <ul className="flex-row gap-x-5 hidden md:flex">
-                        <NavLink
-                            href={route("home")}
-                            active={route().current("home")}
-                        >
-                            Beranda
-                        </NavLink>
-                        <NavLink
-                            href={route("profil")}
-                            active={route().current("profil")}
-                        >
-                            Profil
-                        </NavLink>
-                        <NavLink
-                            href={route("kepengurusan")}
-                            active={route().current("kepengurusan")}
-                        >
-                            Kepengurusan
-                        </NavLink>
-                        <NavLink
-                            href={route("buku")}
-                            active={route().current("buku")}
-                        >
-                            Buku
-                        </NavLink>
-                        <NavLink
-                            href={route("store")}
-                            active={route().current("store")}
-                        >
-                            Store
-                        </NavLink>
-                    </ul>
-                </div>
+                <MainNavList />
+
                 <div className="flex flex-row items-center gap-x-10">
                     <ChangeTheme className="hidden md:flex" />
                     <div className="relative flex justify-center items-center group select-none">
@@ -76,7 +54,7 @@ export default function Navbar() {
                             account
                         </div>
                         {account ? (
-                            <section className="absolute h-fit bg-primaryDark dark:bg-secondaryButtonDark dark:border-secondaryDark border-2 -bottom-[13rem] -left-20 -right-20 rounded-md flex flex-col p-4 gap-y-3 before:content-[''] before:h-3 before:w-3 before:absolute before:bg-primaryDark  dark:before:bg-secondaryButtonDark before:left-1/2 before:-translate-x-1/2 before:-top-1 before:rotate-45 ">
+                            <section className="absolute h-fit bg-primaryDark dark:bg-secondaryButtonDark dark:border-secondaryDark border-2 -bottom-[13rem] md:-bottom-[10.4rem] -left-20 -right-20 rounded-md flex flex-col p-4 gap-y-3 before:content-[''] before:h-3 before:w-3 before:absolute before:bg-primaryDark  dark:before:bg-secondaryButtonDark before:left-1/2 before:-translate-x-1/2 before:-top-1 before:rotate-45 ">
                                 <h5 className="text-center">Guest</h5>
                                 <PrimaryButton className="flex justify-center hover:bg-primaryButtonDark">
                                     <Link
@@ -100,23 +78,27 @@ export default function Navbar() {
                             </section>
                         ) : null}
                     </div>
-                    <button>
-                        <GiHamburgerMenu
-                            className="cursor-pointer block md:hidden"
-                            onClick={() => {
-                                setSidebarActive((prev) => !prev);
-                                if (sidebarActive == false) {
-                                    document.body.style.overflow = "hidden";
-                                } else {
-                                    document.body.style.overflow = "auto";
-                                }
-                            }}
-                        />
+                    <button
+                        className={`${
+                            sidebarActive
+                                ? "after:content-[''] after:absolute after:h-screen after:w-screen after:left-64 cursor-default"
+                                : null
+                        }`}
+                        onClick={() => {
+                            setSidebarActive((prev) => !prev);
+                            if (sidebarActive == false) {
+                                document.body.style.overflow = "hidden";
+                            } else {
+                                document.body.style.overflow = "auto";
+                            }
+                        }}
+                    >
+                        <GiHamburgerMenu className="cursor-pointer block md:hidden" />
                     </button>
                     <section
                         className={`fixed left-0 top-0 bg-primaryDark dark:bg-secondaryButtonDark pt-3 select-none h-screen ${
                             !sidebarActive ? "w-0" : "w-64"
-                        } transition-all duration-500 shadow-2xl flex flex-col gap-y-11 overflow-hidden`}
+                        } transition-all duration-500 shadow-2xl flex flex-col gap-y-11 overflow-hidden z-10`}
                     >
                         <header className="flex flex-row justify-center items-center gap-x-3">
                             <img
@@ -147,11 +129,11 @@ export default function Navbar() {
                                 onClick={() =>
                                     (document.body.style.overflow = "auto")
                                 }
-                                href={route("profil")}
+                                href={route("sejarahvisimisi")}
                             >
                                 <li
                                     className={`p-4 border hover:bg-primaryButton hover:bg-opacity-40 hover:shadow-lg ${
-                                        route().current("profil")
+                                        route().current("sejarahvisimisi")
                                             ? "bg-primaryButton bg-opacity-20 shadow-lg"
                                             : null
                                     }`}

@@ -1,6 +1,7 @@
 import Cards from "@/Components/Cards";
 import Main from "@/Layouts/MainLayout";
-import { Head, Link } from "@inertiajs/react";
+import { CategoryType, PageProps, PostType } from "@/types";
+import { Head, Link, usePage } from "@inertiajs/react";
 import React from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { BsNewspaper } from "react-icons/bs";
@@ -8,7 +9,10 @@ import { FaArrowRight, FaCircle } from "react-icons/fa";
 import { HiOutlineAcademicCap } from "react-icons/hi";
 import { MdOutlineLocalGroceryStore } from "react-icons/md";
 
-const Home = () => {
+export default function Home({
+    posts,
+    categories,
+}: PageProps<{ posts: PostType[]; categories: CategoryType[] }>) {
     interface CardType {
         icon: React.JSX.Element;
         title: string;
@@ -27,7 +31,7 @@ const Home = () => {
             icon: <BsNewspaper className={className} />,
             title: "Berita",
             desc: "Berita terbaru",
-            href: route("home"),
+            href: route("berita"),
         },
         {
             icon: <MdOutlineLocalGroceryStore className={className} />,
@@ -36,6 +40,8 @@ const Home = () => {
             href: route("home"),
         },
     ];
+    const page = usePage();
+    console.log(page.props);
     return (
         <Main>
             <Head title="Home" />
@@ -95,7 +101,7 @@ const Home = () => {
                     </div>
                     <br />
                     <Link
-                        href={route("profil")}
+                        href={route("sejarahvisimisi")}
                         className="bg-primaryDark py-2 px-4 rounded-md mt-3 w-fit border-2 border-secondaryButton text-accent flex flex-row gap-x-2 items-center hover:bg-accent transition-colors hover:text-secondary dark:bg-secondaryButtonDark dark:text-accentDark dark:border-accentDark hover:dark:bg-accentDark dark:hover:text-primaryDark"
                     >
                         Selengkapnya
@@ -119,48 +125,37 @@ const Home = () => {
                     </h2>
                 </span>
                 <div className="mt-6 flex md:flex-row gap-x-4 flex-col gap-y-4 ">
-                    <Cards />
+                    <Cards posts={posts} length={2} />
                     <div className="bg-secondaryButton dark:bg-secondaryButtonDark h-full p-[35px] rounded-md md:w-3/4 sticky top-20 w-full">
                         <h2 className="font-semibold text-2xl text-primary dark:text-primaryButton">
                             Kategori Informasi
                         </h2>
                         <ul className="mt-5 font-semibold">
-                            <Link
-                                href={route("home")}
-                                className="flex flex-row justify-between gap-x-4 items-center border-b border-primaryDark"
-                            >
-                                <li>Akademik</li>
-                                <span>(5)</span>
-                            </Link>
-                            <Link
-                                href={route("home")}
-                                className="flex flex-row justify-between gap-x-4 items-center border-b border-primaryDark"
-                            >
-                                <li>Berita</li>
-                                <span>(5)</span>
-                            </Link>
-                            <Link
-                                href={route("home")}
-                                className="flex flex-row justify-between gap-x-4 items-center border-b border-primaryDark"
-                            >
-                                <li>Mahasiswa</li>
-                                <span>(5)</span>
-                            </Link>
-                            <Link
-                                href={route("home")}
-                                className="flex flex-row justify-between gap-x-4 items-center border-b border-primaryDark"
-                            >
-                                <li>Pengumuman</li>
-                                <span>(5)</span>
-                            </Link>
-                            <Link
-                                href={route("home")}
-                                className="flex flex-row justify-between gap-x-4 items-center border-b border-primaryDark"
-                            >
-                                <li>Prentasi Mahasiswa</li>
-                                <span>(5)</span>
-                            </Link>
+                            {categories
+                                ?.sort(
+                                    (a, b) => b.posts.length - a.posts.length
+                                )
+                                .slice(0, 5)
+                                .map((category) => (
+                                    <Link
+                                        href={route("home")}
+                                        className="flex flex-row justify-between gap-x-4 items-center border-b border-primaryDark"
+                                    >
+                                        <li>{category.name}</li>
+                                        <span>({category.posts.length})</span>
+                                    </Link>
+                                ))}
                         </ul>
+                        {categories?.length >= 5 ? (
+                            <Link
+                                href={route("home")}
+                                className="bg-primaryDark py-2 px-4 rounded-md mt-3 w-fit border-2 border-secondaryButton text-accent flex flex-row gap-x-2 items-center hover:bg-accent transition-colors
+                                text-sm hover:text-secondary dark:bg-secondaryButtonDark dark:text-accentDark dark:border-accentDark hover:dark:bg-accentDark dark:hover:text-primaryDark"
+                            >
+                                Lihat Semua Kategori
+                                <FaArrowRight />
+                            </Link>
+                        ) : null}
                     </div>
                 </div>
             </section>
@@ -243,7 +238,7 @@ const Home = () => {
                             <Link
                                 href={route("home")}
                                 key={key}
-                                className={`text-sm md:text-base p-[5px_13px] rounded-3xl  ${
+                                className={`text-sm md:text-base p-[5px_13px] rounded-3xl hover:bg-secondaryButton hover:opacity-80 ${
                                     val == "Kampus"
                                         ? "bg-secondaryButton text-accent"
                                         : ""
@@ -278,6 +273,4 @@ const Home = () => {
             </section>
         </Main>
     );
-};
-
-export default Home;
+}

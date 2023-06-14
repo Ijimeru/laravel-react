@@ -31,11 +31,13 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'posts'=> \App\Models\Post::all()->load(['author','categories']),
+        'categories'=>\App\Models\Category::all()->load('posts')
     ]);
 })->name("home");
-Route::get('/profil',fn()=>
-    Inertia::render("Main/Profil")
-)->name("profil");
+Route::get('/sejarah-visi-misi',fn()=>
+    Inertia::render("Main/SejarahVisiMisi")
+)->name("sejarahvisimisi");
 Route::get('/kepengurusan',fn()=>
     Inertia::render("Main/Kepengurusan")
 )->name("kepengurusan");
@@ -45,6 +47,12 @@ Route::get('/buku',fn()=>
 Route::get('/store',fn()=>
     Inertia::render("Main/Store")
 )->name("store");
+Route::get('/berita/',fn()=>
+    Inertia::render("Main/Berita",[
+    "posts"=>\App\Models\Post::all()->load(['author','categories']),
+    "categories"=>\App\Models\Category::all()
+])
+)->name("berita");
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -56,6 +64,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('chirps',ChirpController::class)->only(['index', 'store', 'update', 'destroy'])->middleware(['auth','verified']);
+Route::resource('chirps',ChirpController::class)->only(['index', 'store', 'update', 'destroy','show'])->middleware(['auth','verified']);
 
 require __DIR__.'/auth.php';

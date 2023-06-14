@@ -1,6 +1,16 @@
+import { PostType } from "@/types";
 import { FaCircle } from "react-icons/fa";
-
-export default function Card({ childClassName }: { childClassName?: string }) {
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/id";
+dayjs.extend(relativeTime);
+export default function Card({
+    childClassName,
+    post,
+}: {
+    childClassName?: string;
+    post?: PostType;
+}) {
     return (
         <div className="flex flex-col rounded-md bg-primaryDark shadow-md dark:bg-secondaryButtonDark">
             <div className="">
@@ -16,11 +26,13 @@ export default function Card({ childClassName }: { childClassName?: string }) {
                         `font-semibold md:text-base text-xl ` + childClassName
                     }
                 >
-                    Mahasiswa itera Raih gelar winner di pemilihan putra putri
-                    lampung
+                    {post?.title}
                 </h5>
                 <span className="text-xs text-accent font-medium flex flex-row items-center gap-x-1 h-12 dark:text-accentDark">
-                    <FaCircle />4 May 2023
+                    <FaCircle />
+                    {dayjs(post?.created_at)
+                        .locale("id")
+                        .format("DD MMMM YYYY")}
                 </span>
             </div>
         </div>

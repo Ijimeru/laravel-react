@@ -1,4 +1,4 @@
-# Kaizen Management System
+# WEB HIMATEKIA
 
 ## 📑 Deskripsi
 

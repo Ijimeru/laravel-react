@@ -15,14 +15,13 @@ export default function Berita({
     posts: PostType[];
     categories: CategoryType[];
 }) {
-    const [filteredPosts, setFilteredPosts] = useState<PostType[]>(posts);
-    const [selectedOptions, setSelectedOptions] = useRemember<CategoryType[]>(
-        []
+    const page = usePage<PageProps>();
+    const category = page.props.ziggy.query.category;
+    const [selectedOptions, setSelectedOptions] = useState<CategoryType[]>(
+        category
+            ? categories.filter((categorys) => categorys.name == category)
+            : []
     );
-    const [jumlahPostPerHalaman, setJumlahPostPerHalaman] =
-        useRemember<number>(5);
-    function searchBerita() {}
-    const [current, setCurrent] = useState<number>(1);
     useEffect(() => {
         setFilteredPosts(
             posts.filter((post) =>
@@ -33,6 +32,19 @@ export default function Berita({
             )
         );
     }, [selectedOptions]);
+    const [filteredPosts, setFilteredPosts] = useState<PostType[]>(
+        category
+            ? posts.filter((post) =>
+                  post.categories
+                      .map((category) => category.name)
+                      .includes(category)
+              )
+            : posts
+    );
+
+    const [jumlahPostPerHalaman, setJumlahPostPerHalaman] = useState<number>(5);
+    function searchBerita() {}
+    const [current, setCurrent] = useState<number>(1);
 
     return (
         <Main>

@@ -11,6 +11,7 @@ import PrimaryButton from "./PrimaryButton";
 import SecondaryButton from "./SecondaryButton";
 import { useWindowSize } from "@/hooks/useWindowSize";
 import MainNavList from "./MainNavList";
+import MobileMainNavList from "./MobileMainNavList";
 
 export default function Navbar() {
     const [account, setAccount] = useState<boolean>(false);
@@ -108,88 +109,8 @@ export default function Navbar() {
                             />
                             <span className="font-semibold">HIMATEKIA</span>
                         </header>
-                        <ul>
-                            <Link
-                                onClick={() =>
-                                    (document.body.style.overflow = "auto")
-                                }
-                                href={route("home")}
-                            >
-                                <li
-                                    className={`p-4 border hover:bg-primaryButton hover:bg-opacity-40 hover:shadow-lg ${
-                                        route().current("home")
-                                            ? "bg-primaryButton bg-opacity-20 shadow-lg"
-                                            : null
-                                    }`}
-                                >
-                                    Home
-                                </li>
-                            </Link>
-                            <Link
-                                onClick={() =>
-                                    (document.body.style.overflow = "auto")
-                                }
-                                href={route("sejarahvisimisi")}
-                            >
-                                <li
-                                    className={`p-4 border hover:bg-primaryButton hover:bg-opacity-40 hover:shadow-lg ${
-                                        route().current("sejarahvisimisi")
-                                            ? "bg-primaryButton bg-opacity-20 shadow-lg"
-                                            : null
-                                    }`}
-                                >
-                                    Profil
-                                </li>
-                            </Link>
-                            <Link
-                                onClick={() =>
-                                    (document.body.style.overflow = "auto")
-                                }
-                                href={route("kepengurusan")}
-                            >
-                                <li
-                                    className={`p-4 border hover:bg-primaryButton hover:bg-opacity-40 hover:shadow-lg ${
-                                        route().current("kepengurusan")
-                                            ? "bg-primaryButton bg-opacity-20 shadow-lg"
-                                            : null
-                                    }`}
-                                >
-                                    Kepengurusan
-                                </li>
-                            </Link>
-                            <Link
-                                onClick={() =>
-                                    (document.body.style.overflow = "auto")
-                                }
-                                href={route("buku")}
-                            >
-                                <li
-                                    className={`p-4 border hover:bg-primaryButton hover:bg-opacity-40 hover:shadow-lg ${
-                                        route().current("buku")
-                                            ? "bg-primaryButton bg-opacity-20 shadow-lg"
-                                            : null
-                                    }`}
-                                >
-                                    Buku
-                                </li>
-                            </Link>
-                            <Link
-                                onClick={() =>
-                                    (document.body.style.overflow = "auto")
-                                }
-                                href={route("store")}
-                            >
-                                <li
-                                    className={`p-4 border hover:bg-primaryButton hover:bg-opacity-40 hover:shadow-lg ${
-                                        route().current("store")
-                                            ? "bg-primaryButton bg-opacity-20 shadow-lg"
-                                            : null
-                                    }`}
-                                >
-                                    Store
-                                </li>
-                            </Link>
-                        </ul>
+
+                        <MobileMainNavList />
                     </section>
                 </div>
             </div>

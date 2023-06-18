@@ -12,6 +12,7 @@ export default function Cards({
     posts,
     current,
     setCurrent,
+    length,
     noButton,
     pagination,
     jumlahPostPerHalaman,
@@ -41,11 +42,15 @@ export default function Cards({
     useEffect(() => {
         pagination
             ? setCardPosts(posts?.slice(start, stop))
-            : setCardPosts(posts);
+            : setCardPosts(posts?.slice(0, length));
     }, [jumlahPostPerHalaman, currentPage, selectedOptions, posts]);
 
     const [cardPosts, setCardPosts] = useState<PostType[] | undefined>(
-        pagination ? posts?.slice(start, stop) : posts
+        pagination
+            ? posts?.slice(start, stop)
+            : length
+            ? posts?.slice(0, length)
+            : posts
     );
     return (
         <div className="flex flex-col gap-y-3">

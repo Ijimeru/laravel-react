@@ -4,68 +4,67 @@ import NavLink from "./NavLink";
 import { useState } from "react";
 import { Transition } from "@headlessui/react";
 import NavLinkMain from "./NavLinkMain";
-
-export default function MainNavList() {
-    const navList: {
+export const navList: {
+    name: string;
+    href?: string;
+    child?: {
         name: string;
         href?: string;
-        child?: {
-            name: string;
-            href?: string;
-            child?: { name: string; href: string }[];
-        }[];
-    }[] = [
-        {
-            name: "Beranda",
-            href: "home",
-        },
-        {
-            name: "Profil Himpunan",
-            child: [
-                {
-                    name: "Sejarah & Visi Misi",
-                    href: "sejarahvisimisi",
-                },
-                {
-                    name: "Struktur Organisasi",
-                    child: [
-                        { name: "2018-1", href: "home" },
-                        { name: "2018-2", href: "home" },
-                        {
-                            name: "2019",
-                            href: "home",
-                        },
-                        {
-                            name: "2020",
-                            href: "home",
-                        },
-                    ],
-                },
-            ],
-        },
-        {
-            name: "Buku",
-            href: "buku",
-        },
-        {
-            name: "Berita",
-            href: "berita",
-            child: [
-                {
-                    name: "Berita Himpunan",
-                    href: "home",
-                },
-                {
-                    name: "Berita Akademik",
-                    href: "home",
-                },
-            ],
-        },
-        {
-            name: "Store",
-            href: "store",
-        },
-    ];
+        child?: { name: string; href: string }[];
+    }[];
+}[] = [
+    {
+        name: "Beranda",
+        href: "home",
+    },
+    {
+        name: "Profil Himpunan",
+        child: [
+            {
+                name: "Sejarah & Visi Misi",
+                href: "sejarahvisimisi",
+            },
+            {
+                name: "Struktur Organisasi",
+                child: [
+                    { name: "2018-1", href: "home" },
+                    { name: "2018-2", href: "home" },
+                    {
+                        name: "2019",
+                        href: "home",
+                    },
+                    {
+                        name: "2020",
+                        href: "home",
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        name: "Buku",
+        href: "buku",
+    },
+    {
+        name: "Berita",
+        href: "berita",
+        child: [
+            {
+                name: "Berita Himpunan",
+                href: "home",
+            },
+            {
+                name: "Berita Akademik",
+                href: "home",
+            },
+        ],
+    },
+    {
+        name: "Store",
+        href: "store",
+    },
+];
+export default function MainNavList() {
     const [activeNav, setActiveNav] = useState<string>("");
     const [activeChildNav, setActiveChildNav] = useState<string>("");
     return (

@@ -2,7 +2,7 @@ import Cards from "@/Components/Cards";
 import Main from "@/Layouts/MainLayout";
 import { CategoryType, PageProps, PostType } from "@/types";
 import { Head, Link, usePage } from "@inertiajs/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { BsNewspaper } from "react-icons/bs";
 import { FaArrowRight, FaCircle } from "react-icons/fa";
@@ -40,8 +40,8 @@ export default function Home({
             href: route("home"),
         },
     ];
-    const page = usePage();
-    console.log(page.props);
+    const page = usePage<PageProps>();
+    useEffect(() => {}, [page.props.ziggy.query.category]);
     return (
         <Main>
             <Head title="Home" />
@@ -125,7 +125,7 @@ export default function Home({
                     </h2>
                 </span>
                 <div className="mt-6 flex md:flex-row gap-x-4 flex-col gap-y-4 ">
-                    <Cards posts={posts} length={2} />
+                    <Cards posts={posts} length={5} />
                     <div className="bg-secondaryButton dark:bg-secondaryButtonDark h-full p-[35px] rounded-md md:w-3/4 sticky top-20 w-full">
                         <h2 className="font-semibold text-2xl text-primary dark:text-primaryButton">
                             Kategori Informasi
@@ -138,7 +138,9 @@ export default function Home({
                                 .slice(0, 5)
                                 .map((category) => (
                                     <Link
-                                        href={route("home")}
+                                        href={route("berita", {
+                                            category: category.name,
+                                        })}
                                         className="flex flex-row justify-between gap-x-4 items-center border-b border-primaryDark"
                                     >
                                         <li>{category.name}</li>
@@ -171,6 +173,8 @@ export default function Home({
                             className="grid-cols-2"
                             childClassName="text-[15px]"
                             btnText="Lihat Semua"
+                            posts={posts}
+                            length={5}
                         />
                     </div>
                 </div>
@@ -185,6 +189,8 @@ export default function Home({
                             className="grid-cols-2"
                             childClassName="text-[15px]"
                             btnText="Lihat Semua"
+                            posts={posts}
+                            length={5}
                         />
                     </div>
                 </div>
@@ -233,42 +239,55 @@ export default function Home({
                     </h2>
                 </div>
                 <div className="flex justify-center gap-x-3">
-                    {["Kampus", "Kemahasiswaan", "Akademik", "Kegiatan"].map(
-                        (val, key) => (
+                    {categories
+                        .sort((a, b) => b.posts.length - a.posts.length)
+                        .slice(0, 4)
+                        .map((val, key) => (
                             <Link
-                                href={route("home")}
+                                href={route("home", { category: val.name })}
+                                preserveScroll
                                 key={key}
-                                className={`text-sm md:text-base p-[5px_13px] rounded-3xl hover:bg-secondaryButton hover:opacity-80 ${
-                                    val == "Kampus"
+                                className={`text-sm md:text-base p-[5px_13px] rounded-3xl hover:bg-secondaryButton hover:opacity-80 flex items-center ${
+                                    val.name == page.props.ziggy.query.category
                                         ? "bg-secondaryButton text-accent"
                                         : ""
                                 }`}
                             >
-                                {val}
+                                {val.name}
                             </Link>
-                        )
-                    )}
+                        ))}
                 </div>
                 <div className="grid md:grid-cols-4 grid-cols-2 gap-4">
-                    {[1, 2, 3, 4, 5].map((val, key) => (
-                        <div
-                            className="overflow-hidden rounded-lg group relative"
-                            key={key}
-                        >
-                            <img
-                                src="/img/dummy.jpg"
-                                alt="dummy"
-                                className="rounded-lg hover:scale-110 transition-transform duration-300 group-hover:scale-110"
-                            />
-                            <Link
-                                href={route("home")}
-                                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl text-primaryDark opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200 z-10"
+                    {posts
+                        .filter((post) =>
+                            post.categories
+                                .map((category) => category.name)
+                                .includes(
+                                    page.props.ziggy.query.category
+                                        ? page.props.ziggy.query.category
+                                        : "Doloremque."
+                                )
+                        )
+                        .slice(0, 5)
+                        .map((val, key) => (
+                            <div
+                                className="overflow-hidden rounded-lg group relative"
+                                key={key}
                             >
-                                <AiOutlineSearch />
-                            </Link>
-                            <section className="bg-[#680000] h-full w-full absolute opacity-0 group-hover:opacity-30 transition-opacity top-0"></section>
-                        </div>
-                    ))}
+                                <img
+                                    src={val.image}
+                                    alt="dummy"
+                                    className="rounded-lg hover:scale-110 transition-transform duration-300 group-hover:scale-110"
+                                />
+                                <Link
+                                    href={route("berita", { name: val.title })}
+                                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl text-primaryDark opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200 z-10"
+                                >
+                                    <AiOutlineSearch />
+                                </Link>
+                                <section className="bg-[#680000] h-full w-full absolute opacity-0 group-hover:opacity-30 transition-opacity top-0"></section>
+                            </div>
+                        ))}
                 </div>
             </section>
         </Main>

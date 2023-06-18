@@ -36,5 +36,5 @@ export type PageProps<
     auth: {
         user: User;
     };
-    ziggy: { query: { page: string } };
+    ziggy: { query: { page: string; category: string } };
 };

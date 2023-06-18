@@ -25,9 +25,7 @@ export default function SelectNumberPage({
 }) {
     return (
         <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label" sx={{ zIndex: 100 }}>
-                {label}
-            </InputLabel>
+            <InputLabel id="demo-simple-select-label">{label}</InputLabel>
             <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"

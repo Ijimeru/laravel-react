@@ -50,7 +50,9 @@ Route::get('/store',fn()=>
 Route::get('/berita/',fn()=>
     Inertia::render("Main/Berita",[
     "posts"=>\App\Models\Post::all()->load(['author','categories']),
-    "categories"=>\App\Models\Category::all()
+    "categories"=>\App\Models\Category::whereHas('meta_category',function(\Illuminate\Database\Eloquent\Builder $query){
+        $query->where('name',"Post");
+    })->get()
 ])
 )->name("berita");
 

@@ -41,7 +41,6 @@ export default function Home({
         },
     ];
     const page = usePage<PageProps>();
-    useEffect(() => {}, [page.props.ziggy.query.category]);
     return (
         <Main>
             <Head title="Home" />
@@ -248,7 +247,14 @@ export default function Home({
                                 preserveScroll
                                 key={key}
                                 className={`text-sm md:text-base p-[5px_13px] rounded-3xl hover:bg-secondaryButton hover:opacity-80 flex items-center ${
-                                    val.name == page.props.ziggy.query.category
+                                    val.name ==
+                                    (page.props.ziggy.query.category
+                                        ? page.props.ziggy.query.category
+                                        : categories.sort(
+                                              (a, b) =>
+                                                  b.posts.length -
+                                                  a.posts.length
+                                          )[0].name)
                                         ? "bg-secondaryButton text-accent"
                                         : ""
                                 }`}
@@ -265,10 +271,14 @@ export default function Home({
                                 .includes(
                                     page.props.ziggy.query.category
                                         ? page.props.ziggy.query.category
-                                        : "Doloremque."
+                                        : categories.sort(
+                                              (a, b) =>
+                                                  b.posts.length -
+                                                  a.posts.length
+                                          )[0].name
                                 )
                         )
-                        .slice(0, 5)
+                        .slice(0, 8)
                         .map((val, key) => (
                             <div
                                 className="overflow-hidden rounded-lg group relative"

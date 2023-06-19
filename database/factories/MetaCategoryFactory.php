@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\MetaCategory>
  */
-class CategoryFactory extends Factory
+class MetaCategoryFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,8 +18,6 @@ class CategoryFactory extends Factory
     {
         return [
             //
-            'name'=>$this->faker->sentence(1),
-            'meta_category_id'=> mt_rand(1,2)
         ];
     }
 }

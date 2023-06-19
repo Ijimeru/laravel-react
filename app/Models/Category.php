@@ -12,4 +12,7 @@ class Category extends Model
     public function posts(){
         return $this->belongsToMany(Post::class);
     }
+    public function meta_category(){
+        return $this->belongsTo(MetaCategory::class);
+    }
 }

@@ -30,10 +30,16 @@ class migrateseed extends Command
             '--seed' => true,
         ]);
         $this->call('db:seed',[
+            '--class' => 'MetaCategorySeeder',
+        ]);
+        $this->call('db:seed',[
             '--class' => 'CategorySeeder',
         ]);
         $this->call('db:seed',[
             '--class' => 'PostSeeder',
+        ]);
+        $this->call('db:seed',[
+            '--class' => 'BookSeeder',
         ]);
     }
 }

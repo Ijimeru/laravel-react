@@ -6,9 +6,11 @@ export default function Pagination({
     jumlahPostPerHalaman,
     current,
     setCurrent,
+    className,
 }: {
     jumlahPost: number;
     current: number;
+    className?: string;
     setCurrent: Dispatch<SetStateAction<number>>;
     jumlahPostPerHalaman: number;
 }) {
@@ -19,7 +21,11 @@ export default function Pagination({
         return null;
     }
     return (
-        <div className="flex w-full justify-center flex-col gap-y-4">
+        <div
+            className={
+                `flex w-full justify-center flex-col gap-y-4 ` + className
+            }
+        >
             <div className="flex gap-x-2 w-fit bg-primaryDark py-2 px-5 rounded-md shadow-md">
                 <Button
                     onClick={() => setCurrent(prev > 0 ? prev : 1)}

@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { HomeContext } from "@/Context/HomeContext";
+import { useContext, useState } from "react";
 import { CiDark, CiLight } from "react-icons/ci";
 
 export default function ChangeTheme({ className }: { className?: string }) {
-    const [mode, setMode] = useState<string | null>(
-        localStorage.getItem("mode") ? localStorage.getItem("mode") : "light"
-    );
+    const { mode, setMode } = useContext(HomeContext);
     const [click, setClick] = useState<boolean>(false);
     return (
         <div

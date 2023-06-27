@@ -18,8 +18,9 @@ class BookFactory extends Factory
     {
         return [
             //
-            'title'=>fake()->title(),
-            'cover'=>$this->faker->sentence(1),
+            'title'=>fake()->sentence(2),
+            'file'=> '\file\daftarpembimbing.pdf',
+            'cover'=>'\img\cover.webp',
             'author'=>fake()->name(),
             'tahun'=>fake()->year()
         ];

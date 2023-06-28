@@ -25,10 +25,10 @@ export default function Chirp({ chirp }: { chirp: ChirpType }) {
                 preserveScroll: true,
                 onSuccess: () => {
                     setEditing(false);
-                    resolve("good");
+                    resolve("Berhasil diubah");
                 },
                 onError: () => {
-                    reject("bad");
+                    reject("Gagal diubah");
                 },
             })
         );
@@ -97,7 +97,7 @@ export default function Chirp({ chirp }: { chirp: ChirpType }) {
                             </Dropdown.Trigger>
                             <Dropdown.Content>
                                 <button
-                                    className="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:bg-gray-100 transition duration-150 ease-in-out"
+                                    className="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out "
                                     onClick={() => setEditing(true)}
                                 >
                                     Edit
@@ -106,9 +106,8 @@ export default function Chirp({ chirp }: { chirp: ChirpType }) {
                                     as="button"
                                     href={route("chirps.destroy", chirp.id)}
                                     method="delete"
-                                    onClick={() =>
-                                        toast.success("Berhasil dihapus")
-                                    }
+                                    onSuccess={() =>
+                                        toast.success("Berhasil dihapus")}
                                 >
                                     Delete
                                 </Dropdown.Link>

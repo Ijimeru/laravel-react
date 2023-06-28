@@ -25,7 +25,6 @@ const DashboardProvider: FC<DashboardProviderProps> = ({ children }) => {
     const [mode, setMode] = useState<string | null>(
         localStorage.getItem("mode") ? localStorage.getItem("mode") : "light"
     );
-    console.log(mode);
     return (
         <DashboardContext.Provider value={{ mode, setMode }}>
             {children}

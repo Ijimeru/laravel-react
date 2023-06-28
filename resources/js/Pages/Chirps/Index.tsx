@@ -27,13 +27,13 @@ export default function Index({
                 <form onSubmit={submit}>
                     <textarea
                         value={data.message}
-                        placeholder="What's on your mind?"
+                        placeholder="Berikan saran anda untuk kemajuan web"
                         className="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
                         onChange={(e) => setData("message", e.target.value)}
                     ></textarea>
                     <InputError message={errors.message} className="mt-2" />
                     <PrimaryButton className="mt-4" disabled={processing}>
-                        Chirp
+                        Kirim
                     </PrimaryButton>
                 </form>
                 <div className="mt-6 bg-white shadow-sm rounded-lg divide-y">

@@ -1,10 +1,11 @@
 import Dropdown from "@/Components/Dropdown";
+import MyToastContainer from "@/Components/MyToastContainer";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import DashboardProvider from "@/Context/DashboardContext";
+import DashboardProvider, { DashboardContext } from "@/Context/DashboardContext";
 import { User } from "@/types";
 import { Link } from "@inertiajs/react";
-import { PropsWithChildren, ReactNode, useEffect, useState } from "react";
+import { PropsWithChildren, ReactNode, useContext, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 
 export default function Authenticated({
@@ -24,18 +25,7 @@ export default function Authenticated({
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
             <DashboardProvider>
-                <ToastContainer
-                    position="top-right"
-                    autoClose={5000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="light"
-                />
+                <MyToastContainer/>
                 <nav className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex justify-between h-16">
@@ -57,18 +47,28 @@ export default function Authenticated({
                                     >
                                         Dashboard
                                     </NavLink>
-                                    {user.roles.map((role)=>role.role).includes('admin')?<>                                    <NavLink
+                                    <NavLink
                                         href={route("chirps.index")}
                                         active={route().current("chirps.index")}
                                     >
-                                        Chirps
+                                        Kotak saran
                                     </NavLink>
-                                    <NavLink
+                                    {user.roles.map((role)=>role.role).includes('admin')?       
+                                    <>
+                                     <NavLink
                                         href={route("posts.index")}
                                         active={route().current("posts.index")}
                                     >
                                         Posts
-                                    </NavLink></>:null}
+                                    </NavLink>
+                                    <NavLink
+                                        href={route("books.index")}
+                                        active={route().current("books.index")}
+                                    >
+                                        Books
+                                    </NavLink>
+                                    </>                       
+                                   :null}
 
                                 </div>
                             </div>
@@ -105,6 +105,12 @@ export default function Authenticated({
                                                 href={route("profile.edit")}
                                             >
                                                 Profile
+                                            </Dropdown.Link>
+                                            {user.roles.map((role)=>role.role).includes('super_admin')}
+                                            <Dropdown.Link
+                                                href={route("websettings")}
+                                            >
+                                                Web Settings
                                             </Dropdown.Link>
                                             <Dropdown.Link
                                                 href={route("logout")}

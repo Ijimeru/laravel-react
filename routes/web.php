@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookController;
 use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -27,6 +28,11 @@ use Inertia\Inertia;
 //         'phpVersion' => PHP_VERSION,
 //     ]);
 // });
+
+Route::get('/web-settings',fn()=>
+    Inertia::render('Dashboard/WebSettings')
+)->name('websettings');
+
 Route::get('/', function () {
     return Inertia::render('Main/Home', [
         'canLogin' => Route::has('login'),
@@ -65,7 +71,7 @@ Route::get('/berita/',fn()=>
 )->name("berita");
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('Dashboard/Index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -76,4 +82,5 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('chirps',ChirpController::class)->only(['index', 'store', 'update', 'destroy','show'])->middleware(['auth','verified']);
 Route::resource('posts',PostController::class)->only(['index', 'store', 'update', 'destroy','show'])->middleware(['auth','verified']);
+Route::resource('books',BookController::class)->only(['index', 'store', 'update', 'destroy','show'])->middleware(['auth','verified']);
 require __DIR__.'/auth.php';

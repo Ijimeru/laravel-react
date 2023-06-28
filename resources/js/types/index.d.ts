@@ -2,6 +2,9 @@ export interface User {
     id: number;
     name: string;
     email: string;
+    roles:{
+        role:string;
+    }[];
     email_verified_at: string;
 }
 export interface ChirpType {
@@ -10,6 +13,12 @@ export interface ChirpType {
     created_at: string;
     user: { name: string; id: number };
     updated_at: string;
+}
+
+export interface ConstantType {
+    text:string;
+    btext:string;
+    color:string;
 }
 
 export interface CategoryType {

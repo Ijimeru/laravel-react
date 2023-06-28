@@ -2,17 +2,23 @@ import ComponentDataGrid from "@/Components/ComponentDataGrid";
 import { DashboardContext } from "@/Context/DashboardContext";
 import Main from "@/Layouts/MainLayout";
 
-import { PageProps, PostType } from "@/types";
+import { ConstantType, PageProps, PostType } from "@/types";
 import { Head, router } from "@inertiajs/react";
 
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AiOutlineEye } from "react-icons/ai";
 import { BsRecycle, BsTrash } from "react-icons/bs";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDeleteForever, MdOutlinePublish } from "react-icons/md";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-
+import PrimaryButton from "@/Components/PrimaryButton";
+import Modal from '@/Components/Modal';
+import { BUANG } from "@/Constant/PostConstant";
+import InputLabel from "@/Components/InputLabel";
+import SecondaryButton from "@/Components/SecondaryButton";
+import DangerButton from "@/Components/DangerButton";
+import { Button } from "@mui/material";
 export default function Index({
     auth,
     posts,
@@ -112,21 +118,45 @@ export default function Index({
             },
         },
     ];
+    const [modalConstant] = useState<ConstantType>(BUANG)
+    const [show,setShow] = useState<boolean>(false);
 
     return (
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    All Posts
+                <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading- flex flex-row items-center gap-x-4">
+                    All Posts                 <PrimaryButton onClick={()=>setShow(true)}>
+                    Add new
+                </PrimaryButton>
                 </h2>
             }
         >
             <Head title="Posts" />
 
             <div>
+
                 <ComponentDataGrid data={posts} columns={columns} />
             </div>
+            <Modal show={show} onClose={()=>{setShow(false);}}>
+                <form onSubmit={()=>{}} className="p-6">
+                    <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100 text-center">
+                        {modalConstant.text}
+                    </h2>
+
+                    <div className="mt-6">
+                        <InputLabel htmlFor="password" value="Password" className="sr-only" />
+                    </div>
+
+                    <div className="mt-6 flex justify-center">
+                        <SecondaryButton onClick={()=>{setShow(false)}}>Cancel</SecondaryButton>
+
+                        <button className={`ml-3 px-4 rounded-md text-primaryDark`} style={{backgroundColor: modalConstant.color}}>
+                            {modalConstant.btext}
+                        </button>
+                    </div>
+                </form>
+            </Modal>
         </AuthenticatedLayout>
     );
 }

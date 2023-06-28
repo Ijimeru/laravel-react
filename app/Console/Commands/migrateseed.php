@@ -41,5 +41,8 @@ class migrateseed extends Command
         $this->call('db:seed',[
             '--class' => 'BookSeeder',
         ]);
+        $this->call('db:seed',[
+            '--class' => 'RoleSeeder',
+        ]);
     }
 }

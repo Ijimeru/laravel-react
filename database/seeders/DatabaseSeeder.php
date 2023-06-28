@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'muhammad.120280027@student.itera.ac.id',
             'password' => bcrypt('1234567er')
         ]);
+
     }
 }

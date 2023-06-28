@@ -57,7 +57,7 @@ export default function Authenticated({
                                     >
                                         Dashboard
                                     </NavLink>
-                                    <NavLink
+                                    {user.roles.map((role)=>role.role).includes('admin')?<>                                    <NavLink
                                         href={route("chirps.index")}
                                         active={route().current("chirps.index")}
                                     >
@@ -68,7 +68,8 @@ export default function Authenticated({
                                         active={route().current("posts.index")}
                                     >
                                         Posts
-                                    </NavLink>
+                                    </NavLink></>:null}
+
                                 </div>
                             </div>
 

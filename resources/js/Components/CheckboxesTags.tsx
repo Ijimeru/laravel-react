@@ -31,7 +31,6 @@ export default function CheckboxesTags({
     setSelectedOptions: Dispatch<SetStateAction<CategoryType[]>>;
 }) {
     const { mode } = useContext(HomeContext);
-
     return (
         <ThemeProvider theme={mode == "light" ? lightTheme : darkTheme}>
             <CssBaseline />

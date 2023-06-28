@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\ChirpController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -41,8 +43,14 @@ Route::get('/sejarah-visi-misi',fn()=>
 Route::get('/kepengurusan',fn()=>
     Inertia::render("Main/Kepengurusan")
 )->name("kepengurusan");
-Route::get('/buku',fn()=>
-    Inertia::render("Main/Buku")
+Route::get('/buku',fn(Request $request)=>
+
+    Inertia::render("Main/Buku",[
+        "books"=>\App\Models\Book::all()->load('categories'),
+        "categories"=>\App\Models\Category::whereHas('meta_category',function(\Illuminate\Database\Eloquent\Builder $query){
+            $query->where('name','Book');
+        })->get()
+    ])
 )->name("buku");
 Route::get('/store',fn()=>
     Inertia::render("Main/Store")
@@ -67,5 +75,5 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('chirps',ChirpController::class)->only(['index', 'store', 'update', 'destroy','show'])->middleware(['auth','verified']);
-
+Route::resource('posts',PostController::class)->only(['index', 'store', 'update', 'destroy','show'])->middleware(['auth','verified']);
 require __DIR__.'/auth.php';

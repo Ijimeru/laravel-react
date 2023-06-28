@@ -1,4 +1,4 @@
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import {
     GiHamburgerMenu,
@@ -12,11 +12,14 @@ import SecondaryButton from "./SecondaryButton";
 import { useWindowSize } from "@/hooks/useWindowSize";
 import MainNavList from "./MainNavList";
 import MobileMainNavList from "./MobileMainNavList";
+import { PageProps } from "@/types";
 
 export default function Navbar() {
     const [account, setAccount] = useState<boolean>(false);
     const [sidebarActive, setSidebarActive] = useState<boolean>(false);
     const windowSize = useWindowSize();
+    const page = usePage<PageProps>();
+    const user = page.props.auth.user;
 
     useEffect(() => {
         if (windowSize.width! > 768) {
@@ -55,28 +58,48 @@ export default function Navbar() {
                             account
                         </div>
                         {account ? (
-                            <section className="absolute h-fit bg-primaryDark dark:bg-secondaryButtonDark dark:border-secondaryDark border-2 -bottom-[13rem] md:-bottom-[10.4rem] -left-20 -right-20 rounded-md flex flex-col p-4 gap-y-3 before:content-[''] before:h-3 before:w-3 before:absolute before:bg-primaryDark  dark:before:bg-secondaryButtonDark before:left-1/2 before:-translate-x-1/2 before:-top-1 before:rotate-45 ">
-                                <h5 className="text-center">Guest</h5>
-                                <PrimaryButton className="flex justify-center hover:bg-primaryButtonDark">
-                                    <Link
-                                        href={route("login")}
-                                        as="button"
-                                        className="text-sm"
-                                    >
-                                        Login
-                                    </Link>
-                                </PrimaryButton>
-                                <SecondaryButton className="flex justify-center hover:bg-secondaryButton">
-                                    <Link
-                                        href={route("register")}
-                                        as="button"
-                                        className="text-sm"
-                                    >
-                                        Register
-                                    </Link>
-                                </SecondaryButton>
-                                <ChangeTheme className="flex w-fit self-center md:hidden" />
-                            </section>
+                            user ? (
+                                <section className="absolute h-fit bg-primaryDark dark:bg-secondaryButtonDark dark:border-secondaryDark border-2 -bottom-[10rem] md:-bottom-[7.6rem] -left-20 -right-20 rounded-md flex flex-col p-4 gap-y-3 before:content-[''] before:h-3 before:w-3 before:absolute before:bg-primaryDark  dark:before:bg-secondaryButtonDark before:left-1/2 before:-translate-x-1/2 before:-top-1 before:rotate-45 ">
+                                    <h5 className="text-center">
+                                        {user.name.length > 10
+                                            ? user.name.slice(0, 10) + "..."
+                                            : user.name}
+                                    </h5>
+                                    <PrimaryButton className="flex justify-center hover:bg-primaryButtonDark">
+                                        <Link
+                                            href={route("dashboard")}
+                                            as="button"
+                                            className="text-sm"
+                                        >
+                                            Dashboard
+                                        </Link>
+                                    </PrimaryButton>
+                                    <ChangeTheme className="flex w-fit self-center md:hidden" />
+                                </section>
+                            ) : (
+                                <section className="absolute h-fit bg-primaryDark dark:bg-secondaryButtonDark dark:border-secondaryDark border-2 -bottom-[13rem] md:-bottom-[10.4rem] -left-20 -right-20 rounded-md flex flex-col p-4 gap-y-3 before:content-[''] before:h-3 before:w-3 before:absolute before:bg-primaryDark  dark:before:bg-secondaryButtonDark before:left-1/2 before:-translate-x-1/2 before:-top-1 before:rotate-45 ">
+                                    <h5 className="text-center">Guest</h5>
+                                    <PrimaryButton className="flex justify-center hover:bg-primaryButtonDark">
+                                        <Link
+                                            href={route("login")}
+                                            as="button"
+                                            className="text-sm"
+                                        >
+                                            Login
+                                        </Link>
+                                    </PrimaryButton>
+                                    <SecondaryButton className="flex justify-center hover:bg-secondaryButton">
+                                        <Link
+                                            href={route("register")}
+                                            as="button"
+                                            className="text-sm"
+                                        >
+                                            Register
+                                        </Link>
+                                    </SecondaryButton>
+                                    <ChangeTheme className="flex w-fit self-center md:hidden" />
+                                </section>
+                            )
                         ) : null}
                     </div>
                     <button

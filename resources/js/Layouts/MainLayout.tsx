@@ -11,18 +11,18 @@ export default function Main({ children }: HTMLAttributes<HTMLDivElement>) {
         } else {
             localStorage.setItem("mode", "light");
         }
-    });
+    }, []);
     return (
-        <div
-            className={`flex justify-between flex-col bg-secondary dark:bg-secondaryDark text-primary dark:text-primaryDark scroll-smooth`}
-        >
-            <HomeProvider>
+        <HomeProvider>
+            <div
+                className={`flex justify-between flex-col bg-secondary dark:bg-secondaryDark text-primary dark:text-primaryDark scroll-smooth`}
+            >
                 <Navbar />
                 <div className="min-h-[calc(100vh-72px-410px)]">{children}</div>
 
                 <br />
                 <MainFooter />
-            </HomeProvider>
-        </div>
+            </div>
+        </HomeProvider>
     );
 }

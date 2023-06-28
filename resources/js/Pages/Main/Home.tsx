@@ -132,7 +132,8 @@ export default function Home({
                         <ul className="mt-5 font-semibold">
                             {categories
                                 ?.sort(
-                                    (a, b) => b.posts.length - a.posts.length
+                                    (a, b) =>
+                                        b.posts?.length! - a.posts?.length!
                                 )
                                 .slice(0, 5)
                                 .map((category) => (
@@ -143,7 +144,7 @@ export default function Home({
                                         className="flex flex-row justify-between gap-x-4 items-center border-b border-primaryDark"
                                     >
                                         <li>{category.name}</li>
-                                        <span>({category.posts.length})</span>
+                                        <span>({category.posts?.length})</span>
                                     </Link>
                                 ))}
                         </ul>
@@ -239,7 +240,7 @@ export default function Home({
                 </div>
                 <div className="flex justify-center gap-x-3">
                     {categories
-                        .sort((a, b) => b.posts.length - a.posts.length)
+                        .sort((a, b) => b.posts?.length! - a.posts?.length!)
                         .slice(0, 4)
                         .map((val, key) => (
                             <Link
@@ -252,8 +253,8 @@ export default function Home({
                                         ? page.props.ziggy.query.category
                                         : categories.sort(
                                               (a, b) =>
-                                                  b.posts.length -
-                                                  a.posts.length
+                                                  b.posts?.length! -
+                                                  a.posts?.length!
                                           )[0].name)
                                         ? "bg-secondaryButton text-accent"
                                         : ""
@@ -273,8 +274,8 @@ export default function Home({
                                         ? page.props.ziggy.query.category
                                         : categories.sort(
                                               (a, b) =>
-                                                  b.posts.length -
-                                                  a.posts.length
+                                                  b.posts?.length! -
+                                                  a.posts?.length!
                                           )[0].name
                                 )
                         )

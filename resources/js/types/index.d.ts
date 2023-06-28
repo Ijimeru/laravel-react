@@ -15,12 +15,26 @@ export interface ChirpType {
 export interface CategoryType {
     id: number;
     name: string;
-    posts: PostType[];
+    posts?: PostType[];
+    books?: BookType[];
+}
+
+export interface BookType {
+    id: number;
+    categories: CategoryType[];
+    title: string;
+    cover: string;
+    author: string;
+    file: string;
+    tahun: string;
+    created_at: string;
+    updated_at: string;
 }
 
 export interface PostType {
     id: number;
     categories: CategoryType[];
+    author: { name: string };
     image: string;
     title: string;
     slug: string;

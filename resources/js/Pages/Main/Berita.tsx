@@ -11,12 +11,12 @@ import SelectNumberPage from "@/Components/SelectNumberPage";
 export default function Berita({
     posts,
     categories,
-}: {
+    ziggy,
+}: PageProps<{
     posts: PostType[];
     categories: CategoryType[];
-}) {
-    const page = usePage<PageProps>();
-    const category = page.props.ziggy.query.category;
+}>) {
+    const category = ziggy.query.category;
     const [selectedOptions, setSelectedOptions] = useState<CategoryType[]>(
         category
             ? categories.filter((categorys) => categorys.name == category)
@@ -43,7 +43,6 @@ export default function Berita({
     );
 
     const [jumlahPostPerHalaman, setJumlahPostPerHalaman] = useState<number>(5);
-    function searchBerita() {}
     const [current, setCurrent] = useState<number>(1);
 
     return (
@@ -67,10 +66,22 @@ export default function Berita({
                         label="Jumlah berita per halaman"
                         setJumlahPostPerHalaman={setJumlahPostPerHalaman}
                     />
+
+                    <div className="w-full flex flex-row gap-x-3">
+                        <CheckboxesTags
+                            current={current}
+                            setCurrent={setCurrent}
+                            jumlahData={filteredPosts.length}
+                            jumlahDataPerHalaman={jumlahPostPerHalaman}
+                            category={categories}
+                            selectedOptions={selectedOptions!}
+                            setSelectedOptions={setSelectedOptions}
+                        />
+                    </div>
                     <input
                         type="text"
-                        className="rounded-lg h-8 w-full border-2 border-secondaryButton dark:border-secondaryButtonDark dark:bg-secondaryDark bg-secondary
-                        focus:border-primary dark:focus:border-accentDark"
+                        className="rounded-lg h-8 w-full border border-gray-400 hover:border-gray-800  dark:bg-secondaryButtonDark dark:border-[#4a4a4d] bg-primaryDark
+                        focus:border-primary dark:hover:border-primaryDark dark:focus:border-primaryDark dark:placeholder:text-[rgb(187,187,187)]"
                         placeholder="Cari berita..."
                         onChange={(e) => {
                             let filterPost: PostType[] = posts.filter((post) =>
@@ -89,27 +100,6 @@ export default function Berita({
                             }
                         }}
                     />
-                    <div className="w-full flex flex-row gap-x-3">
-                        <CheckboxesTags
-                            current={current}
-                            setCurrent={setCurrent}
-                            jumlahPost={filteredPosts.length}
-                            jumlahPostPerHalaman={jumlahPostPerHalaman}
-                            category={categories}
-                            selectedOptions={selectedOptions!}
-                            setSelectedOptions={setSelectedOptions}
-                        />
-                        <Button
-                            sx={{
-                                bgcolor: "#d58bfa",
-                                color: "#06312f",
-                                textTransform: "none",
-                            }}
-                            onClick={() => searchBerita()}
-                        >
-                            Cari Berdasarkan Bategori
-                        </Button>
-                    </div>
                 </div>
             </section>
             <section

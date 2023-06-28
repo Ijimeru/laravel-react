@@ -1,6 +1,5 @@
-import { HomeContext } from "@/Context/HomeContext";
 import { darkTheme, lightTheme } from "@/Muitheme/DarkLightTheme";
-import { router } from "@inertiajs/react";
+import { useAppSelector } from "@/store/store";
 import {
     CssBaseline,
     FormControl,
@@ -10,7 +9,7 @@ import {
     SelectChangeEvent,
     ThemeProvider,
 } from "@mui/material";
-import { Dispatch, SetStateAction, useContext } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 export default function SelectNumberPage({
     jumlahPostPerHalaman,
@@ -27,7 +26,7 @@ export default function SelectNumberPage({
     setCurrent: Dispatch<SetStateAction<number>>;
     setJumlahPostPerHalaman: Dispatch<SetStateAction<number>>;
 }) {
-    const { mode } = useContext(HomeContext);
+    const mode = useAppSelector((state) => state.mode.mode);
     return (
         <ThemeProvider theme={mode == "light" ? lightTheme : darkTheme}>
             <CssBaseline />

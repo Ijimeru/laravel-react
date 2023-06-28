@@ -1,9 +1,8 @@
-import { DashboardContext } from "@/Context/DashboardContext";
 import { darkTheme, lightTheme } from "@/Muitheme/DarkLightTheme";
+import { useAppSelector } from "@/store/store";
 import { PostType } from "@/types";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useContext } from "react";
 export default function ComponentDataGrid({
     data,
     columns,
@@ -11,7 +10,7 @@ export default function ComponentDataGrid({
     data: PostType[] | null;
     columns: GridColDef[];
 }) {
-    const { mode } = useContext(DashboardContext);
+    const mode = useAppSelector((state) => state.mode.mode);
     return (
         <ThemeProvider theme={mode == "light" ? lightTheme : darkTheme}>
             <CssBaseline />

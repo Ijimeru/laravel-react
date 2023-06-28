@@ -2,11 +2,11 @@ import Dropdown from "@/Components/Dropdown";
 import MyToastContainer from "@/Components/MyToastContainer";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import DashboardProvider, { DashboardContext } from "@/Context/DashboardContext";
+import { store } from "@/store/store";
 import { User } from "@/types";
 import { Link } from "@inertiajs/react";
-import { PropsWithChildren, ReactNode, useContext, useEffect, useState } from "react";
-import { ToastContainer } from "react-toastify";
+import { PropsWithChildren, ReactNode, useEffect, useState } from "react";
+import { Provider } from "react-redux";
 
 export default function Authenticated({
     user,
@@ -24,8 +24,8 @@ export default function Authenticated({
     }, []);
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-            <DashboardProvider>
-                <MyToastContainer/>
+            <Provider store={store}>
+                <MyToastContainer />
                 <nav className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex justify-between h-16">
@@ -53,23 +53,28 @@ export default function Authenticated({
                                     >
                                         Kotak saran
                                     </NavLink>
-                                    {user.roles.map((role)=>role.role).includes('admin')?       
-                                    <>
-                                     <NavLink
-                                        href={route("posts.index")}
-                                        active={route().current("posts.index")}
-                                    >
-                                        Posts
-                                    </NavLink>
-                                    <NavLink
-                                        href={route("books.index")}
-                                        active={route().current("books.index")}
-                                    >
-                                        Books
-                                    </NavLink>
-                                    </>                       
-                                   :null}
-
+                                    {user.roles
+                                        .map((role) => role.role)
+                                        .includes("admin") ? (
+                                        <>
+                                            <NavLink
+                                                href={route("posts.index")}
+                                                active={route().current(
+                                                    "posts.index"
+                                                )}
+                                            >
+                                                Posts
+                                            </NavLink>
+                                            <NavLink
+                                                href={route("books.index")}
+                                                active={route().current(
+                                                    "books.index"
+                                                )}
+                                            >
+                                                Books
+                                            </NavLink>
+                                        </>
+                                    ) : null}
                                 </div>
                             </div>
 
@@ -106,7 +111,9 @@ export default function Authenticated({
                                             >
                                                 Profile
                                             </Dropdown.Link>
-                                            {user.roles.map((role)=>role.role).includes('super_admin')}
+                                            {user.roles
+                                                .map((role) => role.role)
+                                                .includes("super_admin")}
                                             <Dropdown.Link
                                                 href={route("websettings")}
                                             >
@@ -222,7 +229,7 @@ export default function Authenticated({
                 )}
 
                 <main>{children}</main>
-            </DashboardProvider>
+            </Provider>
         </div>
     );
 }

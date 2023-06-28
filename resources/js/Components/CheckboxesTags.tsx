@@ -1,5 +1,5 @@
-import { HomeContext } from "@/Context/HomeContext";
 import { darkTheme, lightTheme } from "@/Muitheme/DarkLightTheme";
+import { useAppSelector } from "@/store/store";
 import { CategoryType } from "@/types";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
@@ -8,7 +8,7 @@ import Checkbox from "@mui/material/Checkbox";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import { ThemeProvider } from "@mui/material/styles";
-import { Dispatch, SetStateAction, useContext } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -30,7 +30,7 @@ export default function CheckboxesTags({
     selectedOptions: CategoryType[];
     setSelectedOptions: Dispatch<SetStateAction<CategoryType[]>>;
 }) {
-    const { mode } = useContext(HomeContext);
+    const mode = useAppSelector((state) => state.mode.mode);
     return (
         <ThemeProvider theme={mode == "light" ? lightTheme : darkTheme}>
             <CssBaseline />

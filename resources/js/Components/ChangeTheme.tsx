@@ -1,9 +1,12 @@
-import { HomeContext } from "@/Context/HomeContext";
-import { useContext, useState } from "react";
+import { changeMode } from "@/store/features/modeSlice";
+import { useAppDispatch, useAppSelector } from "@/store/store";
+import { useState } from "react";
 import { CiDark, CiLight } from "react-icons/ci";
 
 export default function ChangeTheme({ className }: { className?: string }) {
-    const { mode, setMode } = useContext(HomeContext);
+    // const { mode, setMode } = useContext(HomeContext);
+    const mode = useAppSelector((state) => state.mode.mode);
+    const dispatch = useAppDispatch();
     const [click, setClick] = useState<boolean>(false);
     return (
         <div
@@ -36,7 +39,7 @@ export default function ChangeTheme({ className }: { className?: string }) {
                 onClick={() => {
                     document.body.classList.add("dark");
                     localStorage.setItem("mode", "dark");
-                    setMode("dark");
+                    dispatch(changeMode({ mode: "dark" }));
                 }}
             />
             <CiLight
@@ -45,7 +48,7 @@ export default function ChangeTheme({ className }: { className?: string }) {
                 onClick={() => {
                     localStorage.setItem("mode", "light");
                     document.body.classList.remove("dark");
-                    setMode("light");
+                    dispatch(changeMode({ mode: "light" }));
                 }}
             />
         </div>

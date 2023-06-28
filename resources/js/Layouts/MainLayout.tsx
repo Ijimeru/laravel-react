@@ -1,8 +1,8 @@
 import MainFooter from "@/Components/MainFooter";
 import Navbar from "@/Components/Navbar";
-import Navbarcoba from "@/Components/Navbarcoba";
-import HomeProvider from "@/Context/HomeContext";
+import { store } from "@/store/store";
 import { HTMLAttributes, useEffect } from "react";
+import { Provider } from "react-redux";
 
 export default function Main({ children }: HTMLAttributes<HTMLDivElement>) {
     useEffect(() => {
@@ -13,7 +13,7 @@ export default function Main({ children }: HTMLAttributes<HTMLDivElement>) {
         }
     }, []);
     return (
-        <HomeProvider>
+        <Provider store={store}>
             <div
                 className={`flex justify-between flex-col bg-secondary dark:bg-secondaryDark text-primary dark:text-primaryDark scroll-smooth`}
             >
@@ -23,6 +23,6 @@ export default function Main({ children }: HTMLAttributes<HTMLDivElement>) {
                 <br />
                 <MainFooter />
             </div>
-        </HomeProvider>
+        </Provider>
     );
 }

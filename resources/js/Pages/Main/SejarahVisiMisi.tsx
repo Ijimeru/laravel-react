@@ -1,9 +1,22 @@
 import Main from "@/Layouts/MainLayout";
+import { content } from "@/types";
 import { Head } from "@inertiajs/react";
 
-export default function SejarahVisiMisi() {
+export default function SejarahVisiMisi({
+    sejarah,
+    visi,
+    misi,
+    logo,
+    kontak,
+}: {
+    sejarah: content;
+    visi: content;
+    misi: content;
+    logo: content;
+    kontak: content;
+}) {
     return (
-        <Main>
+        <Main logo={logo} visi={visi} kontak={kontak}>
             <Head title="Profil" />
             <section className="bg-[url('/img/hero-img.jpg')] h-[12rem] bg-cover bg-center bg-no-repeat bg-white relative flex justify-center items-center flex-col text-center mt-4">
                 <div className="text-primaryDark z-10">
@@ -21,14 +34,10 @@ export default function SejarahVisiMisi() {
                     <h6 className="text-3xl font-extrabold text-accent dark:text-accentDark">
                         Sejarah
                     </h6>
-                    <p className="text-primary dark:text-primaryDark">
-                        Lorem, ipsum dolor sit amet consectetur adipisicing
-                        elit. Vel sapiente corporis atque, sit quibusdam neque,
-                        veniam accusamus maxime cupiditate optio minus
-                        doloremque sunt consectetur molestiae voluptas? Fugiat
-                        dolores tenetur commodi, facilis obcaecati laudantium
-                        enim corporis, eos odit totam, deserunt nisi.
-                    </p>
+                    <p
+                        className="text-primary dark:text-primaryDark editor"
+                        dangerouslySetInnerHTML={{ __html: sejarah.content }}
+                    />
                 </div>
                 <div className="flex justify-center grow basis-0">
                     <img src="/img/dummy2.jpg" alt="" className="rounded-md" />
@@ -40,34 +49,20 @@ export default function SejarahVisiMisi() {
                         <h4 className="uppercase font-extrabold text-3xl text-yellow-500 dark:text-secondaryButton">
                             visi
                         </h4>
-                        <p className="text-primaryDark mt-4">
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Esse laborum ipsam delectus maiores eligendi
-                            repellendus error autem voluptatem sed? Soluta.
-                        </p>
+                        <p
+                            className="text-primaryDark mt-4 editor"
+                            dangerouslySetInnerHTML={{ __html: visi.content }}
+                        />
                     </div>
                 </div>
                 <div className="grow basis-0 shrink p-6 flex flex-col justify-center">
                     <h4 className="uppercase font-extrabold text-3xl text-primary dark:text-accentDark">
                         misi
                     </h4>
-                    <ol className="list-decimal mt-3 ml-4">
-                        <li>
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Quia incidunt magni non nam fugiat illum alias
-                            excepturi qui culpa voluptatibus!
-                        </li>
-                        <li>
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Quia incidunt magni non nam fugiat illum alias
-                            excepturi qui culpa voluptatibus!
-                        </li>
-                        <li>
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Quia incidunt magni non nam fugiat illum alias
-                            excepturi qui culpa voluptatibus!
-                        </li>
-                    </ol>
+                    <span
+                        className="editor"
+                        dangerouslySetInnerHTML={{ __html: misi.content }}
+                    />
                 </div>
             </section>
         </Main>

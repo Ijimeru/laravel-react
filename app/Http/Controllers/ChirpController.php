@@ -18,6 +18,7 @@ class ChirpController extends Controller
         //
         return Inertia::render('Chirps/Index',[
             'chirps' => $request->user()->chirps()->with('user:id,name')->latest()->get(),
+            'logo'=> \App\Models\Setting::find(4)
         ]);
     }
 

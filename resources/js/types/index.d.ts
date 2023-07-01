@@ -2,8 +2,8 @@ export interface User {
     id: number;
     name: string;
     email: string;
-    roles:{
-        role:string;
+    roles: {
+        role: string;
     }[];
     email_verified_at: string;
 }
@@ -16,9 +16,9 @@ export interface ChirpType {
 }
 
 export interface ConstantType {
-    text:string;
-    btext:string;
-    color:string;
+    text: string;
+    btext: string;
+    color: string;
 }
 
 export interface CategoryType {
@@ -38,6 +38,9 @@ export interface BookType {
     tahun: string;
     created_at: string;
     updated_at: string;
+}
+interface content {
+    content: string;
 }
 
 export interface PostType {

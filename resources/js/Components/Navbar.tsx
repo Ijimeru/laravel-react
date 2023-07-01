@@ -14,7 +14,7 @@ import MainNavList from "./MainNavList";
 import MobileMainNavList from "./MobileMainNavList";
 import { PageProps } from "@/types";
 
-export default function Navbar() {
+export default function Navbar({ logo }: { logo: { content: string } }) {
     const [account, setAccount] = useState<boolean>(false);
     const [sidebarActive, setSidebarActive] = useState<boolean>(false);
     const windowSize = useWindowSize();
@@ -32,8 +32,8 @@ export default function Navbar() {
             <div className="container mx-auto flex flex-wrap items-center justify-between p-4">
                 <Link href={route("home")}>
                     <img
-                        src="/img/logo-himatekia.png"
-                        alt=""
+                        src={"/storage/" + logo.content}
+                        alt="logo"
                         className="w-10"
                     />
                 </Link>
@@ -59,7 +59,7 @@ export default function Navbar() {
                         </div>
                         {account ? (
                             user ? (
-                                <section className="absolute h-fit bg-primaryDark dark:bg-secondaryButtonDark dark:border-secondaryDark border-2 -bottom-[10rem] md:-bottom-[7.6rem] -left-20 -right-20 rounded-md flex flex-col p-4 gap-y-3 before:content-[''] before:h-3 before:w-3 before:absolute before:bg-primaryDark  dark:before:bg-secondaryButtonDark before:left-1/2 before:-translate-x-1/2 before:-top-1 before:rotate-45 ">
+                                <section className="absolute h-fit bg-primaryDark dark:bg-secondaryButtonDark dark:border-secondaryDark border-2 -bottom-[13rem] md:-bottom-[10.8rem] -left-20 -right-20 rounded-md flex flex-col p-4 gap-y-3 before:content-[''] before:h-3 before:w-3 before:absolute before:bg-primaryDark  dark:before:bg-secondaryButtonDark before:left-1/2 before:-translate-x-1/2 before:-top-1 before:rotate-45 ">
                                     <h5 className="text-center">
                                         {user.name.length > 10
                                             ? user.name.slice(0, 10) + "..."
@@ -68,12 +68,22 @@ export default function Navbar() {
                                     <PrimaryButton className="flex justify-center hover:bg-primaryButtonDark">
                                         <Link
                                             href={route("dashboard")}
-                                            as="button"
+                                            as="a"
                                             className="text-sm"
                                         >
                                             Dashboard
                                         </Link>
                                     </PrimaryButton>
+                                    <SecondaryButton className="flex justify-center hover:bg-primaryButtonDark">
+                                        <Link
+                                            href={route("logout")}
+                                            as="a"
+                                            className="text-sm"
+                                            method="post"
+                                        >
+                                            logout
+                                        </Link>
+                                    </SecondaryButton>
                                     <ChangeTheme className="flex w-fit self-center md:hidden" />
                                 </section>
                             ) : (
@@ -82,7 +92,7 @@ export default function Navbar() {
                                     <PrimaryButton className="flex justify-center hover:bg-primaryButtonDark">
                                         <Link
                                             href={route("login")}
-                                            as="button"
+                                            as="a"
                                             className="text-sm"
                                         >
                                             Login
@@ -91,7 +101,7 @@ export default function Navbar() {
                                     <SecondaryButton className="flex justify-center hover:bg-secondaryButton">
                                         <Link
                                             href={route("register")}
-                                            as="button"
+                                            as="a"
                                             className="text-sm"
                                         >
                                             Register
@@ -126,7 +136,7 @@ export default function Navbar() {
                     >
                         <header className="flex flex-row justify-center items-center gap-x-3">
                             <img
-                                src={"/img/logo-himatekia.png"}
+                                src={`/storage/${logo.content}`}
                                 alt="logo himpunan"
                                 width={30}
                             />

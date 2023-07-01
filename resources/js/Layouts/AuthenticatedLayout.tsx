@@ -1,3 +1,4 @@
+import ChangeTheme from "@/Components/ChangeTheme";
 import Dropdown from "@/Components/Dropdown";
 import MyToastContainer from "@/Components/MyToastContainer";
 import NavLink from "@/Components/NavLink";
@@ -11,8 +12,13 @@ import { Provider } from "react-redux";
 export default function Authenticated({
     user,
     header,
+    logo,
     children,
-}: PropsWithChildren<{ user: User; header?: ReactNode }>) {
+}: PropsWithChildren<{
+    user: User;
+    header?: ReactNode;
+    logo: { content: string };
+}>) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
     useEffect(() => {
@@ -34,7 +40,7 @@ export default function Authenticated({
                                     <Link href="/">
                                         <img
                                             className="block h-9 w-auto"
-                                            src={"/img/logo-himatekia.png"}
+                                            src={"/storage/" + logo.content}
                                             alt="Logo Himatekia"
                                         />
                                     </Link>
@@ -191,7 +197,19 @@ export default function Authenticated({
                                 href={route("chirps.index")}
                                 active={route().current("chirps.index")}
                             >
-                                Chirps
+                                Kotak saran
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink
+                                href={route("posts.index")}
+                                active={route().current("posts.index")}
+                            >
+                                Posts
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink
+                                href={route("books.index")}
+                                active={route().current("books.index")}
+                            >
+                                Books
                             </ResponsiveNavLink>
                         </div>
 
@@ -202,6 +220,12 @@ export default function Authenticated({
                                 </div>
                                 <div className="font-medium text-sm text-gray-500">
                                     {user.email}
+                                </div>
+                                <div className="font-medium text-sm text-gray-500">
+                                    your role :{" "}
+                                    {user.roles
+                                        .map((role) => role.role)
+                                        .join(",")}
                                 </div>
                             </div>
 

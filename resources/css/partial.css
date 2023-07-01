@@ -1,0 +1,74 @@
+.editor ol {
+    list-style-type: decimal;
+    margin-left: 16px;
+}
+
+.editor h2 {
+    font-size: 48px;
+}
+.editor h3 {
+    font-size: 36px;
+}
+.editor h4 {
+    font-size: 24px;
+}
+
+.editor div[role="textbox"] {
+    min-height: 150px;
+}
+
+.editor.dark
+    div[role="textbox"].ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-blurred,
+.editor.dark
+    div[role="textbox"].ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-focused {
+    color: white;
+    background-color: #1a1a1a;
+}
+.editor.dark
+    div[role="textbox"].ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-blurred {
+    min-height: 150px;
+    color: white;
+    background-color: #1a1a1a;
+}
+
+.editor.dark
+    div[role="presentation"]
+    .ck-sticky-panel
+    .ck-sticky-panel__content
+    div[role="toolbar"] {
+    background-color: #1a1a1a;
+    color: white;
+}
+.editor.dark
+    div[role="presentation"]
+    .ck-sticky-panel
+    .ck-sticky-panel__content
+    div[role="toolbar"]
+    .ck-toolbar__items
+    button[type="button"] {
+    color: white;
+}
+
+.editor.dark
+    div[role="presentation"]
+    .ck-sticky-panel
+    .ck-sticky-panel__content
+    div[role="toolbar"]
+    .ck-toolbar__items
+    button[type="button"].ck-on:hover,
+.editor.dark
+    div[role="presentation"]
+    .ck-sticky-panel
+    .ck-sticky-panel__content
+    div[role="toolbar"]
+    .ck-toolbar__items
+    button[type="button"].ck-on,
+.editor.dark
+    div[role="presentation"]
+    .ck-sticky-panel
+    .ck-sticky-panel__content
+    div[role="toolbar"]
+    .ck-toolbar__items
+    button[type="button"].ck-off:hover {
+    background-color: rgba(157, 39, 116, 0.5);
+}

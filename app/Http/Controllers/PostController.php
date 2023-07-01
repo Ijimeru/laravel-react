@@ -16,7 +16,8 @@ class PostController extends Controller
     {
         //
         return Inertia::render('Posts/Index',[
-            'posts'=>\App\Models\Post::with('author:id,name')->latest()->get()
+            'posts'=>\App\Models\Post::with('author:id,name')->latest()->get(),
+            'logo'=> \App\Models\Setting::find(4)
         ]);
     }
 

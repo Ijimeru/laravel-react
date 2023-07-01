@@ -1,20 +1,25 @@
 import Cards from "@/Components/Cards";
 import CheckboxesTags from "@/Components/CheckboxesTags";
+import SelectNumberPage from "@/Components/SelectNumberPage";
 import Main from "@/Layouts/MainLayout";
-import { CategoryType, PageProps, PostType } from "@/types";
-import { Head, Link, router, usePage, useRemember } from "@inertiajs/react";
-import { Button, IconButton } from "@mui/material";
+import { CategoryType, PageProps, PostType, content } from "@/types";
+import { Head } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import { checkSubsequence } from "../../utils/CheckSubsequence";
-import SelectNumberPage from "@/Components/SelectNumberPage";
 
 export default function Berita({
     posts,
     categories,
     ziggy,
+    logo,
+    visi,
+    kontak,
 }: PageProps<{
     posts: PostType[];
     categories: CategoryType[];
+    logo: content;
+    visi: content;
+    kontak: content;
 }>) {
     const category = ziggy.query.category;
     const [selectedOptions, setSelectedOptions] = useState<CategoryType[]>(
@@ -46,7 +51,7 @@ export default function Berita({
     const [current, setCurrent] = useState<number>(1);
 
     return (
-        <Main>
+        <Main logo={logo} visi={visi} kontak={kontak}>
             <Head title="Berita" />
             <section className="flex p-3 container m-auto h-64  mt-6">
                 <div className="flex bg-secondaryButton rounded-xl justify-center items-center dark:bg-secondaryButtonDark w-full">

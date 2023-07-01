@@ -1,22 +1,26 @@
-import AutocompleteDropdown from "@/Components/AutocompleteDropdown";
 import CheckboxesTags from "@/Components/CheckboxesTags";
 
 import Pagination from "@/Components/Pagination";
 import SelectNumberPage from "@/Components/SelectNumberPage";
-import { HomeContext } from "@/Context/HomeContext";
 import Main from "@/Layouts/MainLayout";
-import { BookType, CategoryType, PageProps } from "@/types";
+import { BookType, CategoryType, content } from "@/types";
 import { checkSubsequence } from "@/utils/CheckSubsequence";
 import { Transition } from "@headlessui/react";
-import { Head, usePage } from "@inertiajs/react";
-import { useContext, useEffect, useState } from "react";
+import { Head } from "@inertiajs/react";
+import { useEffect, useState } from "react";
 
 export default function Buku({
     books,
     categories,
+    logo,
+    visi,
+    kontak,
 }: {
     books: BookType[];
     categories: CategoryType[];
+    logo: content;
+    visi: content;
+    kontak: content;
 }) {
     const [hover, setHover] = useState<string>("");
 
@@ -48,7 +52,7 @@ export default function Buku({
         setFilteredBooks(books?.slice(start, stop));
     }, [jumlahPostPerHalaman, current, selectedOptions, books]);
     return (
-        <Main>
+        <Main logo={logo} visi={visi} kontak={kontak}>
             <Head title="Buku" />
             <section className="flex p-3 container m-auto h-64  mt-6">
                 <div className="flex bg-secondaryButton rounded-xl justify-center items-center dark:bg-secondaryButtonDark w-full">
@@ -116,6 +120,7 @@ export default function Buku({
                                     : ""
                             }
                             onMouseLeave={(e) => setHover("")}
+                            key={book.id}
                         >
                             <div
                                 className={`relative ${

@@ -1,6 +1,6 @@
 import Cards from "@/Components/Cards";
 import Main from "@/Layouts/MainLayout";
-import { CategoryType, PageProps, PostType } from "@/types";
+import { CategoryType, PageProps, PostType, content } from "@/types";
 import { Head, Link, usePage } from "@inertiajs/react";
 import React, { useEffect } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
@@ -12,7 +12,16 @@ import { MdOutlineLocalGroceryStore } from "react-icons/md";
 export default function Home({
     posts,
     categories,
-}: PageProps<{ posts: PostType[]; categories: CategoryType[] }>) {
+    logo,
+    visi,
+    kontak,
+}: PageProps<{
+    posts: PostType[];
+    categories: CategoryType[];
+    logo: content;
+    visi: content;
+    kontak: content;
+}>) {
     interface CardType {
         icon: React.JSX.Element;
         title: string;
@@ -42,7 +51,7 @@ export default function Home({
     ];
     const page = usePage<PageProps>();
     return (
-        <Main>
+        <Main logo={logo} visi={visi} kontak={kontak}>
             <Head title="Home" />
             <section>
                 <div className="bg-[url('/img/hero-img.jpg')] h-[24rem] bg-cover bg-center bg-no-repeat bg-white relative flex justify-center items-center flex-col text-center">
@@ -141,6 +150,7 @@ export default function Home({
                                         href={route("berita", {
                                             category: category.name,
                                         })}
+                                        key={category.id}
                                         className="flex flex-row justify-between gap-x-4 items-center border-b border-primaryDark"
                                     >
                                         <li>{category.name}</li>

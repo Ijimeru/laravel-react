@@ -21,6 +21,7 @@ class AuthenticatedSessionController extends Controller
     {
         return Inertia::render('Auth/Login', [
             'canResetPassword' => Route::has('password.request'),
+            'logo'=>\App\Models\Setting::find(4),
             'status' => session('status'),
         ]);
     }

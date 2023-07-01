@@ -11,9 +11,11 @@ import Main from "@/Layouts/MainLayout";
 export default function Login({
     status,
     canResetPassword,
+    logo,
 }: {
     status?: string;
     canResetPassword: boolean;
+    logo: { content: string };
 }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: "",
@@ -34,7 +36,7 @@ export default function Login({
     };
 
     return (
-        <GuestLayout>
+        <GuestLayout logo={logo}>
             <Head title="Log in" />
 
             {status && (

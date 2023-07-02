@@ -14,7 +14,6 @@ export default function Store({
     return (
         <Main logo={logo} visi={visi} kontak={kontak}>
             <Head title="Store" />
-            Store
         </Main>
     );
 }

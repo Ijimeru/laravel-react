@@ -39,8 +39,14 @@ export interface BookType {
     created_at: string;
     updated_at: string;
 }
-interface content {
+export interface content {
     content: string;
+}
+
+export interface OrganizationTree {
+    name: string;
+    jabatan?: string;
+    children?: tree[];
 }
 
 export interface PostType {

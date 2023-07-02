@@ -27,15 +27,15 @@ export const navList: {
             {
                 name: "Struktur Organisasi",
                 child: [
-                    { name: "2018-1", href: "home" },
-                    { name: "2018-2", href: "home" },
+                    { name: "2018-1", href: "kepengurusan" },
+                    { name: "2018-2", href: "kepengurusan" },
                     {
                         name: "2019",
-                        href: "home",
+                        href: "kepengurusan",
                     },
                     {
                         name: "2020",
-                        href: "home",
+                        href: "kepengurusan",
                     },
                 ],
             },

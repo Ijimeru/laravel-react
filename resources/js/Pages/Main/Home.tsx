@@ -15,6 +15,7 @@ export default function Home({
     logo,
     visi,
     kontak,
+    auth,
 }: PageProps<{
     posts: PostType[];
     categories: CategoryType[];
@@ -53,6 +54,7 @@ export default function Home({
     return (
         <Main logo={logo} visi={visi} kontak={kontak}>
             <Head title="Home" />
+
             <section>
                 <div className="bg-[url('/img/hero-img.jpg')] h-[24rem] bg-cover bg-center bg-no-repeat bg-white relative flex justify-center items-center flex-col text-center">
                     <section className="h-full w-full bg-[#680000] opacity-30 absolute"></section>
@@ -65,6 +67,11 @@ export default function Home({
                     <h6 className="text-primaryDark text-base z-10 mt-3">
                         Menjadi wadah bagi mahasiswa teknik kimia Institut
                         Teknologi Sumatera
+                        {/* {auth.user.roles
+                            .map((role) => role.role)
+                            .includes("super_admin") ? (
+                            <div>basing</div>
+                        ) : null} */}
                     </h6>
                     <div className="flex flex-col h-full w-full bg-[#680000] opacity-30 absolute"></div>
                 </div>

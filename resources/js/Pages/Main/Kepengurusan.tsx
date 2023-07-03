@@ -15,6 +15,9 @@ const StyledNode = styled.div`
 `;
 export default function Kepengurusan({
     data,
+    logo,
+    visi,
+    kontak,
 }: {
     logo: content;
     visi: content;
@@ -61,7 +64,6 @@ export default function Kepengurusan({
         );
     };
     const chart: OrganizationTree[] = JSON.parse(data.kepengurusan);
-    console.log(JSON.parse(JSON.stringify(chart, null, "\t")));
     return (
         // <Main logo={logo} visi={visi} kontak={kontak} mauto={true}>
         <>

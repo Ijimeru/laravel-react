@@ -13,6 +13,7 @@ export default function Guest({
                     <img
                         src={`/storage/${logo?.content}`}
                         alt="Logo-Himatekia"
+                        width={200}
                     />
                 </Link>
             </div>

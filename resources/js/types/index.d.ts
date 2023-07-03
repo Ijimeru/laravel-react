@@ -44,9 +44,10 @@ export interface content {
 }
 
 export interface OrganizationTree {
-    name: string;
+    name?: string;
     jabatan?: string;
-    children?: tree[];
+    className?: string;
+    children?: OrganizationTree[];
 }
 
 export interface PostType {

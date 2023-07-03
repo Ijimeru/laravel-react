@@ -27,14 +27,10 @@ export const navList: {
             {
                 name: "Struktur Organisasi",
                 child: [
-                    { name: "2018-1", href: "kepengurusan" },
-                    { name: "2018-2", href: "kepengurusan" },
+                    { name: "2021", href: "kepengurusan" },
+                    { name: "2022", href: "kepengurusan" },
                     {
-                        name: "2019",
-                        href: "kepengurusan",
-                    },
-                    {
-                        name: "2020",
+                        name: "2023",
                         href: "kepengurusan",
                     },
                 ],
@@ -222,7 +218,10 @@ export default function MainNavList() {
                                                                             >
                                                                                 <Link
                                                                                     href={route(
-                                                                                        ccval.href
+                                                                                        ccval.href,
+                                                                                        {
+                                                                                            name: ccval.name,
+                                                                                        }
                                                                                     )}
                                                                                     className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 focus:text-gray-700 dark:focus:text-gray-300 flex flex-row items-center"
                                                                                 >

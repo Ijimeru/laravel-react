@@ -14,7 +14,13 @@ import MainNavList from "./MainNavList";
 import MobileMainNavList from "./MobileMainNavList";
 import { PageProps } from "@/types";
 
-export default function Navbar({ logo }: { logo: { content: string } }) {
+export default function Navbar({
+    logo,
+    mauto,
+}: {
+    logo: { content: string };
+    mauto?: boolean;
+}) {
     const [account, setAccount] = useState<boolean>(false);
     const [sidebarActive, setSidebarActive] = useState<boolean>(false);
     const windowSize = useWindowSize();
@@ -29,7 +35,11 @@ export default function Navbar({ logo }: { logo: { content: string } }) {
     }, [windowSize.width]);
     return (
         <nav className="w-full h-fit bg-secondary dark:bg-secondaryDark text-primary dark:text-primaryDark transition-all duration-1000 z-[11] sticky top-0">
-            <div className="container mx-auto flex flex-wrap items-center justify-between p-4">
+            <div
+                className={`${
+                    mauto! ? "container mx-auto" : ""
+                } flex flex-wrap items-center justify-between p-4`}
+            >
                 <Link href={route("home")}>
                     <img
                         src={"/storage/" + logo.content}
@@ -113,7 +123,7 @@ export default function Navbar({ logo }: { logo: { content: string } }) {
                         ) : null}
                     </div>
                     <button
-                        className={`${
+                        className={`mr-6 ${
                             sidebarActive
                                 ? "after:content-[''] after:absolute after:h-screen after:w-screen after:left-64 cursor-default"
                                 : null

@@ -101,12 +101,16 @@ Route::get('/sejarah-visi-misi',fn()=>
         'kontak'=>\App\Models\Setting::find(5)
     ])
 )->name("sejarahvisimisi");
-Route::get('/kepengurusan',fn()=>
-    Inertia::render("Main/Kepengurusan",[
+Route::get('/kepengurusan',function(Request $request){
+    $name = $request->name;
+    $data = \App\Models\Kepengurusan::where('name',$name)->get()[0];
+    return Inertia::render("Main/Kepengurusan",[
         'logo'=>\App\Models\Setting::find(4),
         'visi'=>\App\Models\Setting::find(2),
-        'kontak'=>\App\Models\Setting::find(5)
-    ])
+        'kontak'=>\App\Models\Setting::find(5),
+        'data'=>$data
+    ]);
+}
 )->name("kepengurusan");
 Route::get('/buku',fn(Request $request)=>
 

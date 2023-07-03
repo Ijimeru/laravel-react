@@ -13,8 +13,11 @@ export default function Main({
     logo,
     visi,
     kontak,
+    mauto,
+    ...props
 }: HTMLAttributes<HTMLDivElement> & {
     logo: content;
+    mauto?: boolean;
     visi: content;
     kontak: content;
 }) {

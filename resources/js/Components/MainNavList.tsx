@@ -4,9 +4,12 @@ import NavLink from "./NavLink";
 import { useState } from "react";
 import { Transition } from "@headlessui/react";
 import NavLinkMain from "./NavLinkMain";
+import { toast } from "react-toastify";
+import "react-toastify/ReactToastify.css";
 export const navList: {
     name: string;
     href?: string;
+    commingsoon?: boolean;
     child?: {
         name: string;
         href?: string;
@@ -58,6 +61,7 @@ export const navList: {
     {
         name: "Store",
         href: "store",
+        commingsoon: true,
     },
 ];
 export default function MainNavList() {
@@ -69,15 +73,29 @@ export default function MainNavList() {
                 {navList.map((val, key) =>
                     val.href ? (
                         <div key={key}>
-                            <NavLinkMain
-                                href={route(val.href)}
-                                active={route().current(val.href)}
-                                onMouseEnter={() => setActiveNav(val.name)}
-                                onMouseLeave={() => setActiveNav("")}
-                            >
-                                {val.name}
-                                {val.child ? <RiArrowDropDownLine /> : null}
-                            </NavLinkMain>
+                            {val.commingsoon ? (
+                                <div
+                                    className="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700 focus:text-gray-700 dark:focus:text-gray-300 focus:border-gray-300 dark:focus:border-gray-700 cursor-pointer relative"
+                                    onClick={() =>
+                                        toast.warning("Coming Soon", {
+                                            position: "top-center",
+                                        })
+                                    }
+                                >
+                                    {val.name}
+                                </div>
+                            ) : (
+                                <NavLinkMain
+                                    href={route(val.href)}
+                                    active={route().current(val.href)}
+                                    onMouseEnter={() => setActiveNav(val.name)}
+                                    onMouseLeave={() => setActiveNav("")}
+                                >
+                                    {val.name}
+                                    {val.child ? <RiArrowDropDownLine /> : null}
+                                </NavLinkMain>
+                            )}
+
                             <Transition
                                 show={activeNav == val.name}
                                 enter="transition ease-out duration-100"

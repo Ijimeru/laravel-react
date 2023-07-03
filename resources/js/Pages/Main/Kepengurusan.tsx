@@ -61,11 +61,17 @@ export default function Kepengurusan({
         );
     };
     const chart: OrganizationTree[] = JSON.parse(data.kepengurusan);
+    console.log(JSON.parse(JSON.stringify(chart, null, "\t")));
     return (
         // <Main logo={logo} visi={visi} kontak={kontak} mauto={true}>
         <>
             <Head title="Kepengurusan" />
             <div className="flex flex-col mt-10">
+                <PrimaryButton className="w-40 self-start">
+                    <Link as="a" href={route("home")}>
+                        Kembali ke Halaman awal
+                    </Link>
+                </PrimaryButton>
                 <Tree
                     lineWidth={"2px"}
                     lineColor={"green"}
@@ -76,11 +82,6 @@ export default function Kepengurusan({
                 >
                     <Card data={chart} />
                 </Tree>
-                <PrimaryButton className="w-40 self-start">
-                    <Link as="a" href={route("home")}>
-                        Kembali ke Halaman awal
-                    </Link>
-                </PrimaryButton>
             </div>
         </>
         // </Main>

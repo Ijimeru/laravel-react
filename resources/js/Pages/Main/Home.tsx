@@ -8,6 +8,7 @@ import { BsNewspaper } from "react-icons/bs";
 import { FaArrowRight, FaCircle } from "react-icons/fa";
 import { HiOutlineAcademicCap } from "react-icons/hi";
 import { MdOutlineLocalGroceryStore } from "react-icons/md";
+import { toast } from "react-toastify";
 
 export default function Home({
     posts,
@@ -27,7 +28,7 @@ export default function Home({
         icon: React.JSX.Element;
         title: string;
         desc: string;
-        href: string;
+        href?: string;
     }
     const className: string = "text-4xl";
     const cards: CardType[] = [
@@ -35,7 +36,7 @@ export default function Home({
             icon: <HiOutlineAcademicCap className={className} />,
             title: "Bakmi TK",
             desc: "Bank soal teknik kimia",
-            href: route("home"),
+            href: route("buku"),
         },
         {
             icon: <BsNewspaper className={className} />,
@@ -47,7 +48,6 @@ export default function Home({
             icon: <MdOutlineLocalGroceryStore className={className} />,
             title: "Tekia Store",
             desc: "Toko online",
-            href: route("home"),
         },
     ];
     const page = usePage<PageProps>();
@@ -77,19 +77,41 @@ export default function Home({
                 </div>
             </section>
             <section className="flex md:flex-row flex-col w-full justify-center p-3 md:gap-x-4 gap-y-3 container m-auto -mt-16 relative">
-                {cards.map((card, index) => (
-                    <Link href={card.href} className="w-full" key={index}>
-                        <div className="flex-1 bg-primaryDark dark:bg-secondaryButtonDark shadow-sm p-4 rounded-md flex flex-row md:gap-x-2 gap-x-5 hover:shadow-2xl hover:scale-110 transition-all cursor-pointer">
-                            <span>{card.icon}</span>
-                            <div>
-                                <div className="font-semibold">
-                                    {card.title}
+                {cards.map((card, index) =>
+                    card.href ? (
+                        <Link href={card.href} className="w-full" key={index}>
+                            <div className="flex-1 bg-primaryDark dark:bg-secondaryButtonDark shadow-sm p-4 rounded-md flex flex-row md:gap-x-2 gap-x-5 hover:shadow-2xl hover:scale-110 transition-all cursor-pointer">
+                                <span>{card.icon}</span>
+                                <div>
+                                    <div className="font-semibold">
+                                        {card.title}
+                                    </div>
+                                    <div>{card.desc}</div>
                                 </div>
-                                <div>{card.desc}</div>
+                            </div>
+                        </Link>
+                    ) : (
+                        <div
+                            className="w-full"
+                            key={index}
+                            onClick={() =>
+                                toast.warning("Coming soon", {
+                                    position: "top-center",
+                                })
+                            }
+                        >
+                            <div className="flex-1 bg-primaryDark dark:bg-secondaryButtonDark shadow-sm p-4 rounded-md flex flex-row md:gap-x-2 gap-x-5 hover:shadow-2xl hover:scale-110 transition-all cursor-pointer">
+                                <span>{card.icon}</span>
+                                <div>
+                                    <div className="font-semibold">
+                                        {card.title}
+                                    </div>
+                                    <div>{card.desc}</div>
+                                </div>
                             </div>
                         </div>
-                    </Link>
-                ))}
+                    )
+                )}
             </section>
             <section className="py-10 container m-auto flex md:flex-row flex-col-reverse justify-center px-3 xl:gap-x-24">
                 <div className="md:w-3/5 lg:w-[40%]">
@@ -223,23 +245,45 @@ export default function Home({
                         Jelajahi Lebih Jauh Tentang Himpunan Teknik Kimia ITERA
                     </h6>
                     <section className="flex md:flex-row flex-col w-full justify-center p-3 md:gap-x-4 gap-y-3 container m-auto z-10">
-                        {cards.map((card, index) => (
-                            <Link
-                                href={card.href}
-                                className="w-full"
-                                key={index}
-                            >
-                                <div className="flex-1 bg-primaryDark dark:bg-secondaryButtonDark shadow-sm p-4 rounded-md flex flex-row md:gap-x-2 gap-x-5 hover:shadow-2xl hover:scale-110 transition-all cursor-pointer">
-                                    <span>{card.icon}</span>
-                                    <div>
-                                        <div className="font-semibold">
-                                            {card.title}
+                        {cards.map((card, index) =>
+                            card.href ? (
+                                <Link
+                                    href={card.href}
+                                    className="w-full"
+                                    key={index}
+                                >
+                                    <div className="flex-1 bg-primaryDark dark:bg-secondaryButtonDark shadow-sm p-4 rounded-md flex flex-row md:gap-x-2 gap-x-5 hover:shadow-2xl hover:scale-110 transition-all cursor-pointer">
+                                        <span>{card.icon}</span>
+                                        <div>
+                                            <div className="font-semibold">
+                                                {card.title}
+                                            </div>
+                                            <div>{card.desc}</div>
                                         </div>
-                                        <div>{card.desc}</div>
+                                    </div>
+                                </Link>
+                            ) : (
+                                <div
+                                    className="w-full"
+                                    key={index}
+                                    onClick={() =>
+                                        toast.warning("Coming soon", {
+                                            position: "top-center",
+                                        })
+                                    }
+                                >
+                                    <div className="flex-1 bg-primaryDark dark:bg-secondaryButtonDark shadow-sm p-4 rounded-md flex flex-row md:gap-x-2 gap-x-5 hover:shadow-2xl hover:scale-110 transition-all cursor-pointer">
+                                        <span>{card.icon}</span>
+                                        <div>
+                                            <div className="font-semibold">
+                                                {card.title}
+                                            </div>
+                                            <div>{card.desc}</div>
+                                        </div>
                                     </div>
                                 </div>
-                            </Link>
-                        ))}
+                            )
+                        )}
                     </section>
                 </div>
             </section>

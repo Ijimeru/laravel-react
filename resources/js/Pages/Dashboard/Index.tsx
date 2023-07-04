@@ -1,15 +1,20 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
 import { PageProps } from "@/types";
+import { Head } from "@inertiajs/react";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/ReactToastify.css";
 
 export default function Index({
     auth,
     logo,
+    flash,
 }: PageProps<{ logo: { content: string } }>) {
     return (
         <AuthenticatedLayout
             user={auth.user}
             logo={logo}
+            flash={flash}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                     Dashboard

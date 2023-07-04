@@ -1,13 +1,13 @@
 import { darkTheme, lightTheme } from "@/Muitheme/DarkLightTheme";
 import { useAppSelector } from "@/store/store";
-import { PostType } from "@/types";
+import { BookType, PostType } from "@/types";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 export default function ComponentDataGrid({
     data,
     columns,
 }: {
-    data: PostType[] | null;
+    data: PostType[] | BookType[] | null;
     columns: GridColDef[];
 }) {
     const mode = useAppSelector((state) => state.mode.mode);

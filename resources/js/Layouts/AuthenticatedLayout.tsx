@@ -5,7 +5,7 @@ import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { store } from "@/store/store";
 import { PageProps, User, flash } from "@/types";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import { PropsWithChildren, ReactNode, useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { toast } from "react-toastify";
@@ -15,13 +15,12 @@ export default function Authenticated({
     header,
     logo,
     children,
-    flash,
 }: PropsWithChildren<{
     user: User;
     header?: ReactNode;
     logo: { content: string };
-    flash?: flash;
 }>) {
+    const page = usePage<PageProps>();
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
     useEffect(() => {
@@ -30,8 +29,8 @@ export default function Authenticated({
         } else {
             localStorage.setItem("mode", "light");
         }
-        if (flash?.message) {
-            toast.warning(flash.message);
+        if (page.props.flash.message) {
+            toast.warning(page.props.flash.message);
         }
     }, []);
     return (

@@ -18,7 +18,7 @@ class EnsureUserHasRole
         
         
         if(count($request->user()->hasRole($role))==0){
-            return redirect(url()->previous())->with('msg','Anda bukanlah '.$role);
+            return redirect(url()->previous())->with('msg','Anda tidak mempunyai role '.$role);
         }
         return $next($request);
     }

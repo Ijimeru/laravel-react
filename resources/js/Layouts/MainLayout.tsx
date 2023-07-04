@@ -2,8 +2,11 @@ import MainFooter from "@/Components/MainFooter";
 import MyToastContainer from "@/Components/MyToastContainer";
 import Navbar from "@/Components/Navbar";
 import { store } from "@/store/store";
+import { PageProps } from "@/types";
+import { usePage } from "@inertiajs/react";
 import { HTMLAttributes, useEffect } from "react";
 import { Provider } from "react-redux";
+import { toast } from "react-toastify";
 
 interface content {
     content: string;
@@ -22,11 +25,15 @@ export default function Main({
     visi: content;
     kontak: content;
 }) {
+    const page = usePage<PageProps>();
     useEffect(() => {
         if (localStorage.getItem("mode")) {
             document.body.classList.add(localStorage.getItem("mode")!);
         } else {
             localStorage.setItem("mode", "light");
+        }
+        if (page.props.flash.message) {
+            toast.warning(page.props.flash.message);
         }
     }, []);
     return (

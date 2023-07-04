@@ -42,7 +42,7 @@ Route::get('/web-settings',function(){
         ]);
     }
     
-)->name('websettings')->middleware(['auth']);
+)->name('websettings')->middleware(['auth','role:super_admin']);
 
 Route::patch('/change-settings/{id}',function(Request $request,int $id){
     if($id ==4){

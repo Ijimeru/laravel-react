@@ -124,12 +124,14 @@ export default function Authenticated({
                                             </Dropdown.Link>
                                             {user.roles
                                                 .map((role) => role.role)
-                                                .includes("super_admin")}
-                                            <Dropdown.Link
-                                                href={route("websettings")}
-                                            >
-                                                Web Settings
-                                            </Dropdown.Link>
+                                                .includes("super_admin") ? (
+                                                <Dropdown.Link
+                                                    href={route("websettings")}
+                                                >
+                                                    Web Settings
+                                                </Dropdown.Link>
+                                            ) : null}
+
                                             <Dropdown.Link
                                                 href={route("logout")}
                                                 method="post"

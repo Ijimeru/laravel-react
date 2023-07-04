@@ -136,7 +136,7 @@ export default function Index({
         >
             <Head title="Posts" />
 
-            <div className="container m-auto">
+            <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                 <ComponentDataGrid data={posts} columns={columns} />
             </div>
             <Modal

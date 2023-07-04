@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class BookController extends Controller
@@ -12,12 +13,17 @@ class BookController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        $this->middleware(['auth','verified','role:default']);
+    }
     public function index()
     {
         //
         return Inertia::render('Books/Index',[
 
-            'logo'=>\App\Models\Setting::find(4)
+            'logo'=>\App\Models\Setting::find(4),
+            'book'=>\App\Models\Book::all()
         ]);
     }
 

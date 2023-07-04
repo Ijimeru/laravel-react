@@ -4,20 +4,23 @@ import MyToastContainer from "@/Components/MyToastContainer";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { store } from "@/store/store";
-import { User } from "@/types";
+import { PageProps, User, flash } from "@/types";
 import { Link } from "@inertiajs/react";
 import { PropsWithChildren, ReactNode, useEffect, useState } from "react";
 import { Provider } from "react-redux";
+import { toast } from "react-toastify";
 
 export default function Authenticated({
     user,
     header,
     logo,
     children,
+    flash,
 }: PropsWithChildren<{
     user: User;
     header?: ReactNode;
     logo: { content: string };
+    flash?: flash;
 }>) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -26,6 +29,9 @@ export default function Authenticated({
             document.body.classList.add(localStorage.getItem("mode")!);
         } else {
             localStorage.setItem("mode", "light");
+        }
+        if (flash?.message) {
+            toast.warning(flash.message);
         }
     }, []);
     return (

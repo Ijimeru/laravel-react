@@ -63,6 +63,10 @@ export interface PostType {
     created_at: string;
     updated_at: string;
 }
+export interface flash {
+    message: string;
+}
+
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>
 > = T & {
@@ -70,4 +74,5 @@ export type PageProps<
         user: User;
     };
     ziggy: { query: { page: string; category: string } };
+    flash: flash;
 };

@@ -14,6 +14,8 @@ class BookPolicy
     public function viewAny(User $user): bool
     {
         //
+        // ddd($user->roles());
+        return true;
     }
 
     /**

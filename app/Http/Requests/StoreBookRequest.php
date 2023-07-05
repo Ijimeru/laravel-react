@@ -23,6 +23,12 @@ class StoreBookRequest extends FormRequest
     {
         return [
             //
+            'title' => ['required','max:100'],
+            'author' => ['required','max:100'],
+            'tahun' =>['numeric'],
+            'penerbit' => ['max:50'],
+            'cover'=>['image','required'],
+            'file'=>['mimes:pdf','required']
         ];
     }
 }

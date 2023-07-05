@@ -36,6 +36,7 @@ export interface BookType {
     author: string;
     file: string;
     tahun: string;
+    penerbit: string;
     created_at: string;
     updated_at: string;
 }

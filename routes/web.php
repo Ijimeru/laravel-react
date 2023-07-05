@@ -158,5 +158,5 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('chirps',ChirpController::class)->only(['index', 'store', 'update', 'destroy','show'])->middleware(['auth','verified']);
 Route::resource('posts',PostController::class)->only(['index', 'store', 'update', 'destroy','show'])->middleware(['auth','verified']);
-Route::resource('books',BookController::class)->only(['index', 'store', 'update', 'destroy','show']);
+Route::resource('books',BookController::class)->only(['index', 'store', 'update', 'destroy','show','create']);
 require __DIR__.'/auth.php';

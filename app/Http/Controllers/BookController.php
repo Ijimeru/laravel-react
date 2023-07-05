@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
@@ -33,6 +34,12 @@ class BookController extends Controller
     public function create()
     {
         //
+        return Inertia::render('Books/Create',[
+            'logo'=>\App\Models\Setting::find(4),
+            "categories"=>\App\Models\Category::whereHas('meta_category',function(\Illuminate\Database\Eloquent\Builder $query){
+                $query->where('name','Book');
+            })->get(),
+        ]);
     }
 
     /**
@@ -41,6 +48,20 @@ class BookController extends Controller
     public function store(StoreBookRequest $request)
     {
         //
+
+        $validated = $request->validated();
+
+        if($request->file('file')){
+            $validated['file']=$request->file('file')->store('book-images');
+        }
+        if($request->file('cover')){
+            $validated['cover']= $request->file('cover')->store('cover');
+        }
+        // dd($request->categories);
+        $categories = \App\Models\Category::whereIn('name',$request->categories)->get();
+        
+        Book::create($validated)->categories()->attach($categories);
+        return redirect(route('books.index'))->with('msg','Post Berhasil ditambahkan');
     }
 
     /**

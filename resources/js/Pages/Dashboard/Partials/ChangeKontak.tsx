@@ -2,7 +2,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import { content } from "@/types";
 import CamelToTitle from "@/utils/CamelToTitle";
 import { useForm } from "@inertiajs/react";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 
 interface kontak {
     [identitasWebsite: string]: string;
@@ -30,7 +30,7 @@ export default function ChangeKontak({ kontak }: { kontak: content }) {
                 <div className="flex flex-col gap-y-4">
                     {Object.entries(JSON.parse(data.content) as kontak).map(
                         ([key, value]) => (
-                            <>
+                            <Fragment key={key}>
                                 <h2 className="text-base">
                                     {CamelToTitle(key)} :
                                 </h2>
@@ -50,7 +50,7 @@ export default function ChangeKontak({ kontak }: { kontak: content }) {
                                         // );
                                     }}
                                 />
-                            </>
+                            </Fragment>
                         )
                     )}
                     <div className="flex justify-center">

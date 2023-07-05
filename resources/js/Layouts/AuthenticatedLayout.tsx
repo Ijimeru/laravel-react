@@ -9,6 +9,7 @@ import { Link, usePage } from "@inertiajs/react";
 import { PropsWithChildren, ReactNode, useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { toast } from "react-toastify";
+import "react-toastify/ReactToastify.css";
 
 export default function Authenticated({
     user,
@@ -70,16 +71,20 @@ export default function Authenticated({
                                         <>
                                             <NavLink
                                                 href={route("posts.index")}
-                                                active={route().current(
-                                                    "posts.index"
+                                                active={route(
+                                                    route().current()!
+                                                ).includes(
+                                                    route("posts.index")
                                                 )}
                                             >
                                                 Posts
                                             </NavLink>
                                             <NavLink
                                                 href={route("books.index")}
-                                                active={route().current(
-                                                    "books.index"
+                                                active={route(
+                                                    route().current()!
+                                                ).includes(
+                                                    route("books.index")
                                                 )}
                                             >
                                                 Books
@@ -208,13 +213,17 @@ export default function Authenticated({
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 href={route("posts.index")}
-                                active={route().current("posts.index")}
+                                active={route(route().current()!).includes(
+                                    route("posts.index")
+                                )}
                             >
                                 Posts
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 href={route("books.index")}
-                                active={route().current("books.index")}
+                                active={route(route().current()!).includes(
+                                    route("books.index")
+                                )}
                             >
                                 Books
                             </ResponsiveNavLink>

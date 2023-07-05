@@ -22,7 +22,8 @@ class BookFactory extends Factory
             'file'=> '\file\daftarpembimbing.pdf',
             'cover'=>'\img\cover.webp',
             'author'=>fake()->name(),
-            'tahun'=>fake()->year()
+            'tahun'=>fake()->year(),
+            'penerbit'=>fake()->name(),
         ];
     }
 }

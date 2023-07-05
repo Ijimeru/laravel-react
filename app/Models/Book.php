@@ -9,6 +9,15 @@ class Book extends Model
 {
     use HasFactory;
 
+    protected $fillable =[
+        'title',
+        'cover',
+        'file',
+        'author',
+        'tahun',
+        'penerbit'
+    ];
+
     public function categories(){
         return $this->belongsToMany(Category::class)->withTimestamps();
     }

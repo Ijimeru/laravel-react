@@ -28,7 +28,8 @@ export default function Buku({
 
     const [jumlahPostPerHalaman, setJumlahPostPerHalaman] = useState<number>(5);
     const [current, setCurrent] = useState<number>(1);
-
+    const [bookPage, setBookPage] = useState<BookType[]>(books);
+    const [filteredBooks, setFilteredBooks] = useState<BookType[]>(bookPage);
     const jumlahHalaman = Math.ceil(books?.length! / jumlahPostPerHalaman!);
     const start = (current! - 1) * jumlahPostPerHalaman!;
     const stop =
@@ -38,12 +39,11 @@ export default function Buku({
             ? books?.length
             : start + jumlahPostPerHalaman!;
 
-    const [filteredBooks, setFilteredBooks] = useState<BookType[]>(books);
     const [selectedOptions, setSelectedOptions] = useState<CategoryType[]>([]);
     const [id, setId] = useState<string>("1");
     const [show, setShow] = useState<boolean>(false);
     useEffect(() => {
-        setFilteredBooks(
+        setBookPage(
             books.filter((book) =>
                 checkSubsequence(
                     selectedOptions.map((val) => val.name),
@@ -53,8 +53,8 @@ export default function Buku({
         );
     }, [selectedOptions]);
     useEffect(() => {
-        setFilteredBooks(books?.slice(start, stop));
-    }, [jumlahPostPerHalaman, current, selectedOptions, books]);
+        setFilteredBooks(bookPage?.slice(start, stop));
+    }, [jumlahPostPerHalaman, current, selectedOptions, bookPage]);
     return (
         <Main logo={logo} visi={visi} kontak={kontak}>
             <Head title="Buku" />
@@ -92,14 +92,14 @@ export default function Buku({
                         type="text"
                         className="rounded-lg h-8 w-full border border-gray-400 hover:border-gray-800  dark:bg-secondaryButtonDark dark:border-[#4a4a4d] bg-primaryDark
                         focus:border-primary dark:hover:border-primaryDark dark:focus:border-primaryDark dark:placeholder:text-[rgb(187,187,187)]"
-                        placeholder="Cari buku..."
+                        placeholder="Cari buku berdasarkan judul..."
                         onChange={(e) => {
-                            let filterBook: BookType[] = books.filter((post) =>
-                                post.title
+                            let filterBook: BookType[] = books.filter((book) =>
+                                book.title
                                     .toLowerCase()
                                     .includes(e.target.value)
                             );
-                            setFilteredBooks(filterBook);
+                            setBookPage(filterBook);
                             if (
                                 current >
                                 Math.ceil(
@@ -115,11 +115,11 @@ export default function Buku({
 
             <section className="p-3 container m-auto mt-4 w-full">
                 <div
-                    className={`grid w-full bg-primaryDark dark:bg-secondaryButtonDark rounded-md items-center justify-center text-primary dark:text-primaryDark grid-cols-1 ${
-                        books.length != 0 ? "md:grid-cols-4" : ""
+                    className={`grid w-full rounded-md items-center justify-center text-primary dark:text-primaryDark grid-cols-1 ${
+                        bookPage.length != 0 ? "md:grid-cols-4" : ""
                     } p-3 center gap-y-10 md:gap-4`}
                 >
-                    {books.length != 0 ? (
+                    {bookPage.length != 0 ? (
                         filteredBooks.map((book) => (
                             <div
                                 className="relative"
@@ -207,13 +207,15 @@ export default function Buku({
                     )}
                 </div>
             </section>
-            <Pagination
-                className="flex justify-center items-center"
-                current={current!}
-                setCurrent={setCurrent!}
-                jumlahPost={books?.length!}
-                jumlahPostPerHalaman={jumlahPostPerHalaman!}
-            />
+            {bookPage.length != 0 ? (
+                <Pagination
+                    className="flex justify-center items-center"
+                    current={current!}
+                    setCurrent={setCurrent!}
+                    jumlahPost={bookPage?.length!}
+                    jumlahPostPerHalaman={jumlahPostPerHalaman!}
+                />
+            ) : null}
             {books.length != 0 ? (
                 <Modal
                     maxWidth="md"

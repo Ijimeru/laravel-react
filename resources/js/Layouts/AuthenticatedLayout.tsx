@@ -3,22 +3,25 @@ import Dropdown from "@/Components/Dropdown";
 import MyToastContainer from "@/Components/MyToastContainer";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import { store } from "@/store/store";
-import { PageProps, User, flash } from "@/types";
+import { store, useAppDispatch } from "@/store/store";
+import { BookType, PageProps, User, flash } from "@/types";
 import { Link, usePage } from "@inertiajs/react";
 import { PropsWithChildren, ReactNode, useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/ReactToastify.css";
+import { changeBook } from "@/store/features/bookSlice";
 
 export default function Authenticated({
     user,
     header,
     logo,
+    book,
     children,
 }: PropsWithChildren<{
     user: User;
     header?: ReactNode;
+    book?: BookType;
     logo: { content: string };
 }>) {
     const page = usePage<PageProps>();
@@ -31,7 +34,11 @@ export default function Authenticated({
             localStorage.setItem("mode", "light");
         }
         if (page.props.flash.message) {
-            toast.warning(page.props.flash.message);
+            if (page.props.flash.type == "success") {
+                toast.success(page.props.flash.message);
+            } else if (page.props.flash.type == "warning") {
+                toast.warning(page.props.flash.message);
+            }
         }
     }, []);
     return (
@@ -71,21 +78,25 @@ export default function Authenticated({
                                         <>
                                             <NavLink
                                                 href={route("posts.index")}
-                                                active={route(
-                                                    route().current()!
-                                                ).includes(
-                                                    route("posts.index")
+                                                active={route().current(
+                                                    "posts.index"
                                                 )}
                                             >
                                                 Posts
                                             </NavLink>
                                             <NavLink
                                                 href={route("books.index")}
-                                                active={route(
-                                                    route().current()!
-                                                ).includes(
-                                                    route("books.index")
-                                                )}
+                                                active={
+                                                    book
+                                                        ? route()
+                                                              .current()
+                                                              ?.includes(
+                                                                  "books"
+                                                              )!
+                                                        : route().current(
+                                                              "books.index"
+                                                          )
+                                                }
                                             >
                                                 Books
                                             </NavLink>
@@ -213,17 +224,17 @@ export default function Authenticated({
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 href={route("posts.index")}
-                                active={route(route().current()!).includes(
-                                    route("posts.index")
-                                )}
+                                active={route().current("posts.index")}
                             >
                                 Posts
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 href={route("books.index")}
-                                active={route(route().current()!).includes(
-                                    route("books.index")
-                                )}
+                                active={
+                                    book
+                                        ? route().current()?.includes("books")
+                                        : route().current("books.index")
+                                }
                             >
                                 Books
                             </ResponsiveNavLink>

@@ -56,6 +56,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Role::class)->withTimestamps();
     }
     public function hasRole(string $role){
-        return $this->roles()->get()->where('role',$role);
+        if(count($this->roles()->get()->where('role',$role)))
+        {
+            return true;
+        }
+        return false;
     }
 }

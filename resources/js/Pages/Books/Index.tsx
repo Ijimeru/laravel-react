@@ -1,19 +1,25 @@
 import ComponentDataGrid from "@/Components/ComponentDataGrid";
+import InputLabel from "@/Components/InputLabel";
+import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
+import SecondaryButton from "@/Components/SecondaryButton";
+import { BUANG, DELETE } from "@/Constant/PostConstant";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { BookType, PageProps } from "@/types";
+import { BookType, ConstantType, PageProps } from "@/types";
 import { Head, Link, router } from "@inertiajs/react";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { useState } from "react";
 import { AiOutlineEye } from "react-icons/ai";
 import { BsRecycle, BsTrash } from "react-icons/bs";
 import { FaRegEdit } from "react-icons/fa";
 import { MdOutlinePublish, MdDeleteForever } from "react-icons/md";
+import { toast } from "react-toastify";
 
 export default function Index({
     auth,
     logo,
-    book,
-}: PageProps<{ logo: { content: string }; book: BookType[] }>) {
+    books,
+}: PageProps<{ logo: { content: string }; books: BookType[] }>) {
     const columns: GridColDef[] = [
         { field: "id", headerName: "ID", width: 70 },
         { field: "title", headerName: "Title", minWidth: 70, width: 120 },
@@ -31,37 +37,38 @@ export default function Index({
             renderCell: (params: GridRenderCellParams) => {
                 return (
                     <div className="flex flex-row gap-x-1">
-                        {params.row.status == "trash" ? (
-                            <MdDeleteForever
-                                className="p-1 rounded-lg text-2xl text-white flex justify-center items-center hover:text-[rgb(0,0,0)] bg-[rgb(220,53,69)] overflow-visible cursor-pointer"
-                                onClick={() => {}}
-                                title="Delete Permanen"
-                            />
-                        ) : (
-                            <BsTrash
-                                className="p-1 rounded-lg text-2xl text-white flex justify-center items-center hover:text-[rgb(0,0,0)] bg-[rgb(220,53,69)] overflow-visible cursor-pointer"
-                                onClick={() => {}}
-                                title="Masukkan ke kotak sampah"
-                            />
-                        )}
+                        <BsTrash
+                            className="p-1 rounded-lg text-2xl text-white flex justify-center items-center hover:text-[rgb(0,0,0)] bg-[rgb(220,53,69)] overflow-visible cursor-pointer"
+                            onClick={() => {
+                                setId(params.id);
+                                setType("delete");
+                                setShow(true);
+                            }}
+                            title="Delete Buku"
+                        />
                         <AiOutlineEye
                             className="p-1 rounded-lg justify-center items-center text-white text-2xl bg-[rgb(13,202,240)] hover:text-[rgb(0,0,0)] cursor-pointer overflow-visible"
-                            onClick={() =>
-                                router.get(
-                                    route("posts.view", { id: params.id })
-                                )
-                            }
+                            onClick={() => {
+                                setId(params.id);
+                                setType("show");
+                                setShow(true);
+                            }}
                             title="View Post"
                         />
-                        <FaRegEdit
-                            className="p-1 rounded-lg justify-center items-center text-white text-2xl bg-[#ffc107] hover:text-[rgb(0,0,0)] cursor-pointer overflow-visible"
-                            title="Edit"
-                        />
+                        <Link href={route("books.edit", params.id)}>
+                            <FaRegEdit
+                                className="p-1 rounded-lg justify-center items-center text-white text-2xl bg-[#ffc107] hover:text-[rgb(0,0,0)] cursor-pointer overflow-visible"
+                                title="Edit"
+                            />
+                        </Link>
                     </div>
                 );
             },
         },
     ];
+    const [show, setShow] = useState<boolean>(false);
+    const [id, setId] = useState<number | string>(1);
+    const [type, setType] = useState<string>("");
     return (
         <AuthenticatedLayout
             logo={logo}
@@ -78,8 +85,134 @@ export default function Index({
             <Head title="Books" />
 
             <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                <ComponentDataGrid data={book} columns={columns} />
+                <ComponentDataGrid data={books} columns={columns} />
             </div>
+            <Modal
+                maxWidth={type == "delete" ? "sm" : "md"}
+                show={show}
+                onClose={() => {
+                    setShow(false);
+                }}
+            >
+                {type == "delete" ? (
+                    <form className="p-6">
+                        <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100 text-center">
+                            {DELETE.text}
+                        </h2>
+
+                        <div className="mt-6">
+                            <InputLabel
+                                htmlFor="password"
+                                value="Password"
+                                className="sr-only"
+                            />
+                        </div>
+
+                        <div className="mt-6 flex justify-center">
+                            <SecondaryButton
+                                onClick={() => {
+                                    setShow(false);
+                                }}
+                            >
+                                Cancel
+                            </SecondaryButton>
+
+                            <Link
+                                className={`ml-3 px-4 rounded-md text-primaryDark`}
+                                style={{ backgroundColor: DELETE.color }}
+                                href={route("books.destroy", id!)}
+                                as="button"
+                                method="delete"
+                                onSuccess={() => {
+                                    setShow(false);
+                                    toast.success("Buku berhasil dihapus");
+                                }}
+                            >
+                                {DELETE.btext}
+                            </Link>
+                        </div>
+                    </form>
+                ) : (
+                    <div className="p-6 flex gap-y-3 flex-col items-center">
+                        <h2 className="text-3xl">Book Information</h2>
+                        <img
+                            src={
+                                "/storage/" +
+                                books.filter((book) => book.id == id)[0].cover
+                            }
+                            alt=""
+                            width={150}
+                            className="rounded-md"
+                        />
+                        <div>
+                            <p>
+                                Judul :{" "}
+                                {books.filter((book) => book.id == id)[0].title}
+                            </p>
+                            <p>
+                                Tahun :{" "}
+                                {books.filter((book) => book.id == id)[0].tahun}
+                            </p>
+                            <p>
+                                Penerbit :{" "}
+                                {
+                                    books.filter((book) => book.id == id)[0]
+                                        .penerbit
+                                }
+                            </p>
+                            <p>
+                                Author :{" "}
+                                {
+                                    books.filter((book) => book.id == id)[0]
+                                        .author
+                                }
+                            </p>
+                            <p>
+                                Kategori :{" "}
+                                {books
+                                    .filter((book) => book.id == id)[0]
+                                    .categories.map(
+                                        (category, index, { length }) =>
+                                            index == length - 1 ? (
+                                                <span>{category.name}</span>
+                                            ) : (
+                                                <span>
+                                                    {category.name + " , "}
+                                                </span>
+                                            )
+                                    )}
+                            </p>
+                            <div className="mt-4 flex flex-row gap-x-3">
+                                <SecondaryButton>
+                                    <a
+                                        href={
+                                            "/storage/" +
+                                            books.filter(
+                                                (book) => book.id == id
+                                            )[0].file
+                                        }
+                                        download
+                                    >
+                                        Download
+                                    </a>
+                                </SecondaryButton>
+                                <SecondaryButton>
+                                    <a
+                                        href={
+                                            "/storage/" +
+                                            books.filter(
+                                                (book) => book.id == id
+                                            )[0].file
+                                        }
+                                    >
+                                        Read Online
+                                    </a>
+                                </SecondaryButton>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </Modal>
         </AuthenticatedLayout>
     );
 }

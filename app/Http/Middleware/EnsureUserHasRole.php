@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Providers\AuthServiceProvider;
+use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,10 +17,11 @@ class EnsureUserHasRole
      */
     public function handle(Request $request, Closure $next, string $role ): Response
     {
-        
-        
-        if(count($request->user()->hasRole($role))==0){
-            return redirect(url()->previous())->with('msg','Anda tidak mempunyai role '.$role);
+        if(!$request->user()->hasRole($role)){
+            return redirect('dashboard')->with([
+                'msg'=>'Anda tidak mempunyai role '.$role,
+                'type'=>"warning"
+            ]);
         }
         return $next($request);
     }

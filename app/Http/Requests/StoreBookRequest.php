@@ -26,6 +26,7 @@ class StoreBookRequest extends FormRequest
             'title' => ['required','max:100'],
             'author' => ['required','max:100'],
             'tahun' =>['numeric'],
+            'categories'=> 'required',
             'penerbit' => ['max:50'],
             'cover'=>['image','required'],
             'file'=>['mimes:pdf','required']

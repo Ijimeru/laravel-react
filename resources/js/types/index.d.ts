@@ -66,6 +66,7 @@ export interface PostType {
 }
 export interface flash {
     message: string;
+    type: string;
 }
 
 export type PageProps<
@@ -74,6 +75,7 @@ export type PageProps<
     auth: {
         user: User;
     };
+    book: BookType;
     ziggy: { query: { page: string; category: string } };
     flash: flash;
 };

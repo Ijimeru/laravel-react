@@ -17,13 +17,11 @@ export default function Main({
     logo,
     visi,
     kontak,
-    mauto,
-    ...props
 }: HTMLAttributes<HTMLDivElement> & {
     logo: content;
     mauto?: boolean;
-    visi: content;
-    kontak: content;
+    visi?: content;
+    kontak?: content;
 }) {
     const page = usePage<PageProps>();
     useEffect(() => {
@@ -46,7 +44,7 @@ export default function Main({
                 <div className="min-h-[calc(100vh-72px-410px)]">{children}</div>
 
                 <br />
-                <MainFooter visi={visi} logo={logo} kontak={kontak} />
+                <MainFooter visi={visi!} logo={logo} kontak={kontak!} />
             </div>
         </Provider>
     );

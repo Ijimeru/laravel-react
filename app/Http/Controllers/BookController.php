@@ -6,8 +6,11 @@ use App\Models\Book;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\File;
 
 class BookController extends Controller
 {
@@ -24,7 +27,7 @@ class BookController extends Controller
         return Inertia::render('Books/Index',[
 
             'logo'=>\App\Models\Setting::find(4),
-            'book'=>\App\Models\Book::all()
+            'books'=>\App\Models\Book::all()->load('categories')
         ]);
     }
 
@@ -57,11 +60,13 @@ class BookController extends Controller
         if($request->file('cover')){
             $validated['cover']= $request->file('cover')->store('cover');
         }
-        // dd($request->categories);
         $categories = \App\Models\Category::whereIn('name',$request->categories)->get();
         
         Book::create($validated)->categories()->attach($categories);
-        return redirect(route('books.index'))->with('msg','Post Berhasil ditambahkan');
+        return redirect(route('books.index'))->with([
+            'msg'=>'Buku berhasil ditambahkan',
+            'type'=>'success'
+        ]);
     }
 
     /**
@@ -77,22 +82,62 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-        //
+        return Inertia::render('Books/Edit',[
+            'logo'=>\App\Models\Setting::find(4),
+            "categories"=>\App\Models\Category::whereHas('meta_category',function(\Illuminate\Database\Eloquent\Builder $query){
+                $query->where('name','Book');
+            })->get(),
+            'book'=>[
+                'id'=>$book->id,
+                'title'=>$book->title,
+                'author'=>$book->author,
+                'file'=>$book->file,
+                'cover'=>$book->cover,
+                'categories'=>$book->categories()->get(),
+                'tahun'=>$book->tahun,
+                'penerbit'=>$book->penerbit
+            ]
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBookRequest $request, Book $book)
+    public function update(UpdateBookRequest $request, Book $book):RedirectResponse
     {
         //
+        $this->authorize('update', $book);
+        $validated = $request->validated();
+        if($request->file != $book->file){
+            $request->validate([
+                'file'=>['mimes:pdf']
+            ]);
+        }
+        if($request->cover != $book->cover){
+            $request->validate([
+                'cover'=>'image|file',
+            ]);
+        }
+        $book->update($validated);
+ 
+        return redirect(route('books.index'))->with(
+            [   
+                'msg'=>'Buku berhasil diedit',
+                'type'=>'success'
+            ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Book $book)
+    public function destroy(Book $book) :RedirectResponse
     {
         //
+        $this->authorize('delete', $book);
+        File::delete(storage_path($book->cover));
+        File::delete(storage_path($book->file));
+        $book->categories()->detach();
+        $book->delete();
+        return redirect(route('books.index'));
     }
 }

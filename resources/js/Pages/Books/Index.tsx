@@ -85,134 +85,155 @@ export default function Index({
             <Head title="Books" />
 
             <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                <ComponentDataGrid data={books} columns={columns} />
-            </div>
-            <Modal
-                maxWidth={type == "delete" ? "sm" : "md"}
-                show={show}
-                onClose={() => {
-                    setShow(false);
-                }}
-            >
-                {type == "delete" ? (
-                    <form className="p-6">
-                        <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100 text-center">
-                            {DELETE.text}
-                        </h2>
-
-                        <div className="mt-6">
-                            <InputLabel
-                                htmlFor="password"
-                                value="Password"
-                                className="sr-only"
-                            />
-                        </div>
-
-                        <div className="mt-6 flex justify-center">
-                            <SecondaryButton
-                                onClick={() => {
-                                    setShow(false);
-                                }}
-                            >
-                                Cancel
-                            </SecondaryButton>
-
-                            <Link
-                                className={`ml-3 px-4 rounded-md text-primaryDark`}
-                                style={{ backgroundColor: DELETE.color }}
-                                href={route("books.destroy", id!)}
-                                as="button"
-                                method="delete"
-                                onSuccess={() => {
-                                    setShow(false);
-                                    toast.success("Buku berhasil dihapus");
-                                }}
-                            >
-                                {DELETE.btext}
-                            </Link>
-                        </div>
-                    </form>
+                {books.length != 0 ? (
+                    <ComponentDataGrid data={books} columns={columns} />
                 ) : (
-                    <div className="p-6 flex gap-y-3 flex-col items-center">
-                        <h2 className="text-3xl">Book Information</h2>
-                        <img
-                            src={
-                                "/storage/" +
-                                books.filter((book) => book.id == id)[0].cover
-                            }
-                            alt=""
-                            width={150}
-                            className="rounded-md"
-                        />
-                        <div>
-                            <p>
-                                Judul :{" "}
-                                {books.filter((book) => book.id == id)[0].title}
-                            </p>
-                            <p>
-                                Tahun :{" "}
-                                {books.filter((book) => book.id == id)[0].tahun}
-                            </p>
-                            <p>
-                                Penerbit :{" "}
-                                {
-                                    books.filter((book) => book.id == id)[0]
-                                        .penerbit
-                                }
-                            </p>
-                            <p>
-                                Author :{" "}
-                                {
-                                    books.filter((book) => book.id == id)[0]
-                                        .author
-                                }
-                            </p>
-                            <p>
-                                Kategori :{" "}
-                                {books
-                                    .filter((book) => book.id == id)[0]
-                                    .categories.map(
-                                        (category, index, { length }) =>
-                                            index == length - 1 ? (
-                                                <span>{category.name}</span>
-                                            ) : (
-                                                <span>
-                                                    {category.name + " , "}
-                                                </span>
-                                            )
-                                    )}
-                            </p>
-                            <div className="mt-4 flex flex-row gap-x-3">
-                                <SecondaryButton>
-                                    <a
-                                        href={
-                                            "/storage/" +
-                                            books.filter(
-                                                (book) => book.id == id
-                                            )[0].file
-                                        }
-                                        download
-                                    >
-                                        Download
-                                    </a>
+                    <p className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-3 flex flex-row items-center gap-x-4 justify-center">
+                        Tidak ada Buku
+                    </p>
+                )}
+            </div>
+            {books.length != 0 ? (
+                <Modal
+                    maxWidth={type == "delete" ? "sm" : "md"}
+                    show={show}
+                    onClose={() => {
+                        setShow(false);
+                    }}
+                >
+                    {type == "delete" ? (
+                        <form className="p-6">
+                            <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100 text-center">
+                                {DELETE.text}
+                            </h2>
+
+                            <div className="mt-6">
+                                <InputLabel
+                                    htmlFor="password"
+                                    value="Password"
+                                    className="sr-only"
+                                />
+                            </div>
+
+                            <div className="mt-6 flex justify-center">
+                                <SecondaryButton
+                                    onClick={() => {
+                                        setShow(false);
+                                    }}
+                                >
+                                    Cancel
                                 </SecondaryButton>
-                                <SecondaryButton>
-                                    <a
-                                        href={
-                                            "/storage/" +
-                                            books.filter(
-                                                (book) => book.id == id
-                                            )[0].file
-                                        }
-                                    >
-                                        Read Online
-                                    </a>
-                                </SecondaryButton>
+
+                                <Link
+                                    className={`ml-3 px-4 rounded-md text-primaryDark`}
+                                    style={{ backgroundColor: DELETE.color }}
+                                    href={route("books.destroy", id!)}
+                                    as="button"
+                                    method="delete"
+                                    onSuccess={() => {
+                                        setShow(false);
+                                        toast.success("Buku berhasil dihapus");
+                                    }}
+                                >
+                                    {DELETE.btext}
+                                </Link>
+                            </div>
+                        </form>
+                    ) : (
+                        <div className="p-6 flex gap-y-3 flex-col items-center">
+                            <button
+                                className="self-start text-xl"
+                                onClick={() => setShow(false)}
+                            >
+                                x
+                            </button>
+                            <h2 className="text-3xl">Book Information</h2>
+                            <img
+                                src={
+                                    "/storage/" +
+                                    books.filter((book) => book.id == id)[0]
+                                        .cover
+                                }
+                                alt=""
+                                width={150}
+                                className="rounded-md"
+                            />
+                            <div>
+                                <p>
+                                    Judul :{" "}
+                                    {
+                                        books.filter((book) => book.id == id)[0]
+                                            .title
+                                    }
+                                </p>
+                                <p>
+                                    Tahun :{" "}
+                                    {
+                                        books.filter((book) => book.id == id)[0]
+                                            .tahun
+                                    }
+                                </p>
+                                <p>
+                                    Penerbit :{" "}
+                                    {
+                                        books.filter((book) => book.id == id)[0]
+                                            .penerbit
+                                    }
+                                </p>
+                                <p>
+                                    Author :{" "}
+                                    {
+                                        books.filter((book) => book.id == id)[0]
+                                            .author
+                                    }
+                                </p>
+                                <p>
+                                    Kategori :{" "}
+                                    {books
+                                        .filter((book) => book.id == id)[0]
+                                        .categories.map(
+                                            (category, index, { length }) =>
+                                                index == length - 1 ? (
+                                                    <span>{category.name}</span>
+                                                ) : (
+                                                    <span>
+                                                        {category.name + " , "}
+                                                    </span>
+                                                )
+                                        )}
+                                </p>
+                                <div className="mt-4 flex flex-row gap-x-3 justify-center">
+                                    <SecondaryButton>
+                                        <a
+                                            href={
+                                                "/storage/" +
+                                                books.filter(
+                                                    (book) => book.id == id
+                                                )[0].file
+                                            }
+                                            download
+                                        >
+                                            Download
+                                        </a>
+                                    </SecondaryButton>
+                                    <SecondaryButton>
+                                        <a
+                                            href={
+                                                "/storage/" +
+                                                books.filter(
+                                                    (book) => book.id == id
+                                                )[0].file
+                                            }
+                                        >
+                                            Read Online
+                                        </a>
+                                    </SecondaryButton>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )}
-            </Modal>
+                    )}
+                </Modal>
+            ) : null}
         </AuthenticatedLayout>
     );
 }

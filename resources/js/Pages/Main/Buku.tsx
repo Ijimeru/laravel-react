@@ -1,6 +1,8 @@
 import CheckboxesTags from "@/Components/CheckboxesTags";
+import Modal from "@/Components/Modal";
 
 import Pagination from "@/Components/Pagination";
+import SecondaryButton from "@/Components/SecondaryButton";
 import SelectNumberPage from "@/Components/SelectNumberPage";
 import Main from "@/Layouts/MainLayout";
 import { BookType, CategoryType, content } from "@/types";
@@ -38,6 +40,8 @@ export default function Buku({
 
     const [filteredBooks, setFilteredBooks] = useState<BookType[]>(books);
     const [selectedOptions, setSelectedOptions] = useState<CategoryType[]>([]);
+    const [id, setId] = useState<string>("1");
+    const [show, setShow] = useState<boolean>(false);
     useEffect(() => {
         setFilteredBooks(
             books.filter((book) =>
@@ -110,69 +114,97 @@ export default function Buku({
             </section>
 
             <section className="p-3 container m-auto mt-4 w-full">
-                <div className="grid w-full bg-primaryDark dark:bg-secondaryButtonDark rounded-md items-center justify-center text-primary dark:text-primaryDark grid-cols-1 md:grid-cols-4 p-3 center gap-y-10 md:gap-4">
-                    {filteredBooks.map((book) => (
-                        <div
-                            className="relative"
-                            onMouseEnter={(e) =>
-                                hover != book.id.toString()
-                                    ? setHover(book.id.toString())
-                                    : ""
-                            }
-                            onMouseLeave={(e) => setHover("")}
-                            key={book.id}
-                        >
+                <div
+                    className={`grid w-full bg-primaryDark dark:bg-secondaryButtonDark rounded-md items-center justify-center text-primary dark:text-primaryDark grid-cols-1 ${
+                        books.length != 0 ? "md:grid-cols-4" : ""
+                    } p-3 center gap-y-10 md:gap-4`}
+                >
+                    {books.length != 0 ? (
+                        filteredBooks.map((book) => (
                             <div
-                                className={`relative ${
-                                    hover == book.id.toString()
-                                        ? "scale-105 blur-sm"
-                                        : ""
-                                } transition-all`}
+                                className="relative"
+                                onMouseEnter={(e) => {
+                                    hover != book.id.toString()
+                                        ? setHover(book.id.toString())
+                                        : setHover("");
+                                }}
+                                onMouseLeave={(e) => setHover("")}
+                                key={book.id}
                             >
-                                <img
-                                    src={book.cover}
-                                    alt={book.title}
-                                    className={`rounded-md transition-all w-full`}
-                                />
-                            </div>
-                            <div>
-                                <Transition
-                                    show={book.id.toString() == hover}
-                                    enter="transition ease-out duration-100"
-                                    enterFrom="transform opacity-0 scale-95"
-                                    enterTo="transform opacity-100 scale-105"
-                                    leave="transition ease-in duration-75 delay-200"
-                                    leaveFrom="transform opacity-100 scale-105"
-                                    leaveTo="transform opacity-0 scale-95"
-                                    style={{
-                                        position: "absolute",
-                                        top: 0,
-                                        width: "100%",
-                                    }}
+                                <div
+                                    className={`relative ${
+                                        hover == book.id.toString()
+                                            ? "scale-105 blur-sm"
+                                            : ""
+                                    } transition-all`}
                                 >
-                                    <div className="absolute flex flex-col justify-center items-center w-full bg-primaryDark dark:bg-secondaryButtonDark p-3 pt-0 rounded-md ">
-                                        <div className="flex flex-col items-center justify-center">
-                                            <span className="text-center mt-3 font-bold">
-                                                {book.title.length > 15
-                                                    ? book.title.slice(0, 15) +
-                                                      "..."
-                                                    : book.title}
-                                            </span>
-                                            <span>{book.tahun}</span>
+                                    <img
+                                        src={`/storage/${book.cover}`}
+                                        alt={book.title}
+                                        className={`rounded-md transition-all w-full`}
+                                    />
+                                </div>
+                                <div>
+                                    <Transition
+                                        show={book.id.toString() == hover}
+                                        enter="transition ease-out duration-100"
+                                        enterFrom="transform opacity-0 scale-95"
+                                        enterTo="transform opacity-100 scale-105"
+                                        leave="transition ease-in duration-75 delay-200"
+                                        leaveFrom="transform opacity-100 scale-105"
+                                        leaveTo="transform opacity-0 scale-95"
+                                        style={{
+                                            position: "absolute",
+                                            top: 0,
+                                            width: "100%",
+                                        }}
+                                    >
+                                        <div className="absolute flex flex-col justify-center items-center w-full bg-primaryDark dark:bg-secondaryButtonDark p-3 pt-0 rounded-md ">
+                                            <div className="flex flex-col items-center justify-center">
+                                                <span className="text-center mt-3 font-bold">
+                                                    {book.title.length > 15
+                                                        ? book.title.slice(
+                                                              0,
+                                                              15
+                                                          ) + "..."
+                                                        : book.title}
+                                                </span>
+                                                <span>{book.tahun}</span>
+                                            </div>
+                                            <div className="flex flex-col justify-center items-center text-accent dark:text-accentDark">
+                                                <a
+                                                    href={`/storage/${book.file}`}
+                                                    download
+                                                >
+                                                    Download
+                                                </a>
+                                                <a
+                                                    href={`/storage/${book.file}`}
+                                                    target="blank"
+                                                >
+                                                    Baca online
+                                                </a>
+                                                <button
+                                                    onClick={() => {
+                                                        setId(
+                                                            book.id.toString()
+                                                        );
+                                                        setShow(true);
+                                                    }}
+                                                >
+                                                    Informasi Detail
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div className="flex flex-col justify-center items-center text-accent dark:text-accentDark">
-                                            <a href={book.file} target="blank">
-                                                Download
-                                            </a>
-                                            <a href={book.file} target="blank">
-                                                Baca online
-                                            </a>
-                                        </div>
-                                    </div>
-                                </Transition>
+                                    </Transition>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                    ) : (
+                        <p className="text-center w-full">
+                            Berita tidak ditemukan
+                        </p>
+                    )}
                 </div>
             </section>
             <Pagination
@@ -182,6 +214,116 @@ export default function Buku({
                 jumlahPost={books?.length!}
                 jumlahPostPerHalaman={jumlahPostPerHalaman!}
             />
+            {books.length != 0 ? (
+                <Modal
+                    maxWidth="md"
+                    show={show}
+                    onClose={() => {
+                        setShow(false);
+                    }}
+                >
+                    <div className="p-6 flex gap-y-3 flex-col items-center">
+                        <button
+                            className="self-start text-xl"
+                            onClick={() => setShow(false)}
+                        >
+                            x
+                        </button>
+                        <h2 className="text-3xl">Book Information</h2>
+                        <img
+                            src={
+                                "/storage/" +
+                                books.filter(
+                                    (book) => book.id.toString() == id
+                                )[0].cover
+                            }
+                            alt=""
+                            width={150}
+                            className="rounded-md"
+                        />
+                        <div>
+                            <p>
+                                Judul :{" "}
+                                {
+                                    books.filter(
+                                        (book) => book.id.toString() == id
+                                    )[0].title
+                                }
+                            </p>
+                            <p>
+                                Tahun :{" "}
+                                {
+                                    books.filter(
+                                        (book) => book.id.toString() == id
+                                    )[0].tahun
+                                }
+                            </p>
+                            <p>
+                                Penerbit :{" "}
+                                {
+                                    books.filter(
+                                        (book) => book.id.toString() == id
+                                    )[0].penerbit
+                                }
+                            </p>
+                            <p>
+                                Author :{" "}
+                                {
+                                    books.filter(
+                                        (book) => book.id.toString() == id
+                                    )[0].author
+                                }
+                            </p>
+                            <p>
+                                Kategori :{" "}
+                                {books
+                                    .filter(
+                                        (book) => book.id.toString() == id
+                                    )[0]
+                                    .categories.map(
+                                        (category, index, { length }) =>
+                                            index == length - 1 ? (
+                                                <span>{category.name}</span>
+                                            ) : (
+                                                <span>
+                                                    {category.name + " , "}
+                                                </span>
+                                            )
+                                    )}
+                            </p>
+                            <div className="mt-4 flex flex-row gap-x-3 justify-center">
+                                <SecondaryButton>
+                                    <a
+                                        href={
+                                            "/storage/" +
+                                            books.filter(
+                                                (book) =>
+                                                    book.id.toString() == id
+                                            )[0].file
+                                        }
+                                        download
+                                    >
+                                        Download
+                                    </a>
+                                </SecondaryButton>
+                                <SecondaryButton>
+                                    <a
+                                        href={
+                                            "/storage/" +
+                                            books.filter(
+                                                (book) =>
+                                                    book.id.toString() == id
+                                            )[0].file
+                                        }
+                                    >
+                                        Read Online
+                                    </a>
+                                </SecondaryButton>
+                            </div>
+                        </div>
+                    </div>
+                </Modal>
+            ) : null}
         </Main>
     );
 }

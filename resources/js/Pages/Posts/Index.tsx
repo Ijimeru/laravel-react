@@ -2,7 +2,7 @@ import ComponentDataGrid from "@/Components/ComponentDataGrid";
 import Main from "@/Layouts/MainLayout";
 
 import { ConstantType, PageProps, PostType } from "@/types";
-import { Head, router } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { useContext, useState } from "react";
@@ -128,16 +128,20 @@ export default function Index({
             header={
                 <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading- flex flex-row items-center gap-x-4">
                     All Posts{" "}
-                    <PrimaryButton onClick={() => setShow(true)}>
-                        Add new
-                    </PrimaryButton>
+                    <Link href={route("posts.create")} as="div">
+                        <PrimaryButton>Add new</PrimaryButton>
+                    </Link>
                 </h2>
             }
         >
             <Head title="Posts" />
 
             <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                <ComponentDataGrid data={posts} columns={columns} />
+                <ComponentDataGrid
+                    data={posts}
+                    columns={columns}
+                    notcheckbox={true}
+                />
             </div>
             <Modal
                 show={show}

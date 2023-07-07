@@ -13,6 +13,7 @@ import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import ItemNotInList from "@/utils/ItemNotInList";
 import { toast } from "react-toastify";
+import Add from "./Partials/Add";
 
 export default function Index({
     auth,
@@ -70,6 +71,7 @@ export default function Index({
                                     )
                                 );
                                 setId(params.id.toString());
+                                setType("role");
                                 setShow(true);
                             }}
                         >
@@ -80,13 +82,22 @@ export default function Index({
             },
         },
     ];
+    const [type, setType] = useState<string>("role");
     return (
         <AuthenticatedLayout
             logo={logo}
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight flex flex-row gap-x-4 items-center">
                     Role Management System
+                    <PrimaryButton
+                        onClick={() => {
+                            setType("add");
+                            setShow(true);
+                        }}
+                    >
+                        Add new
+                    </PrimaryButton>
                 </h2>
             }
         >
@@ -107,18 +118,25 @@ export default function Index({
             </div>
 
             <Modal show={show} onClose={() => setShow(false)}>
-                <div className="flex flex-col items-center p-4">
-                    <h2 className="mb-8 text-center text-3xl">Ubah Role</h2>
-                    <TransferList
-                        left={left}
-                        setLeft={setLeft}
-                        right={right}
-                        setRight={setRight}
-                    />
-                    <SecondaryButton className="mt-6" onClick={handleSubmit}>
-                        Ubah
-                    </SecondaryButton>
-                </div>
+                {type == "role" ? (
+                    <div className="flex flex-col items-center p-4">
+                        <h2 className="mb-8 text-center text-3xl">Ubah Role</h2>
+                        <TransferList
+                            left={left}
+                            setLeft={setLeft}
+                            right={right}
+                            setRight={setRight}
+                        />
+                        <SecondaryButton
+                            className="mt-6"
+                            onClick={handleSubmit}
+                        >
+                            Ubah
+                        </SecondaryButton>
+                    </div>
+                ) : (
+                    <Add setShow={setShow} />
+                )}
             </Modal>
         </AuthenticatedLayout>
     );

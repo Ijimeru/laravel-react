@@ -76,12 +76,12 @@ export default function TransferList({
             <CssBaseline />
             <Paper sx={{ width: 200, height: 230, overflow: "auto" }}>
                 <List dense component="div" role="list">
-                    {items.map((value: string) => {
+                    {items.map((value: string, key) => {
                         const labelId = `transfer-list-item-${value}-label`;
 
                         return (
                             <ListItem
-                                key={value}
+                                key={key}
                                 role="listitem"
                                 button
                                 onClick={handleToggle(value)}

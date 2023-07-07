@@ -86,7 +86,11 @@ export default function Index({
 
             <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                 {books.length != 0 ? (
-                    <ComponentDataGrid data={books} columns={columns} />
+                    <ComponentDataGrid
+                        data={books}
+                        columns={columns}
+                        notcheckbox={true}
+                    />
                 ) : (
                     <p className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-3 flex flex-row items-center gap-x-4 justify-center">
                         Tidak ada Buku

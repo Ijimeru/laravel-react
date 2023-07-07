@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
-
+use Illuminate\Support\Str;
 class PostController extends Controller
 {
     /**
@@ -27,14 +29,33 @@ class PostController extends Controller
     public function create()
     {
         //
+        $categories = \App\Models\Category::whereHas('meta_category',function(Builder $query){
+            $query->where('name','Post');
+        })->get();
+        return Inertia::render('Posts/Partials/Create',[
+            'logo'=>\App\Models\Setting::find(4),
+            'categories'=>$categories
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePostRequest $request)
+    public function store(StorePostRequest $request):RedirectResponse
     {
         //
+        $validated = $request->validated();
+
+        $validated["image"]=$request->file('image')->store('post-image');
+        $categories = \App\Models\Category::whereIn('name',$request->categories)->get();
+        $validated["excerpt"] = Str::limit(strip_tags($request->body), 200);
+        $validated["user_id"] = $request->user()->id;
+        // dd($validated);
+        Post::create($validated)->categories()->attach($categories);
+        return redirect(route('posts.index'))->with([
+            'msg'=>'Post berhasil ditambahkan',
+            'type' =>'success'
+        ]);
     }
 
     /**

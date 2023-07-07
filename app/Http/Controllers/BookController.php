@@ -37,7 +37,7 @@ class BookController extends Controller
     public function create()
     {
         //
-        return Inertia::render('Books/Create',[
+        return Inertia::render('Books/Partials/Create',[
             'logo'=>\App\Models\Setting::find(4),
             "categories"=>\App\Models\Category::whereHas('meta_category',function(\Illuminate\Database\Eloquent\Builder $query){
                 $query->where('name','Book');
@@ -82,7 +82,7 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-        return Inertia::render('Books/Edit',[
+        return Inertia::render('Books/Partials/Edit',[
             'logo'=>\App\Models\Setting::find(4),
             "categories"=>\App\Models\Category::whereHas('meta_category',function(\Illuminate\Database\Eloquent\Builder $query){
                 $query->where('name','Book');

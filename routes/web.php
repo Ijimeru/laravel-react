@@ -159,7 +159,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('chirps',ChirpController::class)->only(['index', 'store', 'update', 'destroy','show'])->middleware(['auth','verified']);
-Route::resource('posts',PostController::class)->only(['index', 'store', 'update', 'destroy','show'])->middleware(['auth','verified']);
+Route::resource('posts',PostController::class)->only(['index', 'store', 'update', 'destroy','show','create'])->middleware(['auth','verified']);
 Route::resource('books',BookController::class)->only(['index', 'store', 'update', 'destroy','show','create','edit']);
 Route::resource('users',UserController::class)->only(['index', 'store', 'update', 'destroy','show','create','edit']);
 Route::resource('roles',RoleController::class)->only(['index','store','update','destroy','create','edit']);

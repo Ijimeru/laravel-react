@@ -8,6 +8,8 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function PHPSTORM_META\type;
+
 class EnsureUserHasRole
 {
     /**
@@ -17,11 +19,19 @@ class EnsureUserHasRole
      */
     public function handle(Request $request, Closure $next, string $role ): Response
     {
+        $role = explode(',',$role);
         if(!$request->user()->hasRole($role)){
-            return redirect('dashboard')->with([
-                'msg'=>'Anda tidak mempunyai role '.$role,
-                'type'=>"warning"
-            ]);
+            if($request->user()->hasRole(['admin'])){
+                return redirect(url()->previous())->with([
+                    'msg'=>'Anda tidak mempunyai role '. implode(',',$role),
+                    'type'=>"warning"
+                ]);
+            }else{
+                return redirect(RouteServiceProvider::HOME)->with([
+                    'msg'=>'Anda tidak mempunyai role '. implode(',',$role),
+                    'type'=>"warning"
+                ]);
+            }
         }
         return $next($request);
     }

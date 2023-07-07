@@ -5,15 +5,26 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
+use Inertia\Inertia;
 
 class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+    public function __construct()
+    {
+        $this->middleware(['role:super_admin']);
+    }
     public function index()
     {
         //
+        return Inertia::render('Roles/Index',[
+            'logo'=> \App\Models\Setting::find(4),
+            'roles'=> \App\Models\Role::all(),
+            'users'=>\App\Models\User::all(['id','name'])->load('roles'),
+        ]);
     }
 
     /**

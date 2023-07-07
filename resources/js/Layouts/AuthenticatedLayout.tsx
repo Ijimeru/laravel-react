@@ -11,6 +11,7 @@ import { Provider } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/ReactToastify.css";
 import { changeBook } from "@/store/features/bookSlice";
+import CheckRole from "@/utils/CheckRole";
 
 export default function Authenticated({
     user,
@@ -138,13 +139,26 @@ export default function Authenticated({
                                             >
                                                 Profile
                                             </Dropdown.Link>
-                                            {user.roles
-                                                .map((role) => role.role)
-                                                .includes("super_admin") ? (
+                                            {CheckRole(user.roles, [
+                                                "default",
+                                                "admin",
+                                                "super_admin",
+                                            ]) ? (
                                                 <Dropdown.Link
                                                     href={route("websettings")}
                                                 >
                                                     Web Settings
+                                                </Dropdown.Link>
+                                            ) : null}
+                                            {CheckRole(user.roles, [
+                                                "default",
+                                                "admin",
+                                                "super_admin",
+                                            ]) ? (
+                                                <Dropdown.Link
+                                                    href={route("roles.index")}
+                                                >
+                                                    Role Management
                                                 </Dropdown.Link>
                                             ) : null}
 
@@ -267,6 +281,17 @@ export default function Authenticated({
                                 >
                                     Log Out
                                 </ResponsiveNavLink>
+                                {CheckRole(user.roles, [
+                                    "default",
+                                    "admin",
+                                    "super_admin",
+                                ]) ? (
+                                    <ResponsiveNavLink
+                                        href={route("websettings")}
+                                    >
+                                        Web Settings
+                                    </ResponsiveNavLink>
+                                ) : null}
                             </div>
                         </div>
                     </div>

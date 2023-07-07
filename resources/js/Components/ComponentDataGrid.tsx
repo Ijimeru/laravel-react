@@ -1,14 +1,16 @@
 import { darkTheme, lightTheme } from "@/Muitheme/DarkLightTheme";
 import { useAppSelector } from "@/store/store";
-import { BookType, PostType } from "@/types";
+import { BookType, PostType, User } from "@/types";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 export default function ComponentDataGrid({
     data,
     columns,
+    notcheckbox,
 }: {
-    data: PostType[] | BookType[] | null;
+    data: PostType[] | BookType[] | User[] | null;
     columns: GridColDef[];
+    notcheckbox?: boolean;
 }) {
     const mode = useAppSelector((state) => state.mode.mode);
     return (
@@ -23,7 +25,7 @@ export default function ComponentDataGrid({
                         paginationModel: { pageSize: 5 },
                     },
                 }}
-                checkboxSelection
+                checkboxSelection={notcheckbox == true ? false : true}
                 sx={{
                     maxHeight: "500px",
                     "&.MuiDataGrid-cell": { maxWidth: "100%" },

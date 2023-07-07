@@ -13,14 +13,15 @@ import { useWindowSize } from "@/hooks/useWindowSize";
 import MainNavList from "./MainNavList";
 import MobileMainNavList from "./MobileMainNavList";
 import { PageProps } from "@/types";
+import { toast } from "react-toastify";
 
 export default function Navbar({
     logo,
     mauto,
-}: {
+}: PageProps<{
     logo: { content: string };
     mauto?: boolean;
-}) {
+}>) {
     const [account, setAccount] = useState<boolean>(false);
     const [sidebarActive, setSidebarActive] = useState<boolean>(false);
     const windowSize = useWindowSize();
@@ -69,12 +70,13 @@ export default function Navbar({
                         </div>
                         {account ? (
                             user ? (
-                                <section className="absolute h-fit bg-primaryDark dark:bg-secondaryButtonDark dark:border-secondaryDark border-2 -bottom-[13rem] md:-bottom-[10.8rem] -left-20 -right-20 rounded-md flex flex-col p-4 gap-y-3 before:content-[''] before:h-3 before:w-3 before:absolute before:bg-primaryDark  dark:before:bg-secondaryButtonDark before:left-1/2 before:-translate-x-1/2 before:-top-1 before:rotate-45 ">
+                                <section className="absolute h-fit bg-primaryDark dark:bg-secondaryButtonDark dark:border-secondaryDark border-2 -bottom-[16rem] md:-bottom-[13.8rem] -left-20 -right-20 rounded-md flex flex-col p-4 gap-y-3 before:content-[''] before:h-3 before:w-3 before:absolute before:bg-primaryDark  dark:before:bg-secondaryButtonDark before:left-1/2 before:-translate-x-1/2 before:-top-1 before:rotate-45 ">
                                     <h5 className="text-center">
                                         {user.name.length > 10
                                             ? user.name.slice(0, 10) + "..."
                                             : user.name}
                                     </h5>
+
                                     <PrimaryButton className="flex justify-center hover:bg-primaryButtonDark">
                                         <Link
                                             href={route("dashboard")}
@@ -84,6 +86,7 @@ export default function Navbar({
                                             Dashboard
                                         </Link>
                                     </PrimaryButton>
+
                                     <SecondaryButton className="flex justify-center hover:bg-primaryButtonDark">
                                         <Link
                                             href={route("logout")}
@@ -92,6 +95,16 @@ export default function Navbar({
                                             method="post"
                                         >
                                             logout
+                                        </Link>
+                                    </SecondaryButton>
+                                    <SecondaryButton className="flex justify-center hover:bg-primaryButtonDark">
+                                        <Link
+                                            href={route("profile.edit")}
+                                            as="a"
+                                            className="text-sm"
+                                            method="post"
+                                        >
+                                            Profil
                                         </Link>
                                     </SecondaryButton>
                                     <ChangeTheme className="flex w-fit self-center md:hidden" />

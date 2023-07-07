@@ -68,22 +68,26 @@ export default function Kepengurusan({
         // <Main logo={logo} visi={visi} kontak={kontak} mauto={true}>
         <>
             <Head title="Kepengurusan" />
-            <div className="flex flex-col mt-10">
-                <PrimaryButton className="w-40 self-start">
+            <div>
+                <PrimaryButton className="w-fitself-start">
                     <Link as="a" href={route("home")}>
-                        Kembali ke Halaman awal
+                        x
                     </Link>
                 </PrimaryButton>
-                <Tree
-                    lineWidth={"2px"}
-                    lineColor={"green"}
-                    lineBorderRadius={"10px"}
-                    label={
-                        <StyledNode>Struktur Himpunan {data.name}</StyledNode>
-                    }
-                >
-                    <Card data={chart} />
-                </Tree>
+                <div className="mt-10">
+                    <Tree
+                        lineWidth={"2px"}
+                        lineColor={"green"}
+                        lineBorderRadius={"10px"}
+                        label={
+                            <StyledNode>
+                                Struktur Himpunan {data.name}
+                            </StyledNode>
+                        }
+                    >
+                        <Card data={chart} />
+                    </Tree>
+                </div>
             </div>
         </>
         // </Main>

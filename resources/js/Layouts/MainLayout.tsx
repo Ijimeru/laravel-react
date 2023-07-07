@@ -31,7 +31,11 @@ export default function Main({
             localStorage.setItem("mode", "light");
         }
         if (page.props.flash.message) {
-            toast.warning(page.props.flash.message);
+            if (page.props.flash.type == "success") {
+                toast.success(page.props.flash.message);
+            } else if (page.props.flash.type == "warning") {
+                toast.warning(page.props.flash.message);
+            }
         }
     }, []);
     return (

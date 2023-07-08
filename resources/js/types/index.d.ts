@@ -18,7 +18,7 @@ export interface ChirpType {
 export interface ConstantType {
     text: string;
     btext: string;
-    color: string;
+    type: string;
 }
 
 export interface CategoryType {
@@ -60,6 +60,7 @@ export interface PostType {
     slug: string;
     excerpt: string;
     body: string;
+    status: string;
     published_at: string;
     created_at: string;
     updated_at: string;

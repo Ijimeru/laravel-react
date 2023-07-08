@@ -1,18 +1,18 @@
 import ComponentDataGrid from "@/Components/ComponentDataGrid";
+import DangerButton from "@/Components/DangerButton";
 import InputLabel from "@/Components/InputLabel";
 import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
-import { BUANG, DELETE } from "@/Constant/PostConstant";
+import { DELETE } from "@/Constant/PostConstant";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { BookType, ConstantType, PageProps } from "@/types";
-import { Head, Link, router } from "@inertiajs/react";
+import { BookType, PageProps } from "@/types";
+import { Head, Link } from "@inertiajs/react";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { useState } from "react";
 import { AiOutlineEye } from "react-icons/ai";
-import { BsRecycle, BsTrash } from "react-icons/bs";
 import { FaRegEdit } from "react-icons/fa";
-import { MdOutlinePublish, MdDeleteForever } from "react-icons/md";
+import { MdDeleteForever } from "react-icons/md";
 import { toast } from "react-toastify";
 
 export default function Index({
@@ -21,13 +21,13 @@ export default function Index({
     books,
 }: PageProps<{ logo: { content: string }; books: BookType[] }>) {
     const columns: GridColDef[] = [
-        { field: "id", headerName: "ID", width: 70 },
-        { field: "title", headerName: "Title", minWidth: 70, width: 120 },
+        { field: "title", headerName: "Title", minWidth: 70, width: 240 },
+        { field: "tahun", headerName: "Tahun", minWidth: 70, width: 120 },
         {
             field: "author",
             headerName: "Author",
             minWidth: 130,
-            width: 320,
+            width: 120,
         },
         {
             field: "actions",
@@ -37,7 +37,7 @@ export default function Index({
             renderCell: (params: GridRenderCellParams) => {
                 return (
                     <div className="flex flex-row gap-x-1">
-                        <BsTrash
+                        <MdDeleteForever
                             className="p-1 rounded-lg text-2xl text-white flex justify-center items-center hover:text-[rgb(0,0,0)] bg-[rgb(220,53,69)] overflow-visible cursor-pointer"
                             onClick={() => {
                                 setId(params.id);
@@ -67,7 +67,10 @@ export default function Index({
         },
     ];
     const [show, setShow] = useState<boolean>(false);
-    const [id, setId] = useState<number | string>(1);
+    const [id, setId] = useState<number | string>(
+        books.length > 0 ? books[0].id : 1
+    );
+    console.log(books.filter((book) => book.id == id));
     const [type, setType] = useState<string>("");
     return (
         <AuthenticatedLayout
@@ -129,17 +132,16 @@ export default function Index({
                                 </SecondaryButton>
 
                                 <Link
-                                    className={`ml-3 px-4 rounded-md text-primaryDark`}
-                                    style={{ backgroundColor: DELETE.color }}
+                                    className={`ml-3`}
                                     href={route("books.destroy", id!)}
-                                    as="button"
+                                    as="div"
                                     method="delete"
                                     onSuccess={() => {
                                         setShow(false);
                                         toast.success("Buku berhasil dihapus");
                                     }}
                                 >
-                                    {DELETE.btext}
+                                    <DangerButton>{DELETE.btext}</DangerButton>
                                 </Link>
                             </div>
                         </form>
@@ -153,11 +155,10 @@ export default function Index({
                             </button>
                             <h2 className="text-3xl">Book Information</h2>
                             <img
-                                src={
-                                    "/storage/" +
+                                src={`/storage/${
                                     books.filter((book) => book.id == id)[0]
                                         .cover
-                                }
+                                }`}
                                 alt=""
                                 width={150}
                                 className="rounded-md"
@@ -209,12 +210,11 @@ export default function Index({
                                 <div className="mt-4 flex flex-row gap-x-3 justify-center">
                                     <SecondaryButton>
                                         <a
-                                            href={
-                                                "/storage/" +
+                                            href={`/storage/${
                                                 books.filter(
                                                     (book) => book.id == id
                                                 )[0].file
-                                            }
+                                            }`}
                                             download
                                         >
                                             Download
@@ -222,12 +222,11 @@ export default function Index({
                                     </SecondaryButton>
                                     <SecondaryButton>
                                         <a
-                                            href={
-                                                "/storage/" +
+                                            href={`/storage/${
                                                 books.filter(
                                                     (book) => book.id == id
-                                                )[0].file
-                                            }
+                                                )[0].cover
+                                            }`}
                                         >
                                             Read Online
                                         </a>

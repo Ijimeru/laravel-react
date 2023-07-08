@@ -1,23 +1,31 @@
 import DashboardCheckbox from "@/Components/DashboardCheckbox";
 import Editor from "@/Components/Editor";
 import PublishButton from "@/Components/PublishButton";
-import SecondaryButton from "@/Components/SecondaryButton";
-import Select from "@/Components/SelectComponent";
 import SuccessButton from "@/Components/SuccessButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { useAppSelector } from "@/store/store";
 import { CategoryType, PageProps, content } from "@/types";
 import CamelToTitle from "@/utils/CamelToTitle";
 import ToCapitalCase from "@/utils/ToCapitalCase";
-import { Head, Link, useForm } from "@inertiajs/react";
-import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
-import { toast } from "react-toastify";
-export default function Create({
+import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
+import {
+    ChangeEvent,
+    Fragment,
+    SyntheticEvent,
+    useEffect,
+    useState,
+} from "react";
+import { PostType } from "@/types";
+export default function Edit({
     logo,
     auth,
+    postingan,
     categories,
-}: PageProps<{ logo: content; categories: CategoryType[] }>) {
-    interface PostType {
+}: PageProps<{
+    logo: content;
+    categories: CategoryType[];
+    postingan: PostType;
+}>) {
+    interface PostDashboardType {
         title: string;
         image: File | null | string;
         categories: string[];
@@ -25,29 +33,36 @@ export default function Create({
         status: string;
         [key: string]: unknown;
     }
-    const { data, setData, post, errors } = useForm<PostType>({
-        title: "",
-        image: null,
-        categories: [],
-        body: "",
-        status: "",
+    const { errors } = usePage().props;
+    const { data, setData } = useForm<PostDashboardType>({
+        title: postingan.title,
+        image: postingan.image,
+        categories: postingan.categories.map((category) => category.name),
+        body: postingan.body,
+        status: postingan.status,
     });
     const [src, setSrc] = useState<string>("/img/noimage.jpg");
 
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
-        post(route("posts.store"), {
-            preserveScroll: true,
-            onSuccess: () => {
-                toast.success("Post berhasil ditambahkan");
+        router.post(
+            route("posts.update", postingan.slug),
+            {
+                _method: "put",
+                title: data.title,
+                image: data.image,
+                categories: data.categories,
+                body: data.body,
+                status: data.status,
             },
-        });
+            { preserveScroll: true }
+        );
     };
-    function handleCoverChange(e: ChangeEvent<HTMLInputElement>) {
+    function handleImageChange(e: ChangeEvent<HTMLInputElement>) {
         const file = e.target.files![0];
         if (!file) {
             setSrc("/img/noimage.jpg");
-            setData("image", null);
+            setData("image", postingan.image);
             return;
         }
         // const target = e.target as typeof e.target & {
@@ -68,22 +83,23 @@ export default function Create({
         setData("image", file);
     }
 
-    const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+    const [selectedOptions, setSelectedOptions] = useState<string[]>(
+        data.categories
+    );
     useEffect(() => {
         setData("categories", selectedOptions);
-        console.log(errors);
-    }, [selectedOptions, errors]);
+    }, [selectedOptions]);
     return (
         <AuthenticatedLayout
             logo={logo}
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-3 flex flex-row items-center gap-x-4">
-                    Create Post
+                    Post Edit
                 </h2>
             }
         >
-            <Head title="Create Post" />
+            <Head title="Post Edit" />
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg text-gray-900 dark:text-gray-100">
@@ -95,13 +111,13 @@ export default function Create({
                                 &larr;
                             </Link>
                             <header className="w-full text-center mt-3 text-2xl font-semibold">
-                                Enter Post Information
+                                Edit Post Information
                             </header>
 
-                            {Object.entries(data as PostType).map(
+                            {Object.entries(data as PostDashboardType).map(
                                 ([key, value]) =>
                                     key == "status" ? (
-                                        <></>
+                                        <Fragment key={key}></Fragment>
                                     ) : (
                                         <div
                                             className="flex flex-col mt-4 p-4 gap-y-4"
@@ -136,22 +152,42 @@ export default function Create({
                                                 </>
                                             ) : key == "image" ? (
                                                 <div className="flex flex-col items-center gap-y-3">
-                                                    <img
-                                                        src={src}
-                                                        alt="cover buku"
-                                                        width={200}
-                                                        className="rounded-md shadow-md"
-                                                    />
-                                                    <p className="text-sm text-red-600">
-                                                        {ToCapitalCase(
-                                                            errors[key]
-                                                        )}
+                                                    <div className="flex flex-row w-full">
+                                                        <div className="flex-1 flex items-center flex-col gap-y-4 justify-between">
+                                                            <img
+                                                                src={
+                                                                    "/storage/" +
+                                                                    postingan.image
+                                                                }
+                                                                alt="cover buku"
+                                                                width={200}
+                                                                className="rounded-md"
+                                                            />
+                                                            <small>
+                                                                Current Cover
+                                                            </small>
+                                                        </div>
+                                                        <div className="flex-1 flex items-center flex-col gap-y-4 justify-between">
+                                                            <img
+                                                                src={src}
+                                                                alt="cover buku"
+                                                                width={200}
+                                                                className="rounded-md"
+                                                            />
+                                                            <small>
+                                                                Image you want
+                                                                to change
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                    <p className="text-sm text-red-600 capitalize">
+                                                        {errors[key]}
                                                     </p>
                                                     <input
                                                         type="file"
                                                         className="cursor-pointer dark:bg-slate-500 rounded-md bg-secondary border w-full"
                                                         onChange={
-                                                            handleCoverChange
+                                                            handleImageChange
                                                         }
                                                     />
                                                 </div>
@@ -194,20 +230,9 @@ export default function Create({
                                     )
                             )}
                             <div className="flex justify-center p-4 gap-x-4">
-                                <SuccessButton
-                                    type="submit"
-                                    onClick={() => setData("status", "draft")}
-                                >
+                                <SuccessButton type="submit">
                                     Save
                                 </SuccessButton>
-                                <PublishButton
-                                    type="submit"
-                                    onClick={() =>
-                                        setData("status", "published")
-                                    }
-                                >
-                                    Publish
-                                </PublishButton>
                             </div>
                         </form>
                     </div>

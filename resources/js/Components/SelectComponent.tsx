@@ -9,16 +9,15 @@ import {
     SelectChangeEvent,
     ThemeProvider,
 } from "@mui/material";
-import { Dispatch, SetStateAction } from "react";
 type setDataByObject<TForm> = (data: TForm) => void;
 type setDataByMethod<TForm> = (data: (previousData: TForm) => TForm) => void;
 type setDataByKeyValuePair<TForm> = <K extends keyof TForm>(
     key: K,
     value: TForm[K]
 ) => void;
-interface PostType {
+interface PostDashboardType {
     title: string;
-    image: File | null;
+    image: File | null | string;
     categories: string[];
     body: string;
     status: string;
@@ -36,9 +35,9 @@ export default function SelectComponent({
     data: string;
     option: string[];
     type: string;
-    setData: setDataByObject<PostType> &
-        setDataByMethod<PostType> &
-        setDataByKeyValuePair<PostType>;
+    setData: setDataByObject<PostDashboardType> &
+        setDataByMethod<PostDashboardType> &
+        setDataByKeyValuePair<PostDashboardType>;
 }) {
     const mode = useAppSelector((state) => state.mode.mode);
     return (

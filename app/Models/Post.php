@@ -16,7 +16,8 @@ class Post extends Model
         'status',
         'body',
         'excerpt',
-        'user_id'
+        'user_id',
+        'published_at'
     ];
 
     public function author(){
@@ -32,5 +33,14 @@ class Post extends Model
                 'source'=>'title'
             ]
         ];
+    }
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

@@ -17,12 +17,10 @@ export default function Authenticated({
     user,
     header,
     logo,
-    book,
     children,
 }: PropsWithChildren<{
     user: User;
     header?: ReactNode;
-    book?: BookType;
     logo: { content: string };
 }>) {
     const page = usePage<PageProps>();
@@ -73,9 +71,7 @@ export default function Authenticated({
                                     >
                                         Kotak saran
                                     </NavLink>
-                                    {user.roles
-                                        .map((role) => role.role)
-                                        .includes("admin") ? (
+                                    {CheckRole(user.roles, "admin") ? (
                                         <>
                                             <NavLink
                                                 href={route("posts.index")}
@@ -88,15 +84,9 @@ export default function Authenticated({
                                             <NavLink
                                                 href={route("books.index")}
                                                 active={
-                                                    book
-                                                        ? route()
-                                                              .current()
-                                                              ?.includes(
-                                                                  "books"
-                                                              )!
-                                                        : route().current(
-                                                              "books.index"
-                                                          )
+                                                    route()
+                                                        .current()
+                                                        ?.includes("books")!
                                                 }
                                             >
                                                 Books
@@ -244,11 +234,7 @@ export default function Authenticated({
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 href={route("books.index")}
-                                active={
-                                    book
-                                        ? route().current()?.includes("books")
-                                        : route().current("books.index")
-                                }
+                                active={route().current()?.includes("books")}
                             >
                                 Books
                             </ResponsiveNavLink>

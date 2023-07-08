@@ -25,8 +25,8 @@ export default function Create({
     const { data, setData, post, errors } = useForm<BookPostType>({
         title: "",
         cover: null,
-        categories: [],
         file: null,
+        categories: [],
         author: "",
         tahun: "",
         penerbit: "",
@@ -37,9 +37,6 @@ export default function Create({
         e.preventDefault();
         post(route("books.store"), {
             preserveScroll: true,
-            onSuccess: () => {
-                toast.success("Buku berhasil ditambahkan");
-            },
         });
     };
     function handleCoverChange(e: ChangeEvent<HTMLInputElement>) {
@@ -152,6 +149,25 @@ export default function Create({
                                                     onChange={handleCoverChange}
                                                 />
                                             </div>
+                                        ) : key == "tahun" ? (
+                                            <>
+                                                <p className="text-sm text-red-600 capitalize">
+                                                    {errors[key]}
+                                                </p>
+                                                <input
+                                                    type="number"
+                                                    value={value as string}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            key,
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    className="rounded-lg h-8 w-full border border-gray-400 hover:border-gray-800  dark:bg-secondaryButtonDark dark:border-[#4a4a4d] bg-primaryDark
+                            focus:border-primary dark:hover:border-primaryDark dark:focus:border-primaryDark dark:placeholder:text-[rgb(187,187,187)] px-3"
+                                                    id={key}
+                                                />
+                                            </>
                                         ) : (
                                             <>
                                                 <p className="text-sm text-red-600 capitalize">

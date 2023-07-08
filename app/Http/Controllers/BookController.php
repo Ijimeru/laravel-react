@@ -51,14 +51,13 @@ class BookController extends Controller
     public function store(StoreBookRequest $request)
     {
         //
-
         $validated = $request->validated();
 
         if($request->file('file')){
-            $validated['file']=$request->file('file')->store('book-images');
+            $validated['file']=$request->file('file')->store('book-file');
         }
         if($request->file('cover')){
-            $validated['cover']= $request->file('cover')->store('cover');
+            $validated['cover']= $request->file('cover')->store('book-cover');
         }
         $categories = \App\Models\Category::whereIn('name',$request->categories)->get();
         
@@ -105,21 +104,43 @@ class BookController extends Controller
      */
     public function update(UpdateBookRequest $request, Book $book):RedirectResponse
     {
-        //
-        $this->authorize('update', $book);
+        $req = $request->only(['title','cover','file','author','tahun','penerbit']);
+        $dummy = [
+            "id"=>$book->id,
+            "title"=>$req["title"],
+            "cover"=>$req["cover"],
+            "file"=>$req["file"],
+            "author"=>$req["author"],
+            "tahun"=>$req["tahun"],
+            "penerbit"=>$req["penerbit"],
+            "created_at"=>$book->attributesToArray()["created_at"],
+            "updated_at"=>$book->attributesToArray()["updated_at"]
+        ];
+        if($book->attributesToArray() == $dummy){
+            return redirect(route("books.index"))->with(
+                [   
+                    'msg'=>'Tidak ada perubahan',
+                    'type'=>'success'
+                ]);
+        }
+        
         $validated = $request->validated();
+        $this->authorize('update', $book);
         if($request->file != $book->file){
             $request->validate([
                 'file'=>['mimes:pdf']
             ]);
+            File::delete(public_path().'/storage/'.$book->file);
+            $validated['file']=$request->file('file')->store('book-file');
         }
         if($request->cover != $book->cover){
             $request->validate([
                 'cover'=>'image|file',
             ]);
+            File::delete(public_path().'/storage/'.$book->cover);
+            $validated['cover']=$request->file('cover')->store('book-cover');
         }
         $book->update($validated);
- 
         return redirect(route('books.index'))->with(
             [   
                 'msg'=>'Buku berhasil diedit',

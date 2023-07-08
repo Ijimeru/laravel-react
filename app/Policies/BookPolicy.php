@@ -40,7 +40,7 @@ class BookPolicy
     public function update(User $user, Book $book): bool
     {
         //
-        return $user->hasRole('admin');
+        return $user->hasRole(['admin']);
     }
 
     /**
@@ -49,7 +49,7 @@ class BookPolicy
     public function delete(User $user, Book $book): bool
     {
         //
-        return $user->hasRole('admin');
+        return $user->hasRole(['admin']);
     }
 
     /**

@@ -1,9 +1,10 @@
 import DashboardCheckbox from "@/Components/DashboardCheckbox";
 import SecondaryButton from "@/Components/SecondaryButton";
+import SuccessButton from "@/Components/SuccessButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { BookType, CategoryType, PageProps, content } from "@/types";
 import CamelToTitle from "@/utils/CamelToTitle";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, useForm, router, usePage } from "@inertiajs/react";
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 export default function Edit({
@@ -12,6 +13,7 @@ export default function Edit({
     book,
     categories,
 }: PageProps<{ logo: content; categories: CategoryType[]; book: BookType }>) {
+    const { errors } = usePage().props;
     interface BookPostType {
         title: string;
         cover: File | string;
@@ -22,7 +24,7 @@ export default function Edit({
         penerbit: string;
         [key: string]: unknown;
     }
-    const { data, setData, patch, errors } = useForm<BookPostType>({
+    const { data, setData } = useForm<BookPostType>({
         title: book.title,
         cover: book.cover,
         categories: book.categories.map((category) => category.name),
@@ -35,17 +37,26 @@ export default function Edit({
 
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
-        patch(route("books.update", book.id), {
-            preserveScroll: true,
-            onSuccess: () => {
-                console.log("nice");
+        router.post(
+            route("books.update", book.id),
+            {
+                _method: "put",
+                title: data.title,
+                cover: data.cover,
+                categories: data.categories,
+                file: data.file,
+                author: data.author,
+                tahun: book.tahun,
+                penerbit: data.penerbit,
             },
-        });
+            { preserveScroll: true }
+        );
     };
     function handleCoverChange(e: ChangeEvent<HTMLInputElement>) {
         const file = e.target.files![0];
         if (!file) {
             setSrc("/img/noimage.jpg");
+            setData("cover", book.cover);
             return;
         }
         // const target = e.target as typeof e.target & {
@@ -76,7 +87,6 @@ export default function Edit({
         <AuthenticatedLayout
             logo={logo}
             user={auth.user}
-            book={book}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-3 flex flex-row items-center gap-x-4">
                     Update Book
@@ -127,15 +137,34 @@ export default function Edit({
                                                 <p className="text-sm text-red-600 capitalize">
                                                     {errors[key]}
                                                 </p>
+                                                <SecondaryButton className="w-fit">
+                                                    <a
+                                                        href={`/storage/${value}`}
+                                                        target="_blank"
+                                                    >
+                                                        File Sekarang
+                                                    </a>
+                                                </SecondaryButton>
                                                 <input
                                                     type="file"
                                                     className="cursor-pointer dark:bg-slate-500 rounded-md bg-secondary border w-full"
-                                                    onChange={(e) =>
-                                                        setData(
-                                                            "file",
-                                                            e.target.files![0]
-                                                        )
-                                                    }
+                                                    onChange={(e) => {
+                                                        if (
+                                                            e.target.files!
+                                                                .length == 0
+                                                        ) {
+                                                            setData(
+                                                                "file",
+                                                                book.file
+                                                            );
+                                                        } else {
+                                                            setData(
+                                                                "file",
+                                                                e.target
+                                                                    .files![0]
+                                                            );
+                                                        }
+                                                    }}
                                                 />
                                             </>
                                         ) : key == "cover" ? (
@@ -177,6 +206,25 @@ export default function Edit({
                                                     onChange={handleCoverChange}
                                                 />
                                             </div>
+                                        ) : key == "tahun" ? (
+                                            <>
+                                                <p className="text-sm text-red-600 capitalize">
+                                                    {errors[key]}
+                                                </p>
+                                                <input
+                                                    type="number"
+                                                    value={value as string}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            key,
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    className="rounded-lg h-8 w-full border border-gray-400 hover:border-gray-800  dark:bg-secondaryButtonDark dark:border-[#4a4a4d] bg-primaryDark
+                            focus:border-primary dark:hover:border-primaryDark dark:focus:border-primaryDark dark:placeholder:text-[rgb(187,187,187)] px-3"
+                                                    id={key}
+                                                />
+                                            </>
                                         ) : (
                                             <>
                                                 <p className="text-sm text-red-600 capitalize">
@@ -201,9 +249,9 @@ export default function Edit({
                                 )
                             )}
                             <div className="flex justify-center p-4">
-                                <SecondaryButton className="" type="submit">
-                                    Submit
-                                </SecondaryButton>
+                                <SuccessButton type="submit">
+                                    Save
+                                </SuccessButton>
                             </div>
                         </form>
                     </div>

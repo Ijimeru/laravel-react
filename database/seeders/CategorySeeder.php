@@ -20,7 +20,7 @@ class CategorySeeder extends Seeder
         ]);
         \App\Models\Category::create([
             'name'=>'Akademik',
-            'meta_category_id'=>'2'
+            'meta_category_id'=>'1'
         ]);
     }
 }

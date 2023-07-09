@@ -49,7 +49,7 @@ Route::get('/web-settings',function(){
         ]);
     }
     
-)->name('websettings')->middleware(['auth','role:super_admin']);
+)->name('websettings')->middleware(['auth','verified','role:super_admin']);
 
 Route::patch('/change-settings/{id}',function(Request $request,int $id){
     if($id ==4){
@@ -82,8 +82,7 @@ Route::post('/change-favicon',function (Request $request){
     $request->validate([
         'file'=>['required', new CheckIfFavicon]
     ]);
-    File::delete(public_path('favicon.ico'));
-    $request->file->move(public_path(),'favicon.ico');
+    $request->file('file')->storeAs('', 'favicon.ico','public_uploads');
 });
 
 Route::get('/', function () {

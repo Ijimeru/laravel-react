@@ -7,7 +7,7 @@ Ini adalah projek web himatekia dengan teknologi laravel(backend) dan react iner
 
 ## 🛠 Teknologi
 
--   [Laravel v9](https://github.com/laravel/framework)
+-   [Laravel v10](https://github.com/laravel/framework)
 -   [InertiaJS](https://github.com/inertiajs/inertia)
 -   [React JS](https://react.dev/)
 

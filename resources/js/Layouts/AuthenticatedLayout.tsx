@@ -131,11 +131,10 @@ export default function Authenticated({
                                             >
                                                 Profile
                                             </Dropdown.Link>
-                                            {CheckRole(user.roles, [
-                                                "default",
-                                                "admin",
-                                                "super_admin",
-                                            ]) && (
+                                            {CheckRole(
+                                                user.roles,
+                                                "super_admin"
+                                            ) && (
                                                 <>
                                                     <Dropdown.Link
                                                         href={route(
@@ -269,11 +268,7 @@ export default function Authenticated({
                                 >
                                     Log Out
                                 </ResponsiveNavLink>
-                                {CheckRole(user.roles, [
-                                    "default",
-                                    "admin",
-                                    "super_admin",
-                                ]) ? (
+                                {CheckRole(user.roles, ["super_admin"]) ? (
                                     <ResponsiveNavLink
                                         href={route("websettings")}
                                     >

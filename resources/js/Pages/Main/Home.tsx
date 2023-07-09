@@ -213,7 +213,7 @@ export default function Home({
                             className="grid-cols-2"
                             childClassName="text-[15px]"
                             btnText="Lihat Semua"
-                            category="Akademik"
+                            category="Pengumuman"
                             posts={posts.filter((post) =>
                                 checkSubsequence(
                                     ["Pengumuman"],

@@ -16,7 +16,7 @@ Ini adalah projek web himatekia dengan teknologi laravel(backend) dan react iner
 Untuk menjalankan aplikasi ini, sistem minimal yang dibutuhkan adalah sebagai berikut:
 
 -   PHP 8.0 atau yang lebih tinggi
--   MySQL 5.7 atau yang lebih tinggi
+-   MySQL 5.7 atau yang lebih tinggi (gunakan xampp note:jangan lupa hidupkan apache dan mysql sebelum ke url)
 -   Composer
 -   Node.js 16 atau yang lebih tinggi
 -   NPM 7 atau yang lebih tinggi

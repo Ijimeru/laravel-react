@@ -75,9 +75,11 @@ export default function Authenticated({
                                         <>
                                             <NavLink
                                                 href={route("posts.index")}
-                                                active={route().current(
-                                                    "posts.index"
-                                                )}
+                                                active={
+                                                    route()
+                                                        .current()
+                                                        ?.includes("posts")!
+                                                }
                                             >
                                                 Posts
                                             </NavLink>
@@ -133,24 +135,24 @@ export default function Authenticated({
                                                 "default",
                                                 "admin",
                                                 "super_admin",
-                                            ]) ? (
-                                                <Dropdown.Link
-                                                    href={route("websettings")}
-                                                >
-                                                    Web Settings
-                                                </Dropdown.Link>
-                                            ) : null}
-                                            {CheckRole(user.roles, [
-                                                "default",
-                                                "admin",
-                                                "super_admin",
-                                            ]) ? (
-                                                <Dropdown.Link
-                                                    href={route("roles.index")}
-                                                >
-                                                    Role Management
-                                                </Dropdown.Link>
-                                            ) : null}
+                                            ]) && (
+                                                <>
+                                                    <Dropdown.Link
+                                                        href={route(
+                                                            "websettings"
+                                                        )}
+                                                    >
+                                                        Web Settings
+                                                    </Dropdown.Link>
+                                                    <Dropdown.Link
+                                                        href={route(
+                                                            "roles.index"
+                                                        )}
+                                                    >
+                                                        Role Management
+                                                    </Dropdown.Link>
+                                                </>
+                                            )}
 
                                             <Dropdown.Link
                                                 href={route("logout")}
@@ -228,7 +230,7 @@ export default function Authenticated({
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 href={route("posts.index")}
-                                active={route().current("posts.index")}
+                                active={route().current()?.includes("posts")}
                             >
                                 Posts
                             </ResponsiveNavLink>

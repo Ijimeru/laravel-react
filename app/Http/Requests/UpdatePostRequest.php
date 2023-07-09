@@ -23,7 +23,7 @@ class UpdatePostRequest extends FormRequest
     {
         return [
             //
-            'title'=> 'required|max:50',
+            'title'=> 'required|max:200',
             'categories'=> 'required',
             'body'=> 'required',
             'status'=>'required'

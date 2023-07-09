@@ -155,8 +155,8 @@ class BookController extends Controller
     {
         //
         $this->authorize('delete', $book);
-        File::delete(storage_path($book->cover));
-        File::delete(storage_path($book->file));
+        File::delete(public_path().'/storage/'.$book->cover);
+        File::delete(public_path().'/storage/'.$book->file);
         $book->categories()->detach();
         $book->delete();
         return redirect(route('books.index'));

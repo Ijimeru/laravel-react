@@ -18,10 +18,10 @@ import { toast } from "react-toastify";
 export default function Navbar({
     logo,
     mauto,
-}: PageProps<{
+}: {
     logo: { content: string };
     mauto?: boolean;
-}>) {
+}) {
     const [account, setAccount] = useState<boolean>(false);
     const [sidebarActive, setSidebarActive] = useState<boolean>(false);
     const windowSize = useWindowSize();

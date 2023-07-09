@@ -9,6 +9,7 @@ import {
     SelectChangeEvent,
     ThemeProvider,
 } from "@mui/material";
+import { Dispatch, SetStateAction } from "react";
 type setDataByObject<TForm> = (data: TForm) => void;
 type setDataByMethod<TForm> = (data: (previousData: TForm) => TForm) => void;
 type setDataByKeyValuePair<TForm> = <K extends keyof TForm>(
@@ -26,18 +27,23 @@ interface PostDashboardType {
 
 export default function SelectComponent({
     setData,
+    setState,
     data,
     label,
     option,
     type,
+    value,
 }: {
     label: string;
-    data: string;
+    data?: string;
+    value?: number[];
+    setState?: Dispatch<SetStateAction<string>>;
     option: string[];
-    type: string;
-    setData: setDataByObject<PostDashboardType> &
+    type?: string;
+    setData?: setDataByObject<PostDashboardType> &
         setDataByMethod<PostDashboardType> &
         setDataByKeyValuePair<PostDashboardType>;
+    setId?: Dispatch<SetStateAction<number>>;
 }) {
     const mode = useAppSelector((state) => state.mode.mode);
     return (
@@ -51,11 +57,17 @@ export default function SelectComponent({
                     value={data}
                     label={label}
                     onChange={(e: SelectChangeEvent) => {
-                        setData(type, e.target.value);
+                        setData && setData(type!, e.target.value);
+                        setState && setState(e.target.value);
                     }}
                 >
-                    {option.map((opt) => (
-                        <MenuItem value={opt}>{opt}</MenuItem>
+                    {option.map((opt, index) => (
+                        <MenuItem
+                            value={value?.length! > 0 ? value![index] : opt}
+                            key={index}
+                        >
+                            {opt}
+                        </MenuItem>
                     ))}
                 </Select>
             </FormControl>

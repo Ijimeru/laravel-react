@@ -65,8 +65,8 @@ export default function CheckboxesTags({
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        label="Checkboxes"
-                        placeholder="Favorites"
+                        label="Categories"
+                        placeholder="Pilih Category"
                     />
                 )}
             />

@@ -15,6 +15,7 @@ import {
     useState,
 } from "react";
 import { PostType } from "@/types";
+import CategoryModal from "@/Components/CategoryModal";
 export default function Edit({
     logo,
     auth,
@@ -42,6 +43,8 @@ export default function Edit({
         status: postingan.status,
     });
     const [src, setSrc] = useState<string>("/img/noimage.jpg");
+    const [show, setShow] = useState<boolean>(false);
+    const [method, setMethod] = useState<string>("");
 
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
@@ -137,18 +140,42 @@ export default function Edit({
                                                             errors[key]
                                                         )}
                                                     </p>
-                                                    <DashboardCheckbox
-                                                        data={categories.map(
-                                                            (category) =>
-                                                                category.name
-                                                        )}
-                                                        setSelectedOptions={
-                                                            setSelectedOptions
-                                                        }
-                                                        selectedOptions={
-                                                            selectedOptions
-                                                        }
-                                                    />
+                                                    <div className="flex flex-row items-center">
+                                                        <DashboardCheckbox
+                                                            data={categories.map(
+                                                                (category) =>
+                                                                    category.name
+                                                            )}
+                                                            setSelectedOptions={
+                                                                setSelectedOptions
+                                                            }
+                                                            selectedOptions={
+                                                                selectedOptions
+                                                            }
+                                                        />
+                                                        <div
+                                                            className="rounded-full p-4 text-3xl cursor-pointer"
+                                                            onClick={() => {
+                                                                setMethod(
+                                                                    "post"
+                                                                );
+                                                                setShow(true);
+                                                            }}
+                                                        >
+                                                            +
+                                                        </div>
+                                                        <div
+                                                            className="rounded-full p-4 text-3xl cursor-pointer"
+                                                            onClick={() => {
+                                                                setMethod(
+                                                                    "delete"
+                                                                );
+                                                                setShow(true);
+                                                            }}
+                                                        >
+                                                            -
+                                                        </div>
+                                                    </div>
                                                 </>
                                             ) : key == "image" ? (
                                                 <div className="flex flex-col items-center gap-y-3">
@@ -238,6 +265,14 @@ export default function Edit({
                     </div>
                 </div>
             </div>
+            <CategoryModal
+                show={show}
+                setShow={setShow}
+                type="Posts"
+                method={method}
+                value={categories.map((category) => category.id)}
+                categories={categories.map((category) => category.name)}
+            />
         </AuthenticatedLayout>
     );
 }

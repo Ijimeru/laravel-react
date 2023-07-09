@@ -24,6 +24,7 @@ export interface ConstantType {
 export interface CategoryType {
     id: number;
     name: string;
+    meta_category_id: number;
     posts?: PostType[];
     books?: BookType[];
 }

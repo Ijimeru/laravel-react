@@ -71,6 +71,13 @@ class PostController extends Controller
     public function show(Post $post)
     {
         //
+        return Inertia::render('Posts/Partials/View',[
+            'logo'=>\App\Models\Setting::find(4),
+            'post'=> $post->load(["author","categories"]),
+            'categories'=> \App\Models\Category::whereHas('meta_category',function(Builder $query){
+                $query->where('name','post');
+            })->get()->load("posts")
+        ]);
     }
 
     /**

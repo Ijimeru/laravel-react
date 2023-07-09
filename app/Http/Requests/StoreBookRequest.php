@@ -23,7 +23,7 @@ class StoreBookRequest extends FormRequest
     {
         return [
             //
-            'title' => ['required','max:100'],
+            'title' => ['required','max:200'],
             'author' => ['required','max:100'],
             'tahun' =>['numeric'],
             'categories'=> 'required',

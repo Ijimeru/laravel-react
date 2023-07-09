@@ -70,7 +70,6 @@ export default function Index({
     const [id, setId] = useState<number | string>(
         books.length > 0 ? books[0].id : 1
     );
-    console.log(books.filter((book) => book.id == id));
     const [type, setType] = useState<string>("");
     return (
         <AuthenticatedLayout

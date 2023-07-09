@@ -19,7 +19,6 @@ export default function Main({
     kontak,
 }: HTMLAttributes<HTMLDivElement> & {
     logo: content;
-    mauto?: boolean;
     visi?: content;
     kontak?: content;
 }) {

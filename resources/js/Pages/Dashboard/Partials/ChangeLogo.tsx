@@ -47,7 +47,6 @@ export default function ChangeLogo({ logo }: { logo: { content: string } }) {
     }
     function fileChange(e: ChangeEvent<HTMLInputElement>) {
         const file = e.target.files![0];
-        console.log(file.type);
         if (
             file.type != "image/x-icon" &&
             file.type != "image/jpeg" &&

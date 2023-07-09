@@ -1,5 +1,6 @@
 import InputLabel from "@/Components/InputLabel";
 import SecondaryButton from "@/Components/SecondaryButton";
+import { useAppSelector } from "@/store/store";
 import ToCapitalCase from "@/utils/ToCapitalCase";
 import { useForm } from "@inertiajs/react";
 import { Input } from "@mui/material";
@@ -25,6 +26,7 @@ export default function Add({
             },
         });
     }
+    const mode = useAppSelector((state) => state.mode.mode);
     return (
         <div className="flex flex-col items-center p-4">
             <h2 className="mb-8 text-center text-3xl">Tambah Role</h2>
@@ -37,6 +39,7 @@ export default function Add({
                     <Input
                         type="text"
                         fullWidth
+                        sx={{ color: mode == "dark" ? "white" : "black" }}
                         value={data.role}
                         onChange={(e) => setData("role", e.target.value)}
                     />

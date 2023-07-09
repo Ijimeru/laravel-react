@@ -1,3 +1,4 @@
+import CategoryModal from "@/Components/CategoryModal";
 import CheckboxesTags from "@/Components/CheckboxesTags";
 import DashboardCheckbox from "@/Components/DashboardCheckbox";
 import SecondaryButton from "@/Components/SecondaryButton";
@@ -67,6 +68,9 @@ export default function Create({
     useEffect(() => {
         setData("categories", selectedOptions);
     }, [selectedOptions]);
+
+    const [show, setShow] = useState<boolean>(false);
+    const [method, setMethod] = useState<string>("");
     return (
         <AuthenticatedLayout
             logo={logo}
@@ -103,18 +107,38 @@ export default function Create({
                                                 <p className="text-sm text-red-600 capitalize">
                                                     {errors[key]}
                                                 </p>
-                                                <DashboardCheckbox
-                                                    data={categories.map(
-                                                        (category) =>
-                                                            category.name
-                                                    )}
-                                                    setSelectedOptions={
-                                                        setSelectedOptions
-                                                    }
-                                                    selectedOptions={
-                                                        selectedOptions
-                                                    }
-                                                />
+                                                <div className="flex flex-row items-center">
+                                                    <DashboardCheckbox
+                                                        data={categories.map(
+                                                            (category) =>
+                                                                category.name
+                                                        )}
+                                                        setSelectedOptions={
+                                                            setSelectedOptions
+                                                        }
+                                                        selectedOptions={
+                                                            selectedOptions
+                                                        }
+                                                    />
+                                                    <div
+                                                        className="rounded-full p-4 text-3xl cursor-pointer"
+                                                        onClick={() => {
+                                                            setMethod("post");
+                                                            setShow(true);
+                                                        }}
+                                                    >
+                                                        +
+                                                    </div>
+                                                    <div
+                                                        className="rounded-full p-4 text-3xl cursor-pointer"
+                                                        onClick={() => {
+                                                            setMethod("delete");
+                                                            setShow(true);
+                                                        }}
+                                                    >
+                                                        -
+                                                    </div>
+                                                </div>
                                             </>
                                         ) : key == "file" ? (
                                             <>
@@ -200,6 +224,14 @@ export default function Create({
                     </div>
                 </div>
             </div>
+            <CategoryModal
+                show={show}
+                setShow={setShow}
+                type="Book"
+                method={method}
+                value={categories.map((category) => category.id)}
+                categories={categories.map((category) => category.name)}
+            />
         </AuthenticatedLayout>
     );
 }

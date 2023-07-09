@@ -47,16 +47,6 @@ export const navList: {
     {
         name: "Berita",
         href: "berita",
-        child: [
-            {
-                name: "Berita Himpunan",
-                href: "home",
-            },
-            {
-                name: "Berita Akademik",
-                href: "home",
-            },
-        ],
     },
     {
         name: "Store",

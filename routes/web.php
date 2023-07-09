@@ -1,13 +1,18 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Models\Category;
+use App\Models\Post;
 use App\Rules\CheckIfFavicon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
@@ -87,8 +92,8 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-        'posts'=> \App\Models\Post::all()->load(['author','categories']),
-        'categories'=>\App\Models\Category::all()->load('posts'),
+        'posts'=> \App\Models\Post::where("status","published")->get()->load(['author','categories']),
+        'categories'=>\App\Models\Category::where('meta_category_id',1)->get()->load('posts'),
         'logo'=>\App\Models\Setting::find(4),
         'visi'=>\App\Models\Setting::find(2),
         'kontak'=>\App\Models\Setting::find(5)
@@ -135,7 +140,7 @@ Route::get('/store',fn()=>
 )->name("store");
 Route::get('/berita/',fn()=>
     Inertia::render("Main/Berita",[
-    "posts"=>\App\Models\Post::all()->load(['author','categories']),
+    "posts"=>\App\Models\Post::where("status","published")->get()->load(['author','categories']),
     "categories"=>\App\Models\Category::whereHas('meta_category',function(\Illuminate\Database\Eloquent\Builder $query){
         $query->where('name',"Post");
     })->get(),
@@ -144,6 +149,19 @@ Route::get('/berita/',fn()=>
     'kontak'=>\App\Models\Setting::find(5)
 ])
 )->name("berita");
+
+Route::get('berita/{slug}',function(string $slug){
+    $post = Post::where('slug',$slug)->firstOrFail();
+    return Inertia::render("Main/ShowBerita",[
+        'logo'=>\App\Models\Setting::find(4),
+        'visi'=>\App\Models\Setting::find(2),
+        'kontak'=>\App\Models\Setting::find(5),
+        'post'=> $post->load(['author','categories']),
+        'categories'=> \App\Models\Category::whereHas('meta_category',function(Builder $query){
+            $query->where('name','Post');
+        })->get()->load("posts")
+    ]);
+});
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard/Index',[
@@ -165,5 +183,8 @@ Route::resource('posts',PostController::class)->only(['index', 'store','edit', '
 Route::resource('books',BookController::class)->only(['index', 'store', 'update', 'destroy','show','create','edit']);
 Route::resource('users',UserController::class)->only(['index', 'store', 'update', 'destroy','show','create','edit']);
 Route::resource('roles',RoleController::class)->only(['index','store','update','destroy','create','edit']);
+Route::resource('categories',CategoryController::class)->only(['store','destroy']);
+
+
 
 require __DIR__.'/auth.php';

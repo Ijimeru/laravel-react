@@ -8,6 +8,7 @@ import Pagination from "./Pagination";
 export default function Cards({
     className,
     childClassName,
+    category,
     btnText,
     posts,
     current,
@@ -19,6 +20,7 @@ export default function Cards({
     selectedOptions,
 }: {
     className?: string;
+    category?: string;
     current?: number;
     setCurrent?: Dispatch<SetStateAction<number>>;
     selectedOptions?: CategoryType[];
@@ -61,14 +63,16 @@ export default function Cards({
                 }
             >
                 {cardPosts?.map((post) => (
-                    <Link href={route("home")} key={post.id}>
+                    <Link href={`berita/${post.slug}`} key={post.id}>
                         <Card childClassName={childClassName} post={post} />
                     </Link>
                 ))}
             </div>
             {noButton ? null : (
                 <Link
-                    href={route("home")}
+                    href={route("berita", {
+                        category: category ? category : "",
+                    })}
                     className="bg-primaryDark py-2 px-4 rounded-md mt-3 w-fit border-2 border-secondaryButton text-accent flex flex-row gap-x-2 items-center hover:bg-accent transition-colors hover:text-secondary dark:bg-secondaryButtonDark dark:text-accentDark dark:border-accentDark hover:dark:bg-accentDark dark:hover:text-primaryDark"
                 >
                     {btnText ? btnText : "Lihat semua Berita"}

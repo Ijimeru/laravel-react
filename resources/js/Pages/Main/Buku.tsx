@@ -209,7 +209,7 @@ export default function Buku({
                         ))
                     ) : (
                         <p className="text-center w-full">
-                            Berita tidak ditemukan
+                            Buku tidak ditemukan
                         </p>
                     )}
                 </div>

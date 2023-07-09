@@ -13,7 +13,7 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         //
-        \App\Models\Category::factory(10)->create();
+        // \App\Models\Category::factory(10)->create();
         \App\Models\Category::create([
             'name'=>'Pengumuman',
             'meta_category_id'=>'1'
@@ -21,6 +21,14 @@ class CategorySeeder extends Seeder
         \App\Models\Category::create([
             'name'=>'Akademik',
             'meta_category_id'=>'1'
+        ]);
+        \App\Models\Category::create([
+            'name'=>'Termodinamika',
+            'meta_category_id'=>'2'
+        ]);
+        \App\Models\Category::create([
+            'name'=>'Neraca Massa',
+            'meta_category_id'=>'2'
         ]);
     }
 }

@@ -1,6 +1,7 @@
 import Cards from "@/Components/Cards";
 import Main from "@/Layouts/MainLayout";
 import { CategoryType, PageProps, PostType, content } from "@/types";
+import { checkSubsequence } from "@/utils/CheckSubsequence";
 import { Head, Link, usePage } from "@inertiajs/react";
 import React, { useEffect } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
@@ -212,7 +213,12 @@ export default function Home({
                             className="grid-cols-2"
                             childClassName="text-[15px]"
                             btnText="Lihat Semua"
-                            posts={posts}
+                            category="Akademik"
+                            posts={posts.filter((post) =>
+                                checkSubsequence(post.categories, [
+                                    "Pengumuman",
+                                ])
+                            )}
                             length={5}
                         />
                     </div>
@@ -228,7 +234,10 @@ export default function Home({
                             className="grid-cols-2"
                             childClassName="text-[15px]"
                             btnText="Lihat Semua"
-                            posts={posts}
+                            category="Akademik"
+                            posts={posts.filter((post) =>
+                                checkSubsequence(post.categories, ["Akademik"])
+                            )}
                             length={5}
                         />
                     </div>
@@ -325,7 +334,27 @@ export default function Home({
                             </Link>
                         ))}
                 </div>
-                <div className="grid md:grid-cols-4 grid-cols-2 gap-4">
+                <div
+                    className={`${
+                        posts
+                            .filter((post) =>
+                                post.categories
+                                    .map((category) => category.name)
+                                    .includes(
+                                        page.props.ziggy.query.category
+                                            ? page.props.ziggy.query.category
+                                            : categories.sort(
+                                                  (a, b) =>
+                                                      b.posts?.length! -
+                                                      a.posts?.length!
+                                              )[0].name
+                                    )
+                            )
+                            .slice(0, 8).length > 0
+                            ? "grid md:grid-cols-4 grid-cols-2 gap-4"
+                            : ""
+                    }`}
+                >
                     {posts
                         .filter((post) =>
                             post.categories
@@ -340,26 +369,44 @@ export default function Home({
                                           )[0].name
                                 )
                         )
-                        .slice(0, 8)
-                        .map((val, key) => (
-                            <div
-                                className="overflow-hidden rounded-lg group relative"
-                                key={key}
-                            >
-                                <img
-                                    src={val.image}
-                                    alt="dummy"
-                                    className="rounded-lg hover:scale-110 transition-transform duration-300 group-hover:scale-110"
-                                />
-                                <Link
-                                    href={route("berita", { name: val.title })}
-                                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl text-primaryDark opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200 z-10"
+                        .slice(0, 8).length > 0 ? (
+                        posts
+                            .filter((post) =>
+                                post.categories
+                                    .map((category) => category.name)
+                                    .includes(
+                                        page.props.ziggy.query.category
+                                            ? page.props.ziggy.query.category
+                                            : categories.sort(
+                                                  (a, b) =>
+                                                      b.posts?.length! -
+                                                      a.posts?.length!
+                                              )[0].name
+                                    )
+                            )
+                            .slice(0, 8)
+                            .map((val, key) => (
+                                <div
+                                    className="overflow-hidden rounded-lg group relative"
+                                    key={key}
                                 >
-                                    <AiOutlineSearch />
-                                </Link>
-                                <section className="bg-[#680000] h-full w-full absolute opacity-0 group-hover:opacity-30 transition-opacity top-0"></section>
-                            </div>
-                        ))}
+                                    <img
+                                        src={`/storage/${val.image}`}
+                                        alt="dummy"
+                                        className="rounded-lg hover:scale-110 transition-transform duration-300 group-hover:scale-110"
+                                    />
+                                    <Link
+                                        href={`berita/${val.slug}`}
+                                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl text-primaryDark opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200 z-10"
+                                    >
+                                        <AiOutlineSearch />
+                                    </Link>
+                                    <section className="bg-[#680000] h-full w-full absolute opacity-0 group-hover:opacity-30 transition-opacity top-0"></section>
+                                </div>
+                            ))
+                    ) : (
+                        <p className="text-center w-full">Tidak ada berita</p>
+                    )}
                 </div>
             </section>
         </Main>

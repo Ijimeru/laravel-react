@@ -140,9 +140,7 @@ export default function Index({
                         <AiOutlineEye
                             className="p-1 rounded-lg justify-center items-center text-white text-2xl bg-[rgb(13,202,240)] hover:text-[rgb(0,0,0)] cursor-pointer overflow-visible"
                             onClick={() =>
-                                router.get(
-                                    route("posts.view", { id: params.id })
-                                )
+                                router.get(route("posts.show", params.row.slug))
                             }
                             title="View Post"
                         />

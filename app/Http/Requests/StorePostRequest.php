@@ -23,7 +23,7 @@ class StorePostRequest extends FormRequest
     {
         return [
             //
-            'title'=> 'required|max:50',
+            'title'=> 'required|max:200',
             'image'=> 'required|image',
             'categories'=> 'required',
             'body'=> 'required',

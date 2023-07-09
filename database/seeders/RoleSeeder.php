@@ -24,10 +24,15 @@ class RoleSeeder extends Seeder
         ]);
         
         $roles = \App\Models\Role::all();
+
         \App\Models\User::all()->each(function ($user) use ($roles) { 
-            $user->roles()->attach(
-                $roles->random(rand(1, 3))->pluck('id')->toArray()
-            ); 
+            if($user->name == "Muhammad Habibi Wasi Narendra"){
+                $user->roles()->attach($roles);
+            }else{
+                $user->roles()->attach(
+                    $roles->random(rand(1, 3))->pluck('id')->toArray()
+                ); 
+            }
         });
     }
 }

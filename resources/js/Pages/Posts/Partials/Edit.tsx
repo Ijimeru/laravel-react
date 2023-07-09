@@ -130,7 +130,10 @@ export default function Edit({
                                                 htmlFor={key}
                                                 className="text-lg font-semibold"
                                             >
-                                                {CamelToTitle(key)}
+                                                {CamelToTitle(key)}{" "}
+                                                <span className="text-red-600">
+                                                    *
+                                                </span>
                                             </label>
 
                                             {key == "categories" ? (

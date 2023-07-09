@@ -115,7 +115,12 @@ export default function Edit({
                                             htmlFor={key}
                                             className="text-lg font-semibold"
                                         >
-                                            {CamelToTitle(key)}
+                                            {CamelToTitle(key)}{" "}
+                                            {!(key == "penerbit") && (
+                                                <span className="text-red-600">
+                                                    *
+                                                </span>
+                                            )}
                                         </label>
                                         {key == "categories" ? (
                                             <>

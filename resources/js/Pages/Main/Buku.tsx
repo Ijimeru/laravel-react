@@ -333,8 +333,9 @@ export default function Buku({
                                                     book.id.toString() == id
                                             )[0].file
                                         }
+                                        target="_blank"
                                     >
-                                        Read Online
+                                        Baca Online
                                     </a>
                                 </SecondaryButton>
                             </div>

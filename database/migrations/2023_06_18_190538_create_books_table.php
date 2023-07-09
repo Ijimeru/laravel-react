@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string("file");
             $table->string("author");
             $table->string("tahun");
-            $table->string("penerbit");
+            $table->string("penerbit")->nullable();
             $table->timestamps();
         });
     }

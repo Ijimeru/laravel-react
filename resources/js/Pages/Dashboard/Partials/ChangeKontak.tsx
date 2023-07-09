@@ -3,6 +3,7 @@ import { content } from "@/types";
 import CamelToTitle from "@/utils/CamelToTitle";
 import { useForm } from "@inertiajs/react";
 import { Fragment, useState } from "react";
+import { toast } from "react-toastify";
 
 interface kontak {
     [identitasWebsite: string]: string;
@@ -59,6 +60,11 @@ export default function ChangeKontak({ kontak }: { kontak: content }) {
                             onClick={() => {
                                 patch("/change-settings/5", {
                                     preserveScroll: true,
+                                    onSuccess: () => {
+                                        toast.success(
+                                            "Informasi Kontak berhasil diubah"
+                                        );
+                                    },
                                 });
                             }}
                         >

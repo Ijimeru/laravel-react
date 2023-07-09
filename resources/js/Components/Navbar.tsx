@@ -1,19 +1,14 @@
+import { useWindowSize } from "@/hooks/useWindowSize";
+import { PageProps } from "@/types";
 import { Link, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
-import {
-    GiHamburgerMenu,
-    RiArrowDropDownLine,
-    VscAccount,
-} from "react-icons/all";
+import { GiHamburgerMenu, VscAccount } from "react-icons/all";
 import ChangeTheme from "./ChangeTheme";
-import NavLink from "./NavLinkMain";
-import PrimaryButton from "./PrimaryButton";
-import SecondaryButton from "./SecondaryButton";
-import { useWindowSize } from "@/hooks/useWindowSize";
+import DangerButton from "./DangerButton";
 import MainNavList from "./MainNavList";
 import MobileMainNavList from "./MobileMainNavList";
-import { PageProps } from "@/types";
-import { toast } from "react-toastify";
+import PrimaryButton from "./PrimaryButton";
+import SecondaryButton from "./SecondaryButton";
 
 export default function Navbar({
     logo,
@@ -89,16 +84,6 @@ export default function Navbar({
 
                                     <SecondaryButton className="flex justify-center hover:bg-primaryButtonDark">
                                         <Link
-                                            href={route("logout")}
-                                            as="a"
-                                            className="text-sm"
-                                            method="post"
-                                        >
-                                            logout
-                                        </Link>
-                                    </SecondaryButton>
-                                    <SecondaryButton className="flex justify-center hover:bg-primaryButtonDark">
-                                        <Link
                                             href={route("profile.edit")}
                                             as="a"
                                             className="text-sm"
@@ -107,6 +92,16 @@ export default function Navbar({
                                             Profil
                                         </Link>
                                     </SecondaryButton>
+                                    <DangerButton className="flex justify-center hover:bg-primaryButtonDark">
+                                        <Link
+                                            href={route("logout")}
+                                            as="a"
+                                            className="text-sm"
+                                            method="post"
+                                        >
+                                            logout
+                                        </Link>
+                                    </DangerButton>
                                     <ChangeTheme className="flex w-fit self-center md:hidden" />
                                 </section>
                             ) : (

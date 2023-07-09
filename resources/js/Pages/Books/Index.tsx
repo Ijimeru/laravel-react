@@ -224,8 +224,9 @@ export default function Index({
                                             href={`/storage/${
                                                 books.filter(
                                                     (book) => book.id == id
-                                                )[0].cover
+                                                )[0].file
                                             }`}
+                                            target="_blank"
                                         >
                                             Read Online
                                         </a>

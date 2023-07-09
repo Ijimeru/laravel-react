@@ -215,9 +215,12 @@ export default function Home({
                             btnText="Lihat Semua"
                             category="Akademik"
                             posts={posts.filter((post) =>
-                                checkSubsequence(post.categories, [
-                                    "Pengumuman",
-                                ])
+                                checkSubsequence(
+                                    ["Pengumuman"],
+                                    post.categories.map(
+                                        (category) => category.name
+                                    )
+                                )
                             )}
                             length={5}
                         />
@@ -236,7 +239,12 @@ export default function Home({
                             btnText="Lihat Semua"
                             category="Akademik"
                             posts={posts.filter((post) =>
-                                checkSubsequence(post.categories, ["Akademik"])
+                                checkSubsequence(
+                                    ["Akademik"],
+                                    post.categories.map(
+                                        (category) => category.name
+                                    )
+                                )
                             )}
                             length={5}
                         />

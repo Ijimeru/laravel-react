@@ -16,7 +16,7 @@ export default function Card({
             <div className="">
                 <img
                     className="rounded-t-md"
-                    src="/img/dummy.jpg"
+                    src={`/storage/${post?.image}`}
                     alt="dummy"
                 />
             </div>

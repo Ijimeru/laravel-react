@@ -95,16 +95,25 @@ export default function Buku({
                         placeholder="Cari buku berdasarkan judul,author, dan tahun..."
                         onChange={(e) => {
                             let filterBook: BookType[] = books.filter(
-                                (book) =>
-                                    book.title
-                                        .toLowerCase()
-                                        .includes(e.target.value) ||
-                                    book.tahun
-                                        .toLowerCase()
-                                        .includes(e.target.value) ||
-                                    book.author
-                                        .toLowerCase()
-                                        .includes(e.target.value)
+                                (book) => {
+                                    return (
+                                        book.title
+                                            .toLowerCase()
+                                            .includes(
+                                                e.target.value.toLowerCase()
+                                            ) ||
+                                        book.tahun
+                                            .toLowerCase()
+                                            .includes(
+                                                e.target.value.toLowerCase()
+                                            ) ||
+                                        book.author
+                                            .toLowerCase()
+                                            .includes(
+                                                e.target.value.toLowerCase()
+                                            )
+                                    );
+                                }
                             );
                             setBookPage(filterBook);
                             if (

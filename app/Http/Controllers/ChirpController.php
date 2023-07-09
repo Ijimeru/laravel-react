@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chirp;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -16,8 +17,13 @@ class ChirpController extends Controller
     public function index(Request $request):Response
     {
         //
+        if ($request->user()->hasRole(['admin'])){
+            $chirp = \App\Models\Chirp::with('user:id,name')->get();
+        }else{
+            $chirp = $request->user()->chirps()->with('user:id,name')->latest()->get();
+        }
         return Inertia::render('Chirps/Index',[
-            'chirps' => $request->user()->chirps()->with('user:id,name')->latest()->get(),
+            'chirps' => $chirp,
             'logo'=> \App\Models\Setting::find(4)
         ]);
     }

@@ -21,7 +21,7 @@ class PostController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth','verified','role:user']);
+        $this->middleware(['auth','verified','role:admin']);
     }
     
     public function index()

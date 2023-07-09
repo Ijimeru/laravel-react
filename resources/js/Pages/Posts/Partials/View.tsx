@@ -5,7 +5,7 @@ import { MdOutlineAccountCircle } from "react-icons/md";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/id";
-import { AiTwotoneCalendar } from "react-icons/ai";
+import { AiOutlineEye, AiTwotoneCalendar } from "react-icons/ai";
 import { BsChatDots, BsTwitter, BsWhatsapp } from "react-icons/bs";
 import { BiCategory } from "react-icons/bi";
 import { CgFacebook } from "react-icons/cg";
@@ -69,6 +69,10 @@ export default function View({
                         </span>
                         <span className="border-r pr-2 flex flex-row gap-x-1 items-center">
                             <BsChatDots title="comments" /> No Comments
+                        </span>
+                        <span className="border-r pr-2 flex flex-row gap-x-1 items-center">
+                            <AiOutlineEye title="views" />
+                            {post.views} Views
                         </span>
                     </div>
                     <div className="flex flex-row items-center gap-x-1">

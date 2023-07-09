@@ -2,7 +2,7 @@ import Main from "@/Layouts/MainLayout";
 import { CategoryType, PostType, content } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import dayjs from "dayjs";
-import { AiTwotoneCalendar } from "react-icons/ai";
+import { AiOutlineEye, AiTwotoneCalendar } from "react-icons/ai";
 import { BiCategory } from "react-icons/bi";
 import { BsChatDots, BsTwitter, BsWhatsapp } from "react-icons/bs";
 import { CgFacebook } from "react-icons/cg";
@@ -25,7 +25,7 @@ export default function ShowBerita({
     return (
         <Main logo={logo} visi={visi} kontak={kontak}>
             <Head title={post.title} />
-            <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto py-6 px-4 sm:px-6 lg:px-8">
                 <p className="mt-4 dark:text-primaryDark">
                     <Link
                         href={route("posts.index")}
@@ -67,6 +67,10 @@ export default function ShowBerita({
                         <span className="border-r pr-2 flex flex-row gap-x-1 items-center">
                             <BsChatDots title="comments" /> No Comments
                         </span>
+                        <span className="border-r pr-2 flex flex-row gap-x-1 items-center">
+                            <AiOutlineEye title="views" />
+                            {post.views} Views
+                        </span>
                     </div>
                     <div className="flex flex-row items-center gap-x-1">
                         <BiCategory title="category" />
@@ -77,7 +81,10 @@ export default function ShowBerita({
                         )}
                     </div>
                     <div className="mt-8">
-                        <div dangerouslySetInnerHTML={{ __html: post.body }} />
+                        <div
+                            className="editor"
+                            dangerouslySetInnerHTML={{ __html: post.body }}
+                        />
                     </div>
                     <div className="mt-8 border-t border-b py-6 flex flex-row items-center justify-between">
                         <span className="text-xl dark:text-accentDark text-accent">

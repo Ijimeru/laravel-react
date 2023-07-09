@@ -13,6 +13,8 @@ use App\Rules\CheckIfFavicon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Cache;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
@@ -129,7 +131,7 @@ Route::get('/buku',fn(Request $request)=>
         'kontak'=>\App\Models\Setting::find(5),
         'visi'=>\App\Models\Setting::find(2)
     ])
-)->name("buku");
+)->name("buku")->middleware(['auth','role:default']);
 Route::get('/store',fn()=>
     Inertia::render("Main/Store",[
         'logo'=>\App\Models\Setting::find(4),
@@ -151,6 +153,20 @@ Route::get('/berita/',fn()=>
 
 Route::get('berita/{slug}',function(string $slug){
     $post = Post::where('slug',$slug)->firstOrFail();
+    if(auth()->guest()){
+        $cacheKey = 'post_view_' . $post->id;
+    }else{
+        $cacheKey = 'post_view_' . $post->id . '_' .auth()->user()->id;
+    }
+
+    if (!Cache::has($cacheKey)) {
+        // Increment the view count
+        $post->increment('views');
+
+        // Set cache to prevent multiple increments within the delay period (e.g., 1 hour)
+        Cache::put($cacheKey, true, Carbon::now()->addHour());
+    }
+
     return Inertia::render("Main/ShowBerita",[
         'logo'=>\App\Models\Setting::find(4),
         'visi'=>\App\Models\Setting::find(2),

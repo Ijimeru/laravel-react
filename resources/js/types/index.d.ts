@@ -62,6 +62,7 @@ export interface PostType {
     excerpt: string;
     body: string;
     status: string;
+    views: number;
     published_at: string;
     created_at: string;
     updated_at: string;

@@ -150,7 +150,7 @@ export default function Navbar({
                     <section
                         className={`fixed left-0 top-0 bg-primaryDark dark:bg-secondaryButtonDark pt-3 select-none h-screen ${
                             !sidebarActive ? "w-0" : "w-64"
-                        } transition-all duration-500 shadow-2xl flex flex-col gap-y-11 overflow-hidden z-10`}
+                        } transition-all duration-500 shadow-2xl flex flex-col gap-y-11 overflow-x-hidden z-10`}
                     >
                         <header className="flex flex-row justify-center items-center gap-x-3">
                             <img

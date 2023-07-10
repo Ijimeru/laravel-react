@@ -3,11 +3,13 @@
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChirpController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Post;
 use App\Rules\CheckIfFavicon;
 use Illuminate\Database\Eloquent\Builder;
@@ -174,7 +176,8 @@ Route::get('berita/{slug}',function(string $slug){
         'post'=> $post->load(['author','categories']),
         'categories'=> \App\Models\Category::whereHas('meta_category',function(Builder $query){
             $query->where('name','Post');
-        })->get()->load("posts")
+        })->get()->load("posts"),
+        'comments'=> Comment::with("user:id,name")->where('post_id',$post->id)->latest()->get()
     ]);
 });
 
@@ -199,7 +202,7 @@ Route::resource('books',BookController::class)->only(['index', 'store', 'update'
 Route::resource('users',UserController::class)->only(['index', 'store', 'update', 'destroy','show','create','edit']);
 Route::resource('roles',RoleController::class)->only(['index','store','update','destroy','create','edit']);
 Route::resource('categories',CategoryController::class)->only(['store','destroy']);
-
+Route::resource('comments',CommentController::class)->only(['store','destroy','update','store']);
 
 
 require __DIR__.'/auth.php';

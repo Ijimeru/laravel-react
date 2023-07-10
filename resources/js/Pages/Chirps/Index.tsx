@@ -32,6 +32,10 @@ export default function Index({
                         className="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
                         onChange={(e) => setData("message", e.target.value)}
                     ></textarea>
+                    <p className="mt-3 dark:text-primaryDark text-primary">
+                        Note*:Hanya penulis dan admin yang dapat melihat saran
+                        anda
+                    </p>
                     <InputError message={errors.message} className="mt-2" />
                     <PrimaryButton className="mt-4" disabled={processing}>
                         Kirim

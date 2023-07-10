@@ -72,6 +72,16 @@ export interface flash {
     type: string;
 }
 
+export interface CommentType {
+    id: number;
+    content: string;
+    created_at: string;
+    updated_at: string;
+    post_id: number;
+    user_id: number;
+    user: User;
+}
+
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>
 > = T & {

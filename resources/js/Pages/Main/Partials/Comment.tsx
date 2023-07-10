@@ -1,34 +1,41 @@
+import DangerButton from "@/Components/DangerButton";
 import Dropdown from "@/Components/Dropdown";
 import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
-import { ChirpType, PageProps } from "@/types";
-import { useForm, usePage } from "@inertiajs/react";
+import SecondaryButton from "@/Components/SecondaryButton";
+import { DELETE } from "@/Constant/PostConstant";
+import { CommentType, User } from "@/types";
+import { Link, router, useForm } from "@inertiajs/react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { FormEvent, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 dayjs.extend(relativeTime);
-export default function Chirp({ chirp }: { chirp: ChirpType }) {
-    const { auth } = usePage<PageProps>().props;
 
-    const [editing, setEditing] = useState(false);
-
-    const { data, setData, patch, clearErrors, reset, errors } = useForm({
-        message: chirp.message,
-    });
-
-    const submit = (e: FormEvent) => {
+export default function Comment({
+    datas,
+    user,
+}: {
+    datas: CommentType;
+    user: User;
+}) {
+    const { data, setData, errors, reset, clearErrors, patch } = useForm<{
+        content: string;
+    }>({ content: datas.content });
+    function handleDelete(e: FormEvent) {
         e.preventDefault();
         const response = new Promise((resolve, reject) =>
-            patch(route("chirps.update", chirp.id), {
+            router.delete(route("comments.destroy", datas.id), {
                 preserveScroll: true,
                 onSuccess: () => {
-                    setEditing(false);
-                    resolve("Berhasil diubah");
+                    setShow(false);
+                    resolve("Comment berhasil di hapus");
                 },
                 onError: () => {
-                    reject("Gagal diubah");
+                    setShow(false);
+                    reject("Gagal menghapus comment");
                 },
             })
         );
@@ -49,9 +56,44 @@ export default function Chirp({ chirp }: { chirp: ChirpType }) {
                 },
             },
         });
-    };
+    }
+    function submit(e: FormEvent) {
+        e.preventDefault();
+        const response = new Promise((resolve, reject) => {
+            patch(route("comments.update", datas.id), {
+                preserveScroll: true,
+                onSuccess: () => {
+                    resolve("Comment berhasil diubah");
+                    setEditing(false);
+                    clearErrors();
+                },
+                onError: () => {
+                    reject("Comment gagal diubah");
+                },
+            });
+        });
+        toast.promise(response, {
+            pending: {
+                render() {
+                    return <div>Saving...</div>;
+                },
+            },
+            success: {
+                render({ data }) {
+                    return `${data}`;
+                },
+            },
+            error: {
+                render({ data }) {
+                    return `${data}`;
+                },
+            },
+        });
+    }
+    const [editing, setEditing] = useState<boolean>(false);
+    const [show, setShow] = useState<boolean>(false);
     return (
-        <div className="p-6 flex space-x-2">
+        <div className="p-6 flex space-x-2 my-2 rounded-md dark:bg-secondaryButtonDark bg-primaryDark">
             {/* Same as */}
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -70,18 +112,20 @@ export default function Chirp({ chirp }: { chirp: ChirpType }) {
             <div className="flex-1">
                 <div className="flex justify-between items-center">
                     <div>
-                        <span className="text-gray-800">{chirp.user.name}</span>
+                        <span className="dark:text-primaryDark">
+                            {datas.user.name}
+                        </span>
                         <small className="ml-2 text-sm text-gray-600">
-                            {dayjs(chirp.created_at).fromNow()}
+                            {dayjs(datas.created_at).fromNow()}
                         </small>
-                        {chirp.created_at !== chirp.updated_at && (
+                        {datas.created_at !== datas.updated_at && (
                             <small className="text-sm text-gray-600">
                                 {" "}
                                 &middot; edited
                             </small>
                         )}
                     </div>
-                    {chirp.user.id === auth.user.id && (
+                    {datas.user.id === user?.id && (
                         <Dropdown>
                             <Dropdown.Trigger>
                                 <button>
@@ -98,20 +142,19 @@ export default function Chirp({ chirp }: { chirp: ChirpType }) {
                             <Dropdown.Content>
                                 <button
                                     className="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out "
-                                    onClick={() => setEditing(true)}
+                                    onClick={() => {
+                                        setData("content", datas.content);
+                                        setEditing(true);
+                                    }}
                                 >
                                     Edit
                                 </button>
-                                <Dropdown.Link
-                                    as="button"
-                                    href={route("chirps.destroy", chirp.id)}
-                                    method="delete"
-                                    onSuccess={() =>
-                                        toast.success("Berhasil dihapus")
-                                    }
+                                <button
+                                    onClick={() => setShow(true)}
+                                    className="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
                                 >
                                     Delete
-                                </Dropdown.Link>
+                                </button>
                             </Dropdown.Content>
                         </Dropdown>
                     )}
@@ -119,11 +162,11 @@ export default function Chirp({ chirp }: { chirp: ChirpType }) {
                 {editing ? (
                     <form onSubmit={submit}>
                         <textarea
-                            value={data.message}
-                            onChange={(e) => setData("message", e.target.value)}
+                            value={data.content}
+                            onChange={(e) => setData("content", e.target.value)}
                             className="mt-4 w-full text-gray-900 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
                         ></textarea>
-                        <InputError message={errors.message} className="mt-2" />
+                        <InputError message={errors.content} className="mt-2" />
                         <div className="space-x-2">
                             <PrimaryButton className="mt-4">Save</PrimaryButton>
                             <button
@@ -139,11 +182,40 @@ export default function Chirp({ chirp }: { chirp: ChirpType }) {
                         </div>
                     </form>
                 ) : (
-                    <p className="mt-4 text-lg text-gray-900">
-                        {chirp.message}
+                    <p className="mt-4 text-lg dark:text-primaryDark">
+                        {datas.content}
                     </p>
                 )}
             </div>
+            <Modal show={show} onClose={() => setShow(false)} maxWidth="sm">
+                <form className="p-6" onSubmit={handleDelete}>
+                    <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100 text-center">
+                        {DELETE.text}
+                    </h2>
+
+                    <div className="mt-6">
+                        <InputLabel
+                            htmlFor="password"
+                            value="Password"
+                            className="sr-only"
+                        />
+                    </div>
+
+                    <div className="mt-6 flex justify-center">
+                        <SecondaryButton
+                            onClick={() => {
+                                setShow(false);
+                            }}
+                        >
+                            Cancel
+                        </SecondaryButton>
+
+                        <DangerButton className={`ml-3`}>
+                            {DELETE.btext}
+                        </DangerButton>
+                    </div>
+                </form>
+            </Modal>
         </div>
     );
 }

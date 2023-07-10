@@ -1,6 +1,12 @@
 import Main from "@/Layouts/MainLayout";
-import { CategoryType, PostType, content } from "@/types";
-import { Head, Link } from "@inertiajs/react";
+import {
+    CategoryType,
+    CommentType,
+    PageProps,
+    PostType,
+    content,
+} from "@/types";
+import { Head, Link, usePage } from "@inertiajs/react";
 import dayjs from "dayjs";
 import { AiOutlineEye, AiTwotoneCalendar } from "react-icons/ai";
 import { BiCategory } from "react-icons/bi";
@@ -8,20 +14,25 @@ import { BsChatDots, BsTwitter, BsWhatsapp } from "react-icons/bs";
 import { CgFacebook } from "react-icons/cg";
 import { FaCircle } from "react-icons/fa";
 import { MdOutlineAccountCircle } from "react-icons/md";
+import AddComment from "./Partials/AddComment";
+import Comment from "./Partials/Comment";
 
 export default function ShowBerita({
     logo,
     visi,
+    auth,
     kontak,
     post,
     categories,
-}: {
+    comments,
+}: PageProps<{
     logo: content;
     visi: content;
     kontak: content;
     post: PostType;
     categories: CategoryType[];
-}) {
+    comments: CommentType[];
+}>) {
     return (
         <Main logo={logo} visi={visi} kontak={kontak}>
             <Head title={post.title} />
@@ -65,7 +76,10 @@ export default function ShowBerita({
                                 .format("D MMMM YYYY")}
                         </span>
                         <span className="border-r pr-2 flex flex-row gap-x-1 items-center">
-                            <BsChatDots title="comments" /> No Comments
+                            <BsChatDots title="comments" />{" "}
+                            {comments.length > 0
+                                ? comments.length.toString() + " Comments"
+                                : "No Comments"}
                         </span>
                         <span className="border-r pr-2 flex flex-row gap-x-1 items-center">
                             <AiOutlineEye title="views" />
@@ -115,18 +129,32 @@ export default function ShowBerita({
                             </a>
                         </div>
                     </div>
+
+                    <div className="py-6">
+                        <AddComment auth={auth} post_id={post.id} />
+                    </div>
+                    <div className="">
+                        {comments.map((comment, index) => (
+                            <Comment
+                                datas={comment}
+                                user={auth.user}
+                                key={index}
+                            />
+                        ))}
+                    </div>
                 </main>
-                <nav className="flex-grow-[0.4] flex-1 p-6 flex flex-col gap-y-20">
+                <nav className="flex-grow-[0.4] flex-1 md:p-6 md:mt-0 mt-4 flex flex-col gap-y-20">
                     <div className="border-t">
                         <h2 className="mt-4 text-lg mb-6 text-accent dark:text-accentDark">
                             Kategori Informasi
                         </h2>
                         <ul className="flex flex-col text-lg gap-y-2">
-                            {categories.map((category) => (
+                            {categories.map((category, index) => (
                                 <Link
                                     href={route("berita", {
                                         category: category.name,
                                     })}
+                                    key={index}
                                 >
                                     <li className="border-b flex flex-row items-center justify-between">
                                         <span>{category.name}</span>

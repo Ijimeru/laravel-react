@@ -5,9 +5,9 @@ export default function CheckRole(
     kriteria: string | string[]
 ) {
     if (typeof kriteria == "string") {
-        return roles.map((role) => role.role).includes(kriteria);
+        return roles?.map((role) => role.role).includes(kriteria);
     } else {
-        let role = roles.map((role) => role.role);
+        let role = roles?.map((role) => role.role);
         return checkSubsequence(kriteria, role);
     }
 }

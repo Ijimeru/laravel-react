@@ -12,6 +12,7 @@ const StyledNode = styled.div`
     display: inline-block;
     border: 1px solid red;
     width: fit-content;
+    color: white;
 `;
 export default function Kepengurusan({
     data,
@@ -24,6 +25,10 @@ export default function Kepengurusan({
     kontak: content;
     data: { name: string; kepengurusan: string };
 }) {
+    useEffect(() => {
+        document.body.style.backgroundImage = "url('img/3458.jpg')";
+        document.body.style.backgroundPosition = "center";
+    }, []);
     const Card = ({ data }: { data: OrganizationTree[] }) => {
         return (
             <>
@@ -33,7 +38,7 @@ export default function Kepengurusan({
                             label={
                                 item.className == "nostyle" ? (
                                     <div className="relative h-44 flex flex-row justify-center">
-                                        <div className="border-2 border-l-green-700 w-[0.1px] h-44 border-white "></div>
+                                        <div className="border-2 border-l-green-700 h-44 border-transparent"></div>
                                     </div>
                                 ) : (
                                     <StyledNode>
@@ -68,27 +73,34 @@ export default function Kepengurusan({
         // <Main logo={logo} visi={visi} kontak={kontak} mauto={true}>
         <>
             <Head title="Kepengurusan" />
-            <div>
-                <PrimaryButton className="w-fitself-start">
-                    <Link as="a" href={route("home")}>
-                        x
-                    </Link>
-                </PrimaryButton>
-                <div className="mt-10">
-                    <Tree
-                        lineWidth={"2px"}
-                        lineColor={"green"}
-                        lineBorderRadius={"10px"}
-                        label={
-                            <StyledNode>
-                                Struktur Himpunan {data.name}
-                            </StyledNode>
-                        }
-                    >
-                        <Card data={chart} />
-                    </Tree>
+            <Main logo={logo} visi={visi} kontak={kontak}>
+                <div className="w-full overflow-auto bg-[url('img/3458.jpg')] bg-center">
+                    {/* <PrimaryButton className="w-fitself-start">
+                        <Link as="a" href={route("home")}>
+                            x
+                        </Link>
+                    </PrimaryButton> */}
+                    <div className="mt-10">
+                        <Tree
+                            lineWidth={"2px"}
+                            lineColor={"green"}
+                            lineBorderRadius={"10px"}
+                            label={
+                                <StyledNode>
+                                    Struktur Himpunan {data.name}
+                                </StyledNode>
+                            }
+                        >
+                            <Card data={chart} />
+                        </Tree>
+                    </div>
+                    <p className="text-white">
+                        <a href="https://www.freepik.com/free-vector/decorative-background-with-purple-damask-pattern_956821.htm#query=background%20repeat%20purple&position=6&from_view=search&track=ais">
+                            Image by kjpargeter on Freepik
+                        </a>
+                    </p>
                 </div>
-            </div>
+            </Main>
         </>
         // </Main>
     );

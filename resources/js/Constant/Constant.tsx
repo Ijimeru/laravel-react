@@ -25,3 +25,8 @@ export const DELETE: ConstantType = {
     btext: "Hapus",
     type: "danger",
 };
+export const BAN: ConstantType = {
+    text: "Apakah anda yakin ingin nge-ban orang ini?",
+    btext: "Ban",
+    type: "danger",
+};

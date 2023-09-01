@@ -190,7 +190,7 @@ export default function Buku({
                                             <div className="flex flex-col justify-center items-center text-accent dark:text-accentDark">
                                                 <a
                                                     href={`/storage/${book.file}`}
-                                                    download
+                                                    download={`${book.title}.pdf`}
                                                 >
                                                     Download
                                                 </a>
@@ -253,7 +253,7 @@ export default function Buku({
                                 "/storage/" +
                                 books.filter(
                                     (book) => book.id.toString() == id
-                                )[0].cover
+                                )[0]?.cover
                             }
                             alt=""
                             width={150}
@@ -265,7 +265,7 @@ export default function Buku({
                                 {
                                     books.filter(
                                         (book) => book.id.toString() == id
-                                    )[0].title
+                                    )[0]?.title
                                 }
                             </p>
                             <p>
@@ -273,23 +273,27 @@ export default function Buku({
                                 {
                                     books.filter(
                                         (book) => book.id.toString() == id
-                                    )[0].tahun
+                                    )[0]?.tahun
                                 }
                             </p>
-                            <p>
-                                Penerbit :{" "}
-                                {
-                                    books.filter(
-                                        (book) => book.id.toString() == id
-                                    )[0].penerbit
-                                }
-                            </p>
+                            {books.filter((book) => book.id.toString() == id)[0]
+                                ?.penerbit && (
+                                <p>
+                                    Penerbit :{" "}
+                                    {
+                                        books.filter(
+                                            (book) => book.id.toString() == id
+                                        )[0]?.penerbit
+                                    }
+                                </p>
+                            )}
+
                             <p>
                                 Author :{" "}
                                 {
                                     books.filter(
                                         (book) => book.id.toString() == id
-                                    )[0].author
+                                    )[0]?.author
                                 }
                             </p>
                             <p>
@@ -298,7 +302,7 @@ export default function Buku({
                                     .filter(
                                         (book) => book.id.toString() == id
                                     )[0]
-                                    .categories.map(
+                                    ?.categories.map(
                                         (category, index, { length }) =>
                                             index == length - 1 ? (
                                                 <span>{category.name}</span>
@@ -317,9 +321,14 @@ export default function Buku({
                                             books.filter(
                                                 (book) =>
                                                     book.id.toString() == id
-                                            )[0].file
+                                            )[0]?.file
                                         }
-                                        download
+                                        download={`${
+                                            books.filter(
+                                                (book) =>
+                                                    book.id.toString() == id
+                                            )[0]?.title
+                                        }.pdf`}
                                     >
                                         Download
                                     </a>
@@ -331,7 +340,7 @@ export default function Buku({
                                             books.filter(
                                                 (book) =>
                                                     book.id.toString() == id
-                                            )[0].file
+                                            )[0]?.file
                                         }
                                         target="_blank"
                                     >

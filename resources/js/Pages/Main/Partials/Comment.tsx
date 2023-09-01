@@ -5,8 +5,9 @@ import InputLabel from "@/Components/InputLabel";
 import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
-import { DELETE } from "@/Constant/PostConstant";
-import { CommentType, User } from "@/types";
+import { BAN, BUANG, DELETE } from "@/Constant/Constant";
+import { CommentType, ConstantType, User } from "@/types";
+import CheckRole from "@/utils/CheckRole";
 import { Link, router, useForm } from "@inertiajs/react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -39,6 +40,45 @@ export default function Comment({
                 },
             })
         );
+        toast.promise(response, {
+            pending: {
+                render() {
+                    return <div>Saving...</div>;
+                },
+            },
+            success: {
+                render({ data }) {
+                    return `${data}`;
+                },
+            },
+            error: {
+                render({ data }) {
+                    return `${data}`;
+                },
+            },
+        });
+    }
+    function handleBan(e: FormEvent) {
+        e.preventDefault();
+        const response = new Promise((resolve, reject) => {
+            router.patch(
+                route("users.update", datas.user.id),
+                {
+                    roles: [],
+                },
+                {
+                    preserveScroll: true,
+                    onSuccess: () => {
+                        setShow(false);
+                        resolve("User sudah di ban");
+                    },
+                    onError: () => {
+                        setShow(false);
+                        reject("User gagal di ban");
+                    },
+                }
+            );
+        });
         toast.promise(response, {
             pending: {
                 render() {
@@ -92,6 +132,7 @@ export default function Comment({
     }
     const [editing, setEditing] = useState<boolean>(false);
     const [show, setShow] = useState<boolean>(false);
+    const [constant, setConstant] = useState<ConstantType>(BUANG);
     return (
         <div className="p-6 flex space-x-2 my-2 rounded-md dark:bg-secondaryButtonDark bg-primaryDark">
             {/* Same as */}
@@ -125,7 +166,9 @@ export default function Comment({
                             </small>
                         )}
                     </div>
-                    {datas.user.id === user?.id && (
+                    {(datas.user.id === user?.id ||
+                        CheckRole(user?.roles, "admin") ||
+                        CheckRole(user?.roles, "super_admin")) && (
                         <Dropdown>
                             <Dropdown.Trigger>
                                 <button>
@@ -140,21 +183,43 @@ export default function Comment({
                                 </button>
                             </Dropdown.Trigger>
                             <Dropdown.Content>
-                                <button
-                                    className="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out "
-                                    onClick={() => {
-                                        setData("content", datas.content);
-                                        setEditing(true);
-                                    }}
-                                >
-                                    Edit
-                                </button>
-                                <button
-                                    onClick={() => setShow(true)}
-                                    className="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
-                                >
-                                    Delete
-                                </button>
+                                {datas.user.id == user.id && (
+                                    <button
+                                        className="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out "
+                                        onClick={() => {
+                                            setData("content", datas.content);
+                                            setEditing(true);
+                                        }}
+                                    >
+                                        Edit
+                                    </button>
+                                )}
+
+                                {(datas.user.id == user.id ||
+                                    /* prettier-ignore */
+                                    CheckRole(user.roles, "admin")) && (
+                                    <button
+                                        onClick={() => {
+                                            setConstant(DELETE);
+                                            setShow(true);
+                                        }}
+                                        className="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
+                                    >
+                                        Delete
+                                    </button>
+                                )}
+                                {CheckRole(user.roles, "super_admin") &&
+                                    datas.user.roles && (
+                                        <button
+                                            onClick={() => {
+                                                setConstant(BAN);
+                                                setShow(true);
+                                            }}
+                                            className="block w-full px-4 py-2 text-left text-sm leading-5 text-red-600 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
+                                        >
+                                            Ban
+                                        </button>
+                                    )}
                             </Dropdown.Content>
                         </Dropdown>
                     )}
@@ -188,19 +253,13 @@ export default function Comment({
                 )}
             </div>
             <Modal show={show} onClose={() => setShow(false)} maxWidth="sm">
-                <form className="p-6" onSubmit={handleDelete}>
+                <form
+                    className="p-6"
+                    onSubmit={constant == DELETE ? handleDelete : handleBan}
+                >
                     <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100 text-center">
-                        {DELETE.text}
+                        {constant.text}
                     </h2>
-
-                    <div className="mt-6">
-                        <InputLabel
-                            htmlFor="password"
-                            value="Password"
-                            className="sr-only"
-                        />
-                    </div>
-
                     <div className="mt-6 flex justify-center">
                         <SecondaryButton
                             onClick={() => {
@@ -211,7 +270,7 @@ export default function Comment({
                         </SecondaryButton>
 
                         <DangerButton className={`ml-3`}>
-                            {DELETE.btext}
+                            {constant.btext}
                         </DangerButton>
                     </div>
                 </form>

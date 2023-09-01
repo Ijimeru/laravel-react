@@ -39,6 +39,7 @@ export default function Authenticated({
                 toast.warning(page.props.flash.message);
             }
         }
+        document.body.style.width = "auto";
     }, []);
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">

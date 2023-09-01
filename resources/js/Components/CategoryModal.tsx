@@ -12,6 +12,7 @@ import SelectComponent from "./SelectComponent";
 export default function CategoryModal({
     show,
     setShow,
+    setSelectedOptions,
     type,
     method,
     categories,
@@ -23,6 +24,7 @@ export default function CategoryModal({
     method: string;
     categories?: string[];
     value: number[];
+    setSelectedOptions?: Dispatch<SetStateAction<string[]>>;
 }) {
     const {
         post,
@@ -53,6 +55,11 @@ export default function CategoryModal({
                   preserveScroll: true,
                   onSuccess: () => {
                       toast.success("Category berhasil dihapus");
+                      console.log(category);
+                      setSelectedOptions &&
+                          setSelectedOptions((prev) =>
+                              prev.filter((p) => p != category)
+                          );
                       setCategory("");
                       setShow(false);
                   },

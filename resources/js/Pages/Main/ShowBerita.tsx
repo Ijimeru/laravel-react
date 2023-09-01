@@ -36,7 +36,7 @@ export default function ShowBerita({
     return (
         <Main logo={logo} visi={visi} kontak={kontak}>
             <Head title={post.title} />
-            <div className="mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto py-6 px-4 sm:px-6 lg:px-8 xl:w-4/5">
                 <p className="mt-4 dark:text-primaryDark">
                     <Link
                         href={route("posts.index")}
@@ -47,7 +47,7 @@ export default function ShowBerita({
                     / {post.title}
                 </p>
             </div>
-            <div className="flex md:flex-row flex-col mt-3 p-4 dark:text-primaryDark text-primary">
+            <div className="flex md:flex-row flex-col mt-3 p-4 dark:text-primaryDark text-primary xl:w-4/5 mx-auto">
                 <main className="flex-1">
                     <header>
                         <img

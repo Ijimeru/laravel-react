@@ -19,7 +19,7 @@ import {
     PUBLISH,
     RECYCLE,
     UNPUBLISH,
-} from "@/Constant/PostConstant";
+} from "@/Constant/Constant";
 import InputLabel from "@/Components/InputLabel";
 import SecondaryButton from "@/Components/SecondaryButton";
 import DangerButton from "@/Components/DangerButton";

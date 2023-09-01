@@ -1,19 +1,18 @@
 import CategoryModal from "@/Components/CategoryModal";
 import DashboardCheckbox from "@/Components/DashboardCheckbox";
 import Editor from "@/Components/Editor";
-import Modal from "@/Components/Modal";
 import PublishButton from "@/Components/PublishButton";
-import SecondaryButton from "@/Components/SecondaryButton";
-import Select from "@/Components/SelectComponent";
 import SuccessButton from "@/Components/SuccessButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { useAppSelector } from "@/store/store";
 import { CategoryType, PageProps, content } from "@/types";
 import CamelToTitle from "@/utils/CamelToTitle";
 import ToCapitalCase from "@/utils/ToCapitalCase";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { toast } from "react-toastify";
+import { useDropzone } from "react-dropzone";
+
 export default function Create({
     logo,
     auth,
@@ -35,6 +34,12 @@ export default function Create({
         status: "",
     });
     const [src, setSrc] = useState<string>("/img/noimage.jpg");
+    const onDrop = useCallback((acceptedFiles: File[]) => {
+        // Do something with the files
+    }, []);
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+        onDrop,
+    });
 
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
@@ -45,8 +50,10 @@ export default function Create({
             },
         });
     };
+
     function handleCoverChange(e: ChangeEvent<HTMLInputElement>) {
         const file = e.target.files![0];
+        e.target.value = "";
         if (!file) {
             setSrc("/img/noimage.jpg");
             setData("image", null);
@@ -172,6 +179,7 @@ export default function Create({
                                                         width={200}
                                                         className="rounded-md shadow-md"
                                                     />
+
                                                     <p className="text-sm text-red-600">
                                                         {ToCapitalCase(
                                                             errors[key]
@@ -184,6 +192,24 @@ export default function Create({
                                                             handleCoverChange
                                                         }
                                                     />
+                                                    <div {...getRootProps()}>
+                                                        <input
+                                                            {...getInputProps()}
+                                                        />
+                                                        {isDragActive ? (
+                                                            <p>
+                                                                Drop the files
+                                                                here ...
+                                                            </p>
+                                                        ) : (
+                                                            <p>
+                                                                Drag 'n' drop
+                                                                some files here,
+                                                                or click to
+                                                                select files
+                                                            </p>
+                                                        )}
+                                                    </div>
                                                 </div>
                                             ) : key == "body" ? (
                                                 <>
@@ -244,6 +270,7 @@ export default function Create({
                 </div>
             </div>
             <CategoryModal
+                setSelectedOptions={setSelectedOptions}
                 show={show}
                 setShow={setShow}
                 type="Post"

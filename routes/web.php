@@ -154,7 +154,7 @@ Route::get('/berita/',fn()=>
 )->name("berita");
 
 Route::get('berita/{slug}',function(string $slug){
-    $post = Post::where('slug',$slug)->firstOrFail();
+    $post = Post::where('slug',$slug)->first();
     if(auth()->guest()){
         $cacheKey = 'post_view_' . $post->id;
     }else{
@@ -202,7 +202,7 @@ Route::resource('books',BookController::class)->only(['index', 'store', 'update'
 Route::resource('users',UserController::class)->only(['index', 'store', 'update', 'destroy','show','create','edit']);
 Route::resource('roles',RoleController::class)->only(['index','store','update','destroy','create','edit']);
 Route::resource('categories',CategoryController::class)->only(['store','destroy']);
-Route::resource('comments',CommentController::class)->only(['store','destroy','update','store']);
+Route::resource('comments',CommentController::class)->only(['store','destroy','update']);
 
 
 require __DIR__.'/auth.php';

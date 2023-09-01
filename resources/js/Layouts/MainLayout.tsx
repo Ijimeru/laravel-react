@@ -36,6 +36,7 @@ export default function Main({
                 toast.warning(page.props.flash.message);
             }
         }
+        document.body.style.width = "auto";
     }, []);
     return (
         <Provider store={store}>

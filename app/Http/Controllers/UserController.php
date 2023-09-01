@@ -54,10 +54,10 @@ class UserController extends Controller
     public function update(Request $request, User $user):RedirectResponse
     {
         //
+        $this->authorize('update',$user);
         $roles = \App\Models\Role::whereIn('role',$request->roles)->get();
-        
         $user->roles()->sync($roles);
-        return redirect(route('roles.index'));
+        return redirect($request->headers->get("referer"));
     }
 
     /**

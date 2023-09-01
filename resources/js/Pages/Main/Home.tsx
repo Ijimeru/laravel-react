@@ -395,7 +395,7 @@ export default function Home({
                             .slice(0, 8)
                             .map((val, key) => (
                                 <div
-                                    className="overflow-hidden rounded-lg group relative"
+                                    className="overflow-hidden rounded-lg group relative h-fit"
                                     key={key}
                                 >
                                     <img

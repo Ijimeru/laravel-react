@@ -4,7 +4,7 @@ import InputLabel from "@/Components/InputLabel";
 import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
-import { DELETE } from "@/Constant/PostConstant";
+import { DELETE } from "@/Constant/Constant";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { BookType, PageProps } from "@/types";
 import { Head, Link } from "@inertiajs/react";
@@ -177,13 +177,18 @@ export default function Index({
                                             .tahun
                                     }
                                 </p>
-                                <p>
-                                    Penerbit :{" "}
-                                    {
-                                        books.filter((book) => book.id == id)[0]
-                                            .penerbit
-                                    }
-                                </p>
+                                {books.filter((book) => book.id == id)[0]
+                                    .penerbit && (
+                                    <p>
+                                        Penerbit :{" "}
+                                        {
+                                            books.filter(
+                                                (book) => book.id == id
+                                            )[0].penerbit
+                                        }
+                                    </p>
+                                )}
+
                                 <p>
                                     Author :{" "}
                                     {
@@ -214,7 +219,11 @@ export default function Index({
                                                     (book) => book.id == id
                                                 )[0].file
                                             }`}
-                                            download
+                                            download={
+                                                books.filter(
+                                                    (book) => book.id == id
+                                                )[0].title + ".pdf"
+                                            }
                                         >
                                             Download
                                         </a>

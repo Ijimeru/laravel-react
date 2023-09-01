@@ -85,7 +85,7 @@ export default function Navbar({
                                     <SecondaryButton className="flex justify-center hover:bg-primaryButtonDark">
                                         <Link
                                             href={route("profile.edit")}
-                                            as="a"
+                                            as="div"
                                             className="text-sm"
                                             method="post"
                                         >
@@ -95,7 +95,7 @@ export default function Navbar({
                                     <DangerButton className="flex justify-center hover:bg-primaryButtonDark">
                                         <Link
                                             href={route("logout")}
-                                            as="a"
+                                            as="div"
                                             className="text-sm"
                                             method="post"
                                         >

@@ -25,7 +25,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'is_admin'
     ];
     public function chirps(): HasMany
     {
@@ -48,13 +47,13 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'datetime'
     ];
     public function posts(){
         return $this->hasMany(Post::class);
     }
     public function roles(){
-        return $this->belongsToMany(Role::class)->withTimestamps();
+        return $this->belongsToMany(Role::class)->as("roles")->withTimestamps();
     }
     public function hasRole(array $role){
         if(count($this->roles()->get()->whereIn('role',$role)))

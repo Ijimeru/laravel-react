@@ -36,7 +36,14 @@ export default function ShowBerita({
 }>) {
     return (
         <Main logo={logo} visi={visi} kontak={kontak}>
-            <Head title={post.title} />
+            <Head title={post.title}>
+                <meta name="og:image" content={DriveLink(post.image)} />
+                <meta
+                    head-key="description"
+                    name="description"
+                    content={post.excerpt}
+                />
+            </Head>
             <div className="mx-auto py-6 px-4 sm:px-6 lg:px-8 xl:w-4/5">
                 <p className="mt-4 dark:text-primaryDark">
                     <Link

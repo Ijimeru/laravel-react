@@ -56,6 +56,7 @@ export default function Home({
     return (
         <Main logo={logo} visi={visi} kontak={kontak}>
             <Head title="Home">
+                <meta name="og:image" content={DriveLink(logo.content)} />
                 <meta
                     head-key="description"
                     name="description"

@@ -29,7 +29,7 @@ export default function MainFooter({
                         {JSON.parse(kontak.content).identitasWebsite}
                     </h6>
                     <p
-                        className="editor"
+                        className="visi"
                         dangerouslySetInnerHTML={{
                             __html: 'Visi kami adalah "' + visi.content + '"',
                         }}

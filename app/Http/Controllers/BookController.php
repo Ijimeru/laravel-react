@@ -70,8 +70,8 @@ class BookController extends Controller
         }else{
             $validated['file'] = $request->file;
         }
-        if (strpos($validated['cover'], 'https://drive.google.com')!==false){
-            $link = explode("/file/d/", $validated['cover']);
+        if (strpos($request->cover, 'https://drive.google.com')!==false){
+            $link = explode("/file/d/", $request->cover);
             if (count($link) >= 2){
                 $validated['cover'] = $link[1];
                 $check_view = strpos($validated['cover'], '/view');
@@ -171,8 +171,8 @@ class BookController extends Controller
         }else{
             $validated['file'] = $request->file;
         }
-        if (strpos($validated['cover'], 'https://drive.google.com')!==false){
-            $link = explode("/file/d/", $validated['cover']);
+        if (strpos($request->cover, 'https://drive.google.com')!==false){
+            $link = explode("/file/d/", $request->cover);
             if (count($link) >= 2){
                 $validated['cover'] = $link[1];
                 $check_view = strpos($validated['cover'], '/view');

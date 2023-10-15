@@ -24,7 +24,6 @@ class UpdateBookRequest extends FormRequest
         return [
             //
             'file'=>['required'],
-            'cover'=>['required'],
             'title' => ['required','max:200'],
             'author' => ['required','max:100'],
             'tahun' =>['numeric'],

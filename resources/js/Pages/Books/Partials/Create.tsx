@@ -68,7 +68,7 @@ export default function Create({
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg text-gray-900 dark:text-gray-100">
                         <form onSubmit={handleSubmit}>
                             <Link
-                                href={route("posts.index")}
+                                href={route("books.index")}
                                 className="text-2xl ml-3 hover:text-red-600"
                             >
                                 &larr;
@@ -88,11 +88,14 @@ export default function Create({
                                             className="text-lg font-semibold"
                                         >
                                             {CamelToTitle(key)}{" "}
-                                            {!(key == "penerbit") && (
-                                                <span className="text-red-600">
-                                                    *
-                                                </span>
-                                            )}
+                                            {!(key === "penerbit") &&
+                                                !(
+                                                    key === ("cover" as string)
+                                                ) && (
+                                                    <span className="text-red-600">
+                                                        *
+                                                    </span>
+                                                )}
                                         </label>
                                         {key == "categories" ? (
                                             <>

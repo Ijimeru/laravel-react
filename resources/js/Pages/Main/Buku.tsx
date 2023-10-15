@@ -157,7 +157,11 @@ export default function Buku({
                                     } transition-all`}
                                 >
                                     <img
-                                        src={DriveLink(book.cover)}
+                                        src={
+                                            book.cover
+                                                ? DriveLink(book.cover)
+                                                : "/img/noimage.jpg"
+                                        }
                                         alt={book.title}
                                         className={`rounded-md transition-all w-full`}
                                     />
@@ -253,11 +257,17 @@ export default function Buku({
                         </button>
                         <h2 className="text-3xl">Book Information</h2>
                         <img
-                            src={DriveLink(
+                            src={
                                 books.filter(
                                     (book) => book.id.toString() == id
                                 )[0]?.cover
-                            )}
+                                    ? DriveLink(
+                                          books.filter(
+                                              (book) => book.id.toString() == id
+                                          )[0]?.cover
+                                      )
+                                    : "/img/noimage.jpg"
+                            }
                             alt="Cover buku"
                             width={150}
                             className="rounded-md"

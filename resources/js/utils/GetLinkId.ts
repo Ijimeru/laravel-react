@@ -1,5 +1,5 @@
 export default function GetLinkId(linkdrive: string) {
-    if (linkdrive.indexOf("https://drive.google.com") === 0) {
+    if (linkdrive?.indexOf("https://drive.google.com") === 0) {
         let link = linkdrive.split("/file/d/");
         if (link.length >= 2) {
             let link_id = link[1];

@@ -6,6 +6,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { BookType, CategoryType, PageProps, content } from "@/types";
 import CamelToTitle from "@/utils/CamelToTitle";
 import DriveLink from "@/utils/DriveLink";
+import DriveLinkThumbnail from "@/utils/DriveLinkThumbnail";
 import GetLinkId from "@/utils/GetLinkId";
 import { Head, useForm, router, usePage, Link } from "@inertiajs/react";
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
@@ -18,7 +19,6 @@ export default function Edit({
     const { errors } = usePage().props;
     interface BookPostType {
         title: string;
-        cover: string;
         categories: string[];
         file: string;
         author: string;
@@ -28,7 +28,6 @@ export default function Edit({
     }
     const { data, setData } = useForm<BookPostType>({
         title: book.title,
-        cover: book.cover,
         categories: book.categories.map((category) => category.name),
         file: book.file,
         author: book.author,
@@ -42,7 +41,6 @@ export default function Edit({
             {
                 _method: "put",
                 title: data.title,
-                cover: data.cover,
                 categories: data.categories,
                 file: data.file,
                 author: data.author,
@@ -147,6 +145,41 @@ export default function Edit({
                                             </>
                                         ) : key == "file" ? (
                                             <>
+                                                <div className="flex flex-row w-full">
+                                                    <div className="flex-1 flex items-center flex-col gap-y-4 justify-between">
+                                                        <img
+                                                            src={DriveLinkThumbnail(
+                                                                book.file
+                                                            )}
+                                                            alt="cover buku"
+                                                            width={200}
+                                                            className="rounded-md"
+                                                        />
+                                                        <small>
+                                                            Current Cover
+                                                        </small>
+                                                    </div>
+                                                    <div className="flex-1 flex items-center flex-col gap-y-4 justify-between">
+                                                        <img
+                                                            src={
+                                                                data.file
+                                                                    ? DriveLinkThumbnail(
+                                                                          GetLinkId(
+                                                                              data.file
+                                                                          )!
+                                                                      )
+                                                                    : src
+                                                            }
+                                                            alt="cover buku"
+                                                            width={200}
+                                                            className="rounded-md"
+                                                        />
+                                                        <small>
+                                                            Cover you want to
+                                                            change
+                                                        </small>
+                                                    </div>
+                                                </div>
                                                 <p className="text-sm text-red-600 capitalize">
                                                     {errors[key]}
                                                 </p>
@@ -185,75 +218,6 @@ export default function Edit({
                                                     </Link>
                                                 </small>
                                             </>
-                                        ) : key == "cover" ? (
-                                            <div className="flex flex-col items-center gap-y-3">
-                                                <div className="flex flex-row w-full">
-                                                    <div className="flex-1 flex items-center flex-col gap-y-4 justify-between">
-                                                        <img
-                                                            src={
-                                                                book.cover
-                                                                    ? DriveLink(
-                                                                          book.cover
-                                                                      )
-                                                                    : src
-                                                            }
-                                                            alt="cover buku"
-                                                            width={200}
-                                                            className="rounded-md"
-                                                        />
-                                                        <small>
-                                                            Current Cover
-                                                        </small>
-                                                    </div>
-                                                    <div className="flex-1 flex items-center flex-col gap-y-4 justify-between">
-                                                        <img
-                                                            src={
-                                                                data.cover
-                                                                    ? DriveLink(
-                                                                          GetLinkId(
-                                                                              data.cover
-                                                                          )!
-                                                                      )
-                                                                    : src
-                                                            }
-                                                            alt="cover buku"
-                                                            width={200}
-                                                            className="rounded-md"
-                                                        />
-                                                        <small>
-                                                            Cover you want to
-                                                            change
-                                                        </small>
-                                                    </div>
-                                                </div>
-                                                <p className="text-sm text-red-600 capitalize">
-                                                    {errors[key]}
-                                                </p>
-                                                <input
-                                                    type="text"
-                                                    placeholder={`Masukkan link drive untuk ${key}`}
-                                                    value={value as string}
-                                                    onChange={(e) => {
-                                                        setData(
-                                                            key,
-                                                            e.target.value
-                                                        );
-                                                    }}
-                                                    className="rounded-lg h-8 w-full border border-gray-400 hover:border-gray-800  dark:bg-secondaryButtonDark dark:border-[#4a4a4d] bg-primaryDark
-                                    focus:border-primary dark:hover:border-primaryDark dark:focus:border-primaryDark dark:placeholder:text-[rgb(187,187,187)] px-3"
-                                                    id={key}
-                                                />
-                                                <small className="text-sm">
-                                                    Tutorial upload cover
-                                                    menggunakan link drive,{" "}
-                                                    <Link
-                                                        href={route("tutorial")}
-                                                        className="underline hover:text-blue-600"
-                                                    >
-                                                        Klik di sini
-                                                    </Link>
-                                                </small>
-                                            </div>
                                         ) : key == "tahun" ? (
                                             <>
                                                 <p className="text-sm text-red-600 capitalize">

@@ -9,6 +9,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { BookType, PageProps } from "@/types";
 import DriveLink from "@/utils/DriveLink";
 import DriveLinkDownload from "@/utils/DriveLinkDownload";
+import DriveLinkThumbnail from "@/utils/DriveLinkThumbnail";
 import { Head, Link } from "@inertiajs/react";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { useState } from "react";
@@ -156,9 +157,9 @@ export default function Index({
                             </button>
                             <h2 className="text-3xl">Book Information</h2>
                             <img
-                                src={DriveLink(
+                                src={DriveLinkThumbnail(
                                     books.filter((book) => book.id == id)[0]
-                                        .cover
+                                        .file
                                 )}
                                 alt=""
                                 width={150}

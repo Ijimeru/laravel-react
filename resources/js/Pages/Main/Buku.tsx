@@ -9,6 +9,7 @@ import { BookType, CategoryType, content } from "@/types";
 import { checkSubsequence } from "@/utils/CheckSubsequence";
 import DriveLink from "@/utils/DriveLink";
 import DriveLinkDownload from "@/utils/DriveLinkDownload";
+import DriveLinkThumbnail from "@/utils/DriveLinkThumbnail";
 import { Transition } from "@headlessui/react";
 import { Head } from "@inertiajs/react";
 import { useEffect, useState } from "react";
@@ -158,8 +159,8 @@ export default function Buku({
                                 >
                                     <img
                                         src={
-                                            book.cover
-                                                ? DriveLink(book.cover)
+                                            book.file
+                                                ? DriveLinkThumbnail(book.file)
                                                 : "/img/noimage.jpg"
                                         }
                                         alt={book.title}
@@ -260,11 +261,11 @@ export default function Buku({
                             src={
                                 books.filter(
                                     (book) => book.id.toString() == id
-                                )[0]?.cover
-                                    ? DriveLink(
+                                )[0]?.file
+                                    ? DriveLinkThumbnail(
                                           books.filter(
                                               (book) => book.id.toString() == id
-                                          )[0]?.cover
+                                          )[0]?.file
                                       )
                                     : "/img/noimage.jpg"
                             }

@@ -33,7 +33,6 @@ export interface BookType {
     id: number;
     categories: CategoryType[];
     title: string;
-    cover: string;
     author: string;
     file: string;
     tahun: string;

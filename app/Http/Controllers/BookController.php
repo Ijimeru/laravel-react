@@ -70,23 +70,6 @@ class BookController extends Controller
         }else{
             $validated['file'] = $request->file;
         }
-        if (strpos($request->cover, 'https://drive.google.com')!==false){
-            $link = explode("/file/d/", $request->cover);
-            if (count($link) >= 2){
-                $validated['cover'] = $link[1];
-                $check_view = strpos($validated['cover'], '/view');
-                $check_preview = strpos($validated['cover'], '/preview');
-                if ($check_view !== false){
-                    $validated['cover'] = substr($validated['cover'], 0, $check_view);
-                }elseif ($check_preview !== false){
-                    $validated['cover'] = substr($validated['cover'], 0, $check_preview);
-                }else{
-                    $validated['cover'] = $request->cover;
-                }
-            }
-        }else{
-            $validated['cover'] = $request->cover;
-        }
         $categories = \App\Models\Category::whereIn('name',$request->categories)->get();
         
         Book::create($validated)->categories()->attach($categories);
@@ -119,7 +102,6 @@ class BookController extends Controller
                 'title'=>$book->title,
                 'author'=>$book->author,
                 'file'=>$book->file,
-                'cover'=>$book->cover,
                 'categories'=>$book->categories()->get(),
                 'tahun'=>$book->tahun,
                 'penerbit'=>$book->penerbit
@@ -132,11 +114,10 @@ class BookController extends Controller
      */
     public function update(UpdateBookRequest $request, Book $book):RedirectResponse
     {
-        $req = $request->only(['title','cover','file','author','tahun','penerbit']);
+        $req = $request->only(['title','file','author','tahun','penerbit']);
         $dummy = [
             "id"=>$book->id,
             "title"=>$req["title"],
-            "cover"=>$req["cover"],
             "file"=>$req["file"],
             "author"=>$req["author"],
             "tahun"=>$req["tahun"],

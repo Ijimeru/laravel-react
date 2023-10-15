@@ -6,6 +6,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { CategoryType, PageProps, content } from "@/types";
 import CamelToTitle from "@/utils/CamelToTitle";
 import DriveLink from "@/utils/DriveLink";
+import DriveLinkThumbnail from "@/utils/DriveLinkThumbnail";
 import GetLinkId from "@/utils/GetLinkId";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
@@ -19,7 +20,6 @@ export default function Create({
 }: PageProps<{ logo: content; categories: CategoryType[] }>) {
     interface BookPostType {
         title: string;
-        cover: string;
         categories: string[];
         file: string;
         author: string;
@@ -29,15 +29,12 @@ export default function Create({
     }
     const { data, setData, post, errors } = useForm<BookPostType>({
         title: "",
-        cover: "",
         file: "",
         categories: [],
         author: "",
         tahun: "",
         penerbit: "",
     });
-    const [src, setSrc] = useState<string>("/img/noimage.jpg");
-    const [source] = useDebounce<string>(src, 100);
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
         post(route("books.store"), {
@@ -51,6 +48,8 @@ export default function Create({
     }, [selectedOptions]);
 
     const [show, setShow] = useState<boolean>(false);
+    const [src, setSrc] = useState<string>("/img/noimage.jpg");
+    const [source] = useDebounce(src, 300);
     const [method, setMethod] = useState<string>("");
     return (
         <AuthenticatedLayout
@@ -137,36 +136,6 @@ export default function Create({
                                             </>
                                         ) : key == "file" ? (
                                             <>
-                                                <p className="text-sm text-red-600 capitalize">
-                                                    {errors[key]}
-                                                </p>
-                                                <input
-                                                    type="text"
-                                                    placeholder={`Masukkan link drive untuk ${key}`}
-                                                    value={value as string}
-                                                    onChange={(e) =>
-                                                        setData(
-                                                            key,
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    className="rounded-lg h-8 w-full border border-gray-400 hover:border-gray-800  dark:bg-secondaryButtonDark dark:border-[#4a4a4d] bg-primaryDark
-                                    focus:border-primary dark:hover:border-primaryDark dark:focus:border-primaryDark dark:placeholder:text-[rgb(187,187,187)] px-3"
-                                                    id={key}
-                                                />
-                                                <small className="text-sm">
-                                                    Tutorial upload file
-                                                    menggunakan link drive,{" "}
-                                                    <Link
-                                                        href={route("tutorial")}
-                                                        className="underline hover:text-blue-600"
-                                                    >
-                                                        Klik di sini
-                                                    </Link>
-                                                </small>
-                                            </>
-                                        ) : key == "cover" ? (
-                                            <div className="flex flex-col items-center gap-y-3">
                                                 <img
                                                     src={source}
                                                     alt="cover buku"
@@ -183,10 +152,10 @@ export default function Create({
                                                     onChange={(e) => {
                                                         if (
                                                             e.target.value
-                                                                .length !== 0
+                                                                .length > 0
                                                         ) {
                                                             setSrc(
-                                                                DriveLink(
+                                                                DriveLinkThumbnail(
                                                                     GetLinkId(
                                                                         e.target
                                                                             .value
@@ -208,7 +177,7 @@ export default function Create({
                                                     id={key}
                                                 />
                                                 <small className="text-sm">
-                                                    Tutorial upload cover
+                                                    Tutorial upload file
                                                     menggunakan link drive,{" "}
                                                     <Link
                                                         href={route("tutorial")}
@@ -217,7 +186,7 @@ export default function Create({
                                                         Klik di sini
                                                     </Link>
                                                 </small>
-                                            </div>
+                                            </>
                                         ) : key == "tahun" ? (
                                             <>
                                                 <p className="text-sm text-red-600 capitalize">

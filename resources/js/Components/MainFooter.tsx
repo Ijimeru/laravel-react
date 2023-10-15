@@ -28,7 +28,13 @@ export default function MainFooter({
                     <h6 className="font-semibold">
                         {JSON.parse(kontak.content).identitasWebsite}
                     </h6>
-                    <p>Visi kami adalah “{visi.content}”</p>
+                    <p>
+                        Visi kami adalah “{" "}
+                        <span
+                            dangerouslySetInnerHTML={{ __html: visi.content }}
+                        />
+                        ”
+                    </p>
                 </div>
                 <div className="flex flex-col gap-y-4">
                     <h5 className="text-accent text-lg font-bold">

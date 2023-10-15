@@ -158,16 +158,14 @@ export default function Buku({
                                             : ""
                                     } transition-all`}
                                 >
-                                    <LazyLoadImage
+                                    <img
                                         src={
                                             book.file
                                                 ? DriveLinkThumbnail(book.file)
                                                 : "/img/noimage.jpg"
                                         }
                                         alt={book.title}
-                                        effect="black-and-white"
                                         className={`rounded-md transition-all w-full`}
-                                        loading="lazy"
                                     />
                                 </div>
                                 <div>

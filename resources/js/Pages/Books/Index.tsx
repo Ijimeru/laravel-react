@@ -17,6 +17,7 @@ import { AiOutlineEye } from "react-icons/ai";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import { toast } from "react-toastify";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export default function Index({
     auth,
@@ -156,12 +157,16 @@ export default function Index({
                                 x
                             </button>
                             <h2 className="text-3xl">Book Information</h2>
-                            <img
+                            <LazyLoadImage
                                 src={DriveLinkThumbnail(
                                     books.filter((book) => book.id == id)[0]
                                         .file
                                 )}
-                                alt=""
+                                alt={
+                                    books.filter((book) => book.id == id)[0]
+                                        .title
+                                }
+                                effect="black-and-white"
                                 width={150}
                                 className="rounded-md"
                             />

@@ -10,6 +10,7 @@ import DriveLinkThumbnail from "@/utils/DriveLinkThumbnail";
 import GetLinkId from "@/utils/GetLinkId";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import { toast } from "react-toastify";
 import { useDebounce } from "use-debounce";
 
@@ -136,7 +137,7 @@ export default function Create({
                                             </>
                                         ) : key == "file" ? (
                                             <>
-                                                <img
+                                                <LazyLoadImage
                                                     src={source}
                                                     alt="cover buku"
                                                     width={200}

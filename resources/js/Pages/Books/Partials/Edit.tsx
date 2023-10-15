@@ -10,6 +10,7 @@ import DriveLinkThumbnail from "@/utils/DriveLinkThumbnail";
 import GetLinkId from "@/utils/GetLinkId";
 import { Head, useForm, router, usePage, Link } from "@inertiajs/react";
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 export default function Edit({
     logo,
     auth,
@@ -147,7 +148,7 @@ export default function Edit({
                                             <>
                                                 <div className="flex flex-row w-full">
                                                     <div className="flex-1 flex items-center flex-col gap-y-4 justify-between">
-                                                        <img
+                                                        <LazyLoadImage
                                                             src={DriveLinkThumbnail(
                                                                 book.file
                                                             )}
@@ -160,7 +161,7 @@ export default function Edit({
                                                         </small>
                                                     </div>
                                                     <div className="flex-1 flex items-center flex-col gap-y-4 justify-between">
-                                                        <img
+                                                        <LazyLoadImage
                                                             src={
                                                                 data.file
                                                                     ? DriveLinkThumbnail(

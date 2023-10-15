@@ -13,6 +13,7 @@ import DriveLinkThumbnail from "@/utils/DriveLinkThumbnail";
 import { Transition } from "@headlessui/react";
 import { Head } from "@inertiajs/react";
 import { useEffect, useState } from "react";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export default function Buku({
     books,
@@ -157,14 +158,16 @@ export default function Buku({
                                             : ""
                                     } transition-all`}
                                 >
-                                    <img
+                                    <LazyLoadImage
                                         src={
                                             book.file
                                                 ? DriveLinkThumbnail(book.file)
                                                 : "/img/noimage.jpg"
                                         }
                                         alt={book.title}
+                                        effect="black-and-white"
                                         className={`rounded-md transition-all w-full`}
+                                        loading="lazy"
                                     />
                                 </div>
                                 <div>
@@ -257,7 +260,7 @@ export default function Buku({
                             x
                         </button>
                         <h2 className="text-3xl">Book Information</h2>
-                        <img
+                        <LazyLoadImage
                             src={
                                 books.filter(
                                     (book) => book.id.toString() == id
@@ -269,9 +272,11 @@ export default function Buku({
                                       )
                                     : "/img/noimage.jpg"
                             }
+                            effect="black-and-white"
                             alt="Cover buku"
                             width={150}
                             className="rounded-md"
+                            loading="lazy"
                         />
                         <div>
                             <p>

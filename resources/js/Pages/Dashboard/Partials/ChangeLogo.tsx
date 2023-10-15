@@ -2,24 +2,22 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import SecondaryButton from "@/Components/SecondaryButton";
 import "react-toastify/dist/ReactToastify.css";
-import { useForm } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
+import DriveLink from "@/utils/DriveLink";
+import GetLinkId from "@/utils/GetLinkId";
 export default function ChangeLogo({ logo }: { logo: { content: string } }) {
     const [src, setSrc] = useState<string>("/img/noimage.jpg");
-    const { setData, post, errors } = useForm<{
-        name: string | null;
-        file: File | null;
+    const { setData, post, errors, data } = useForm<{
+        file: string;
     }>({
-        name: "",
-        file: null,
+        file: "",
     });
-    const inputRef = useRef<HTMLInputElement>(null);
     function ubahLogo() {
         const response = new Promise((resolve, reject) =>
             post("/change-logo", {
                 preserveScroll: true,
                 onSuccess: () => {
                     setSrc("/img/noimage.jpg");
-                    inputRef.current!.value = "";
                     resolve("Berhasil diubah");
                 },
                 onError: () => {
@@ -45,36 +43,7 @@ export default function ChangeLogo({ logo }: { logo: { content: string } }) {
             },
         });
     }
-    function fileChange(e: ChangeEvent<HTMLInputElement>) {
-        const file = e.target.files![0];
-        if (
-            file.type != "image/x-icon" &&
-            file.type != "image/jpeg" &&
-            file.type != "image/png" &&
-            file.type != "image/jpg"
-        ) {
-            e.target.value = "";
-            toast.error('Ekstensi Favicon harus dalam ".ico"');
-            return;
-        }
-        // const target = e.target as typeof e.target & {
-        //   previousSibling: { src: string | ArrayBuffer | null; style: React.CSSProperties };
-        // };
-        var img = new Image();
-        var _URL = window.URL || window.webkitURL;
-        var objectUrl = _URL.createObjectURL(file);
-        img.onload = () => {
-            _URL.revokeObjectURL(objectUrl);
-        };
-        img.src = objectUrl;
-        const oFReader = new FileReader();
-        oFReader.readAsDataURL(file);
-        oFReader.onload = function (oFREvent) {
-            setSrc(oFREvent.target!.result as string);
-        };
-        setData("name", e.target.files![0].name);
-        setData("file", e.target.files![0]);
-    }
+
     return (
         <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg flex flex-col gap-y-6">
             <section className="flex md:flex-row flex-col justify-center items-center text-center gap-y-4">
@@ -90,10 +59,11 @@ export default function ChangeLogo({ logo }: { logo: { content: string } }) {
                     <div className="mt-4 flex justify-center w-full flex-col items-center">
                         <div className="w-fit">
                             <img
-                                src={"/storage/" + logo.content}
+                                src={DriveLink(logo.content)}
                                 width={200}
                                 alt="logo"
                                 title="logo"
+                                className="rounded-md"
                             />
                             <p className="text-center mt-3">
                                 &middot; Gambar Logo Saat Ini
@@ -111,11 +81,31 @@ export default function ChangeLogo({ logo }: { logo: { content: string } }) {
                             className="rounded-md"
                         />
                         <input
-                            type="file"
-                            className="cursor-pointer dark:bg-slate-500 rounded-md bg-secondary border max-w-[19rem]"
-                            onChange={fileChange}
-                            ref={inputRef}
+                            type="text"
+                            value={data.file}
+                            placeholder={`Masukkan link drive untuk file logo`}
+                            onChange={(e) => {
+                                setData("file", e.target.value);
+                                if (e.target.value.length !== 0) {
+                                    setSrc(
+                                        DriveLink(GetLinkId(e.target?.value)!)
+                                    );
+                                } else {
+                                    setSrc("/img/noimage.jpg");
+                                }
+                            }}
+                            className="rounded-lg h-8 w-full border border-gray-400 hover:border-gray-800  dark:bg-secondaryButtonDark dark:border-[#4a4a4d] bg-primaryDark
+                                    focus:border-primary dark:hover:border-primaryDark dark:focus:border-primaryDark dark:placeholder:text-[rgb(187,187,187)] px-3"
                         />
+                        <small className="text-sm">
+                            Tutorial upload image menggunakan link drive,{" "}
+                            <Link
+                                href={route("tutorial")}
+                                className="underline hover:text-blue-600"
+                            >
+                                Klik di sini
+                            </Link>
+                        </small>
                     </form>
                 </div>
             </section>

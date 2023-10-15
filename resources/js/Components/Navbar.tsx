@@ -9,6 +9,7 @@ import MainNavList from "./MainNavList";
 import MobileMainNavList from "./MobileMainNavList";
 import PrimaryButton from "./PrimaryButton";
 import SecondaryButton from "./SecondaryButton";
+import DriveLink from "@/utils/DriveLink";
 
 export default function Navbar({
     logo,
@@ -38,7 +39,7 @@ export default function Navbar({
             >
                 <Link href={route("home")}>
                     <img
-                        src={"/storage/" + logo.content}
+                        src={DriveLink(logo.content)}
                         alt="logo"
                         className="w-10"
                     />
@@ -131,11 +132,7 @@ export default function Navbar({
                         ) : null}
                     </div>
                     <button
-                        className={`mr-6 ${
-                            sidebarActive
-                                ? "after:content-[''] after:absolute after:h-screen after:w-screen after:left-64 cursor-default"
-                                : null
-                        }`}
+                        className={`mr-6`}
                         onClick={() => {
                             setSidebarActive((prev) => !prev);
                             if (sidebarActive == false) {
@@ -154,7 +151,7 @@ export default function Navbar({
                     >
                         <header className="flex flex-row justify-center items-center gap-x-3">
                             <img
-                                src={`/storage/${logo.content}`}
+                                src={DriveLink(logo.content)}
                                 alt="logo himpunan"
                                 width={30}
                             />
@@ -165,6 +162,21 @@ export default function Navbar({
                     </section>
                 </div>
             </div>
+            <div
+                className={`${
+                    sidebarActive
+                        ? "fixed top-0 h-screen w-screen cursor-default bg-slate-400 opacity-30"
+                        : null
+                }`}
+                onClick={() => {
+                    setSidebarActive((prev) => !prev);
+                    if (sidebarActive == false) {
+                        document.body.style.overflow = "hidden";
+                    } else {
+                        document.body.style.overflow = "auto";
+                    }
+                }}
+            ></div>
         </nav>
     );
 }

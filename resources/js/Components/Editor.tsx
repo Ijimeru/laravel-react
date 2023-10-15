@@ -10,7 +10,7 @@ type setDataByKeyValuePair<TForm> = <K extends keyof TForm>(
 ) => void;
 interface PostType {
     title: string;
-    image: File | null | string;
+    image: string;
     categories: string[];
     body: string;
     status: string;

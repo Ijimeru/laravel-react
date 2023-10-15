@@ -1,3 +1,4 @@
+import DriveLink from "@/utils/DriveLink";
 import { AiOutlineMail, AiOutlinePhone } from "react-icons/ai";
 import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 
@@ -20,7 +21,7 @@ export default function MainFooter({
             <div className="mb-3 grid grid-cols-2 text-left gap-3 container m-auto">
                 <div className="flex flex-col gap-y-3">
                     <img
-                        src={`/storage/${logo.content}`}
+                        src={DriveLink(logo.content)}
                         alt="logo tekia"
                         className="w-24"
                     />

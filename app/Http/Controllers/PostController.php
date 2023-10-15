@@ -56,14 +56,29 @@ class PostController extends Controller
         //
         $validated = $request->validated();
 
-        $validated["image"]=$request->file('image')->store('post-image');
         $categories = \App\Models\Category::whereIn('name',$request->categories)->get();
         $validated["excerpt"] = Str::limit(strip_tags($request->body), 200);
         $validated["user_id"] = $request->user()->id;
         if($validated["status"]=="published"){
             $validated["published_at"]=now();
         }
-        // dd($validated);
+        if (strpos($validated['image'], 'https://drive.google.com')!==false){
+            $link = explode("/file/d/", $validated['image']);
+            if (count($link) >= 2){
+                $validated['image'] = $link[1];
+                $check_view = strpos($validated['image'], '/view');
+                $check_preview = strpos($validated['image'], '/preview');
+                if ($check_view !== false){
+                    $validated['image'] = substr($validated['image'], 0, $check_view);
+                }elseif ($check_preview !== false){
+                    $validated['image'] = substr($validated['image'], 0, $check_preview);
+                }else{
+                    $validated['image'] = $request->gambar;
+                }
+            }
+        }else{
+            $validated['image'] = $request->gambar;
+        }
         Post::create($validated)->categories()->attach($categories);
         return redirect(route('posts.index'))->with([
             'msg'=>'Post berhasil ditambahkan',
@@ -120,7 +135,8 @@ class PostController extends Controller
             "status"=> $req["status"],
             "published_at"=>$post->published_at,
             "created_at"=> $post->attributesToArray()["created_at"],
-            "updated_at"=> $post->attributesToArray()["updated_at"]
+            "updated_at"=> $post->attributesToArray()["updated_at"],
+            "views"=>$post->views
         ];
         if($post->attributesToArray() == $dummy){
             return redirect(route("posts.index"))->with([
@@ -129,16 +145,26 @@ class PostController extends Controller
             ]);
         }
         $validated = $request->validated();
-        if($request->image != $post->image){
-            $request->validate([
-                    'image'=> 'image',
-                ]);
-            File::delete(public_path()."/storage/".$post->image);
-            $validated['image']=$request->file('image')->store('post-image');
-        }
         
         $categories = \App\Models\Category::whereIn('name',$request->categories)->get();
         $post->categories()->sync($categories);
+        if (strpos($validated['image'], 'https://drive.google.com')!==false){
+            $link = explode("/file/d/", $validated['image']);
+            if (count($link) >= 2){
+                $validated['image'] = $link[1];
+                $check_view = strpos($validated['image'], '/view');
+                $check_preview = strpos($validated['image'], '/preview');
+                if ($check_view !== false){
+                    $validated['image'] = substr($validated['image'], 0, $check_view);
+                }elseif ($check_preview !== false){
+                    $validated['image'] = substr($validated['image'], 0, $check_preview);
+                }else{
+                    $validated['image'] = $request->image;
+                }
+            }
+        }else{
+            $validated['image'] = $request->image;
+        }
         $post->update($validated);
         return redirect(route('posts.index'))->with(
             [   

@@ -53,11 +53,39 @@ class BookController extends Controller
         //
         $validated = $request->validated();
 
-        if($request->file('file')){
-            $validated['file']=$request->file('file')->store('book-file');
+        if (strpos($validated['file'], 'https://drive.google.com')!==false){
+            $link = explode("/file/d/", $validated['file']);
+            if (count($link) >= 2){
+                $validated['file'] = $link[1];
+                $check_view = strpos($validated['file'], '/view');
+                $check_preview = strpos($validated['file'], '/preview');
+                if ($check_view !== false){
+                    $validated['file'] = substr($validated['file'], 0, $check_view);
+                }elseif ($check_preview !== false){
+                    $validated['file'] = substr($validated['file'], 0, $check_preview);
+                }else{
+                    $validated['file'] = $request->file;
+                }
+            }
+        }else{
+            $validated['file'] = $request->file;
         }
-        if($request->file('cover')){
-            $validated['cover']= $request->file('cover')->store('book-cover');
+        if (strpos($validated['cover'], 'https://drive.google.com')!==false){
+            $link = explode("/file/d/", $validated['cover']);
+            if (count($link) >= 2){
+                $validated['cover'] = $link[1];
+                $check_view = strpos($validated['cover'], '/view');
+                $check_preview = strpos($validated['cover'], '/preview');
+                if ($check_view !== false){
+                    $validated['cover'] = substr($validated['cover'], 0, $check_view);
+                }elseif ($check_preview !== false){
+                    $validated['cover'] = substr($validated['cover'], 0, $check_preview);
+                }else{
+                    $validated['cover'] = $request->cover;
+                }
+            }
+        }else{
+            $validated['cover'] = $request->cover;
         }
         $categories = \App\Models\Category::whereIn('name',$request->categories)->get();
         
@@ -126,19 +154,39 @@ class BookController extends Controller
         
         $validated = $request->validated();
         $this->authorize('update', $book);
-        if($request->file != $book->file){
-            $request->validate([
-                'file'=>['mimes:pdf']
-            ]);
-            File::delete(public_path().'/storage/'.$book->file);
-            $validated['file']=$request->file('file')->store('book-file');
+        if (strpos($validated['file'], 'https://drive.google.com')!==false){
+            $link = explode("/file/d/", $validated['file']);
+            if (count($link) >= 2){
+                $validated['file'] = $link[1];
+                $check_view = strpos($validated['file'], '/view');
+                $check_preview = strpos($validated['file'], '/preview');
+                if ($check_view !== false){
+                    $validated['file'] = substr($validated['file'], 0, $check_view);
+                }elseif ($check_preview !== false){
+                    $validated['file'] = substr($validated['file'], 0, $check_preview);
+                }else{
+                    $validated['file'] = $request->file;
+                }
+            }
+        }else{
+            $validated['file'] = $request->file;
         }
-        if($request->cover != $book->cover){
-            $request->validate([
-                'cover'=>'image|file',
-            ]);
-            File::delete(public_path().'/storage/'.$book->cover);
-            $validated['cover']=$request->file('cover')->store('book-cover');
+        if (strpos($validated['cover'], 'https://drive.google.com')!==false){
+            $link = explode("/file/d/", $validated['cover']);
+            if (count($link) >= 2){
+                $validated['cover'] = $link[1];
+                $check_view = strpos($validated['cover'], '/view');
+                $check_preview = strpos($validated['cover'], '/preview');
+                if ($check_view !== false){
+                    $validated['cover'] = substr($validated['cover'], 0, $check_view);
+                }elseif ($check_preview !== false){
+                    $validated['cover'] = substr($validated['cover'], 0, $check_preview);
+                }else{
+                    $validated['cover'] = $request->cover;
+                }
+            }
+        }else{
+            $validated['cover'] = $request->cover;
         }
         $book->update($validated);
         return redirect(route('books.index'))->with(

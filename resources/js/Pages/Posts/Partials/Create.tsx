@@ -6,12 +6,13 @@ import SuccessButton from "@/Components/SuccessButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { CategoryType, PageProps, content } from "@/types";
 import CamelToTitle from "@/utils/CamelToTitle";
+import DriveLink from "@/utils/DriveLink";
+import GetLinkId from "@/utils/GetLinkId";
 import ToCapitalCase from "@/utils/ToCapitalCase";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
-import { useCallback, useMemo } from "react";
 import { toast } from "react-toastify";
-import { useDropzone } from "react-dropzone";
+import { useDebounce } from "use-debounce";
 
 export default function Create({
     logo,
@@ -20,7 +21,7 @@ export default function Create({
 }: PageProps<{ logo: content; categories: CategoryType[] }>) {
     interface PostType {
         title: string;
-        image: File | null | string;
+        image: string;
         categories: string[];
         body: string;
         status: string;
@@ -28,18 +29,13 @@ export default function Create({
     }
     const { data, setData, post, errors } = useForm<PostType>({
         title: "",
-        image: null,
+        image: "",
         categories: [],
         body: "",
         status: "",
     });
     const [src, setSrc] = useState<string>("/img/noimage.jpg");
-    const onDrop = useCallback((acceptedFiles: File[]) => {
-        // Do something with the files
-    }, []);
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({
-        onDrop,
-    });
+    const [source] = useDebounce<string>(src, 100);
 
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
@@ -50,39 +46,13 @@ export default function Create({
             },
         });
     };
-
-    function handleCoverChange(e: ChangeEvent<HTMLInputElement>) {
-        const file = e.target.files![0];
-        e.target.value = "";
-        if (!file) {
-            setSrc("/img/noimage.jpg");
-            setData("image", null);
-            return;
-        }
-        // const target = e.target as typeof e.target & {
-        //   previousSibling: { src: string | ArrayBuffer | null; style: React.CSSProperties };
-        // };
-        var img = new Image();
-        var _URL = window.URL || window.webkitURL;
-        var objectUrl = _URL.createObjectURL(file);
-        img.onload = () => {
-            _URL.revokeObjectURL(objectUrl);
-        };
-        img.src = objectUrl;
-        const oFReader = new FileReader();
-        oFReader.readAsDataURL(file);
-        oFReader.onload = function (oFREvent) {
-            setSrc(oFREvent.target!.result as string);
-        };
-        setData("image", file);
-    }
-
     const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
     useEffect(() => {
         setData("categories", selectedOptions);
     }, [selectedOptions]);
     const [show, setShow] = useState<boolean>(false);
     const [method, setMethod] = useState<string>("");
+
     return (
         <AuthenticatedLayout
             logo={logo}
@@ -172,10 +142,13 @@ export default function Create({
                                                     </div>
                                                 </>
                                             ) : key == "image" ? (
-                                                <div className="flex flex-col items-center gap-y-3">
+                                                <div
+                                                    className="flex flex-col items-center gap-y-3"
+                                                    key={key}
+                                                >
                                                     <img
-                                                        src={src}
-                                                        alt="cover buku"
+                                                        src={source}
+                                                        alt="Hero Image"
                                                         width={200}
                                                         className="rounded-md shadow-md"
                                                     />
@@ -186,30 +159,50 @@ export default function Create({
                                                         )}
                                                     </p>
                                                     <input
-                                                        type="file"
-                                                        className="cursor-pointer dark:bg-slate-500 rounded-md bg-secondary border w-full"
-                                                        onChange={
-                                                            handleCoverChange
-                                                        }
+                                                        type="text"
+                                                        value={value as string}
+                                                        placeholder={`Masukkan link drive untuk file ${key}`}
+                                                        onChange={(e) => {
+                                                            setData(
+                                                                key,
+                                                                e.target.value
+                                                            );
+                                                            if (
+                                                                e.target.value
+                                                                    .length !==
+                                                                0
+                                                            ) {
+                                                                setSrc(
+                                                                    DriveLink(
+                                                                        GetLinkId(
+                                                                            e
+                                                                                .target
+                                                                                ?.value
+                                                                        )!
+                                                                    )
+                                                                );
+                                                            } else {
+                                                                setSrc(
+                                                                    "/img/noimage.jpg"
+                                                                );
+                                                            }
+                                                        }}
+                                                        className="rounded-lg h-8 w-full border border-gray-400 hover:border-gray-800  dark:bg-secondaryButtonDark dark:border-[#4a4a4d] bg-primaryDark
+                                    focus:border-primary dark:hover:border-primaryDark dark:focus:border-primaryDark dark:placeholder:text-[rgb(187,187,187)] px-3"
+                                                        id={key}
                                                     />
-                                                    <div {...getRootProps()}>
-                                                        <input
-                                                            {...getInputProps()}
-                                                        />
-                                                        {isDragActive ? (
-                                                            <p>
-                                                                Drop the files
-                                                                here ...
-                                                            </p>
-                                                        ) : (
-                                                            <p>
-                                                                Drag 'n' drop
-                                                                some files here,
-                                                                or click to
-                                                                select files
-                                                            </p>
-                                                        )}
-                                                    </div>
+                                                    <small className="text-sm">
+                                                        Tutorial upload image
+                                                        menggunakan link drive,{" "}
+                                                        <Link
+                                                            href={route(
+                                                                "tutorial"
+                                                            )}
+                                                            className="underline hover:text-blue-600"
+                                                        >
+                                                            Klik di sini
+                                                        </Link>
+                                                    </small>
                                                 </div>
                                             ) : key == "body" ? (
                                                 <>
@@ -234,6 +227,7 @@ export default function Create({
                                                     <input
                                                         type="text"
                                                         value={value as string}
+                                                        placeholder={`Masukkan ${key}`}
                                                         onChange={(e) =>
                                                             setData(
                                                                 key,
@@ -275,8 +269,7 @@ export default function Create({
                 setShow={setShow}
                 type="Post"
                 method={method}
-                value={categories.map((category) => category.id)}
-                categories={categories.map((category) => category.name)}
+                categories={categories!}
             />
         </AuthenticatedLayout>
     );

@@ -12,6 +12,7 @@ export default function Register({ logo }: { logo: { content: string } }) {
         email: "",
         password: "",
         password_confirmation: "",
+        secret: "",
     });
 
     useEffect(() => {
@@ -110,6 +111,26 @@ export default function Register({ logo }: { logo: { content: string } }) {
                         message={errors.password_confirmation}
                         className="mt-2"
                     />
+                </div>
+                <div>
+                    <InputLabel
+                        htmlFor="secret"
+                        value="Secret Code"
+                        required={true}
+                    />
+
+                    <TextInput
+                        id="secret"
+                        name="secret"
+                        value={data.secret}
+                        className="mt-1 block w-full"
+                        autoComplete="secret"
+                        isFocused={true}
+                        onChange={(e) => setData("secret", e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.secret} className="mt-2" />
                 </div>
 
                 <div className="flex items-center justify-end mt-4">

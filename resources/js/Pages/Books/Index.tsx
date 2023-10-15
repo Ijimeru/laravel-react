@@ -7,6 +7,8 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import { DELETE } from "@/Constant/Constant";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { BookType, PageProps } from "@/types";
+import DriveLink from "@/utils/DriveLink";
+import DriveLinkDownload from "@/utils/DriveLinkDownload";
 import { Head, Link } from "@inertiajs/react";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { useState } from "react";
@@ -154,10 +156,10 @@ export default function Index({
                             </button>
                             <h2 className="text-3xl">Book Information</h2>
                             <img
-                                src={`/storage/${
+                                src={DriveLink(
                                     books.filter((book) => book.id == id)[0]
                                         .cover
-                                }`}
+                                )}
                                 alt=""
                                 width={150}
                                 className="rounded-md"
@@ -214,11 +216,11 @@ export default function Index({
                                 <div className="mt-4 flex flex-row gap-x-3 justify-center">
                                     <SecondaryButton>
                                         <a
-                                            href={`/storage/${
+                                            href={DriveLinkDownload(
                                                 books.filter(
                                                     (book) => book.id == id
                                                 )[0].file
-                                            }`}
+                                            )}
                                             download={
                                                 books.filter(
                                                     (book) => book.id == id
@@ -230,11 +232,11 @@ export default function Index({
                                     </SecondaryButton>
                                     <SecondaryButton>
                                         <a
-                                            href={`/storage/${
+                                            href={DriveLink(
                                                 books.filter(
                                                     (book) => book.id == id
                                                 )[0].file
-                                            }`}
+                                            )}
                                             target="_blank"
                                         >
                                             Read Online

@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import "react-toastify/ReactToastify.css";
 import { changeBook } from "@/store/features/bookSlice";
 import CheckRole from "@/utils/CheckRole";
+import DriveLink from "@/utils/DriveLink";
 
 export default function Authenticated({
     user,
@@ -53,7 +54,7 @@ export default function Authenticated({
                                     <Link href="/">
                                         <img
                                             className="block h-9 w-auto"
-                                            src={"/storage/" + logo.content}
+                                            src={DriveLink(logo.content)}
                                             alt="Logo Himatekia"
                                         />
                                     </Link>
@@ -270,11 +271,18 @@ export default function Authenticated({
                                     Log Out
                                 </ResponsiveNavLink>
                                 {CheckRole(user.roles, ["super_admin"]) ? (
-                                    <ResponsiveNavLink
-                                        href={route("websettings")}
-                                    >
-                                        Web Settings
-                                    </ResponsiveNavLink>
+                                    <>
+                                        <ResponsiveNavLink
+                                            href={route("websettings")}
+                                        >
+                                            Web Settings
+                                        </ResponsiveNavLink>
+                                        <ResponsiveNavLink
+                                            href={route("roles.index")}
+                                        >
+                                            Role Management
+                                        </ResponsiveNavLink>
+                                    </>
                                 ) : null}
                             </div>
                         </div>

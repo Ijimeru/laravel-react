@@ -16,6 +16,9 @@ import {
 } from "react";
 import { PostType } from "@/types";
 import CategoryModal from "@/Components/CategoryModal";
+import DriveLink from "@/utils/DriveLink";
+import GetLinkId from "@/utils/GetLinkId";
+import { useDebounce } from "use-debounce";
 export default function Edit({
     logo,
     auth,
@@ -28,7 +31,7 @@ export default function Edit({
 }>) {
     interface PostDashboardType {
         title: string;
-        image: File | null | string;
+        image: string;
         categories: string[];
         body: string;
         status: string;
@@ -43,6 +46,7 @@ export default function Edit({
         status: postingan.status,
     });
     const [src, setSrc] = useState<string>("/img/noimage.jpg");
+    const [source] = useDebounce<string>(src, 100);
     const [show, setShow] = useState<boolean>(false);
     const [method, setMethod] = useState<string>("");
 
@@ -61,30 +65,6 @@ export default function Edit({
             { preserveScroll: true }
         );
     };
-    function handleImageChange(e: ChangeEvent<HTMLInputElement>) {
-        const file = e.target.files![0];
-        if (!file) {
-            setSrc("/img/noimage.jpg");
-            setData("image", postingan.image);
-            return;
-        }
-        // const target = e.target as typeof e.target & {
-        //   previousSibling: { src: string | ArrayBuffer | null; style: React.CSSProperties };
-        // };
-        var img = new Image();
-        var _URL = window.URL || window.webkitURL;
-        var objectUrl = _URL.createObjectURL(file);
-        img.onload = () => {
-            _URL.revokeObjectURL(objectUrl);
-        };
-        img.src = objectUrl;
-        const oFReader = new FileReader();
-        oFReader.readAsDataURL(file);
-        oFReader.onload = function (oFREvent) {
-            setSrc(oFREvent.target!.result as string);
-        };
-        setData("image", file);
-    }
 
     const [selectedOptions, setSelectedOptions] = useState<string[]>(
         data.categories
@@ -185,21 +165,20 @@ export default function Edit({
                                                     <div className="flex flex-row w-full">
                                                         <div className="flex-1 flex items-center flex-col gap-y-4 justify-between">
                                                             <img
-                                                                src={
-                                                                    "/storage/" +
+                                                                src={DriveLink(
                                                                     postingan.image
-                                                                }
-                                                                alt="cover buku"
+                                                                )}
+                                                                alt="Hero Image"
                                                                 width={200}
                                                                 className="rounded-md"
                                                             />
                                                             <small>
-                                                                Current Cover
+                                                                Current Image
                                                             </small>
                                                         </div>
                                                         <div className="flex-1 flex items-center flex-col gap-y-4 justify-between">
                                                             <img
-                                                                src={src}
+                                                                src={source}
                                                                 alt="cover buku"
                                                                 width={200}
                                                                 className="rounded-md"
@@ -214,12 +193,50 @@ export default function Edit({
                                                         {errors[key]}
                                                     </p>
                                                     <input
-                                                        type="file"
-                                                        className="cursor-pointer dark:bg-slate-500 rounded-md bg-secondary border w-full"
-                                                        onChange={
-                                                            handleImageChange
-                                                        }
+                                                        type="text"
+                                                        value={value as string}
+                                                        placeholder={`Masukkan link drive untuk file ${key}`}
+                                                        onChange={(e) => {
+                                                            setData(
+                                                                key,
+                                                                e.target.value
+                                                            );
+                                                            if (
+                                                                e.target.value
+                                                                    .length !==
+                                                                0
+                                                            ) {
+                                                                setSrc(
+                                                                    DriveLink(
+                                                                        GetLinkId(
+                                                                            e
+                                                                                .target
+                                                                                ?.value
+                                                                        )!
+                                                                    )
+                                                                );
+                                                            } else {
+                                                                setSrc(
+                                                                    "/img/noimage.jpg"
+                                                                );
+                                                            }
+                                                        }}
+                                                        className="rounded-lg h-8 w-full border border-gray-400 hover:border-gray-800  dark:bg-secondaryButtonDark dark:border-[#4a4a4d] bg-primaryDark
+                                    focus:border-primary dark:hover:border-primaryDark dark:focus:border-primaryDark dark:placeholder:text-[rgb(187,187,187)] px-3"
+                                                        id={key}
                                                     />
+                                                    <small className="text-sm">
+                                                        Tutorial upload image
+                                                        menggunakan link drive,{" "}
+                                                        <Link
+                                                            href={route(
+                                                                "tutorial"
+                                                            )}
+                                                            className="underline hover:text-blue-600"
+                                                        >
+                                                            Klik di sini
+                                                        </Link>
+                                                    </small>
                                                 </div>
                                             ) : key == "body" ? (
                                                 <>
@@ -244,6 +261,7 @@ export default function Edit({
                                                     <input
                                                         type="text"
                                                         value={value as string}
+                                                        placeholder={`Masukkan ${key}`}
                                                         onChange={(e) =>
                                                             setData(
                                                                 key,
@@ -271,10 +289,10 @@ export default function Edit({
             <CategoryModal
                 show={show}
                 setShow={setShow}
-                type="Posts"
+                type="Post"
                 method={method}
-                value={categories.map((category) => category.id)}
-                categories={categories.map((category) => category.name)}
+                setSelectedOptions={setSelectedOptions}
+                categories={categories!}
             />
         </AuthenticatedLayout>
     );

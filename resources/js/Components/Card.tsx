@@ -3,6 +3,7 @@ import { FaCircle } from "react-icons/fa";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/id";
+import DriveLink from "@/utils/DriveLink";
 dayjs.extend(relativeTime);
 export default function Card({
     childClassName,
@@ -16,7 +17,7 @@ export default function Card({
             <div className="">
                 <img
                     className="rounded-t-md"
-                    src={`/storage/${post?.image}`}
+                    src={DriveLink(post!.image)}
                     alt="dummy"
                 />
             </div>

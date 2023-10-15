@@ -5,6 +5,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function ChangeMisi({ misi }: { misi: { content: string } }) {
     const [editing, setEditing] = useState<boolean>(false);
@@ -47,6 +48,11 @@ export default function ChangeMisi({ misi }: { misi: { content: string } }) {
                             if (editing) {
                                 patch("/change-settings/3", {
                                     preserveScroll: true,
+                                    onSuccess: () => {
+                                        toast.success(
+                                            "Misi berhasil di update!"
+                                        );
+                                    },
                                 });
                                 setEditing(false);
                             } else {

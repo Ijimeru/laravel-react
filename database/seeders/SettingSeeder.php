@@ -45,5 +45,13 @@ class SettingSeeder extends Seeder
                 "youtubeLink": ""
             }'
         ]);
+        \App\Models\Setting::create([
+            'name'=>'Secret',
+            'content'=>'asdnfkjawnfeiondsklafnalsd'
+        ]);
+        \App\Models\Setting::create([
+            'name'=>'Kontak Reset',
+            'content'=>'+6289624315277'
+        ]);
     }
 }

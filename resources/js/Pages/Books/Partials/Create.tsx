@@ -5,9 +5,13 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { CategoryType, PageProps, content } from "@/types";
 import CamelToTitle from "@/utils/CamelToTitle";
-import { Head, useForm } from "@inertiajs/react";
+import DriveLink from "@/utils/DriveLink";
+import GetLinkId from "@/utils/GetLinkId";
+import { Head, Link, useForm } from "@inertiajs/react";
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useDebounce } from "use-debounce";
+
 export default function Create({
     logo,
     auth,
@@ -15,9 +19,9 @@ export default function Create({
 }: PageProps<{ logo: content; categories: CategoryType[] }>) {
     interface BookPostType {
         title: string;
-        cover: File | null;
+        cover: string;
         categories: string[];
-        file: File | null;
+        file: string;
         author: string;
         tahun: string;
         penerbit: string;
@@ -25,44 +29,21 @@ export default function Create({
     }
     const { data, setData, post, errors } = useForm<BookPostType>({
         title: "",
-        cover: null,
-        file: null,
+        cover: "",
+        file: "",
         categories: [],
         author: "",
         tahun: "",
         penerbit: "",
     });
     const [src, setSrc] = useState<string>("/img/noimage.jpg");
-
+    const [source] = useDebounce<string>(src, 100);
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
         post(route("books.store"), {
             preserveScroll: true,
         });
     };
-    function handleCoverChange(e: ChangeEvent<HTMLInputElement>) {
-        const file = e.target.files![0];
-        if (!file) {
-            setSrc("/img/noimage.jpg");
-            return;
-        }
-        // const target = e.target as typeof e.target & {
-        //   previousSibling: { src: string | ArrayBuffer | null; style: React.CSSProperties };
-        // };
-        var img = new Image();
-        var _URL = window.URL || window.webkitURL;
-        var objectUrl = _URL.createObjectURL(file);
-        img.onload = () => {
-            _URL.revokeObjectURL(objectUrl);
-        };
-        img.src = objectUrl;
-        const oFReader = new FileReader();
-        oFReader.readAsDataURL(file);
-        oFReader.onload = function (oFREvent) {
-            setSrc(oFREvent.target!.result as string);
-        };
-        setData("cover", file);
-    }
 
     const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
     useEffect(() => {
@@ -86,6 +67,12 @@ export default function Create({
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg text-gray-900 dark:text-gray-100">
                         <form onSubmit={handleSubmit}>
+                            <Link
+                                href={route("posts.index")}
+                                className="text-2xl ml-3 hover:text-red-600"
+                            >
+                                &larr;
+                            </Link>
                             <header className="w-full text-center mt-3 text-2xl font-semibold">
                                 Enter Book Information
                             </header>
@@ -151,20 +138,34 @@ export default function Create({
                                                     {errors[key]}
                                                 </p>
                                                 <input
-                                                    type="file"
-                                                    className="cursor-pointer dark:bg-slate-500 rounded-md bg-secondary border w-full"
+                                                    type="text"
+                                                    placeholder={`Masukkan link drive untuk ${key}`}
+                                                    value={value as string}
                                                     onChange={(e) =>
                                                         setData(
-                                                            "file",
-                                                            e.target.files![0]
+                                                            key,
+                                                            e.target.value
                                                         )
                                                     }
+                                                    className="rounded-lg h-8 w-full border border-gray-400 hover:border-gray-800  dark:bg-secondaryButtonDark dark:border-[#4a4a4d] bg-primaryDark
+                                    focus:border-primary dark:hover:border-primaryDark dark:focus:border-primaryDark dark:placeholder:text-[rgb(187,187,187)] px-3"
+                                                    id={key}
                                                 />
+                                                <small className="text-sm">
+                                                    Tutorial upload file
+                                                    menggunakan link drive,{" "}
+                                                    <Link
+                                                        href={route("tutorial")}
+                                                        className="underline hover:text-blue-600"
+                                                    >
+                                                        Klik di sini
+                                                    </Link>
+                                                </small>
                                             </>
                                         ) : key == "cover" ? (
                                             <div className="flex flex-col items-center gap-y-3">
                                                 <img
-                                                    src={src}
+                                                    src={source}
                                                     alt="cover buku"
                                                     width={200}
                                                     className="rounded-md shadow-md"
@@ -173,10 +174,46 @@ export default function Create({
                                                     {errors[key]}
                                                 </p>
                                                 <input
-                                                    type="file"
-                                                    className="cursor-pointer dark:bg-slate-500 rounded-md bg-secondary border w-full"
-                                                    onChange={handleCoverChange}
+                                                    type="text"
+                                                    placeholder={`Masukkan link drive untuk ${key}`}
+                                                    value={value as string}
+                                                    onChange={(e) => {
+                                                        if (
+                                                            e.target.value
+                                                                .length !== 0
+                                                        ) {
+                                                            setSrc(
+                                                                DriveLink(
+                                                                    GetLinkId(
+                                                                        e.target
+                                                                            .value
+                                                                    )!
+                                                                )
+                                                            );
+                                                        } else {
+                                                            setSrc(
+                                                                "/img/noimage.jpg"
+                                                            );
+                                                        }
+                                                        setData(
+                                                            key,
+                                                            e.target.value
+                                                        );
+                                                    }}
+                                                    className="rounded-lg h-8 w-full border border-gray-400 hover:border-gray-800  dark:bg-secondaryButtonDark dark:border-[#4a4a4d] bg-primaryDark
+                                    focus:border-primary dark:hover:border-primaryDark dark:focus:border-primaryDark dark:placeholder:text-[rgb(187,187,187)] px-3"
+                                                    id={key}
                                                 />
+                                                <small className="text-sm">
+                                                    Tutorial upload cover
+                                                    menggunakan link drive,{" "}
+                                                    <Link
+                                                        href={route("tutorial")}
+                                                        className="underline hover:text-blue-600"
+                                                    >
+                                                        Klik di sini
+                                                    </Link>
+                                                </small>
                                             </div>
                                         ) : key == "tahun" ? (
                                             <>
@@ -184,6 +221,7 @@ export default function Create({
                                                     {errors[key]}
                                                 </p>
                                                 <input
+                                                    placeholder={`Masukkan ${key}`}
                                                     type="number"
                                                     value={value as string}
                                                     onChange={(e) =>
@@ -204,6 +242,7 @@ export default function Create({
                                                 </p>
                                                 <input
                                                     type="text"
+                                                    placeholder={`Masukkan ${key}`}
                                                     value={value as string}
                                                     onChange={(e) =>
                                                         setData(
@@ -234,8 +273,8 @@ export default function Create({
                 setShow={setShow}
                 type="Book"
                 method={method}
-                value={categories.map((category) => category.id)}
-                categories={categories.map((category) => category.name)}
+                setSelectedOptions={setSelectedOptions}
+                categories={categories!}
             />
         </AuthenticatedLayout>
     );

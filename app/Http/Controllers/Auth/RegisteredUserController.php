@@ -33,10 +33,13 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $secret_code= \App\Models\Setting::find(6)->content;
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => ['required','string','email','max:255','unique:'.User::class,'regex:/^.+\.+[0-9]{2,3}.+28.+[0-9]{2,4}.+\@student\.itera\.ac\.id$/i'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'secret'=>'required|in:'.$secret_code
         ]);
 
         $default= Role::all()->where('role','default');
@@ -45,13 +48,13 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+        $user->markEmailAsVerified();
         $user->roles()->attach($default);
-        event(new Registered($user));
-
+        // event(new Registered($user));
         Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME)->with([
-            'msg'=>"Akun berhasil dibuat, silahkan verifikasi email anda",
+            'msg'=>"Akun berhasil dibuat",
             'type'=>'success'
         ]);
     }

@@ -7,6 +7,8 @@ import SelectNumberPage from "@/Components/SelectNumberPage";
 import Main from "@/Layouts/MainLayout";
 import { BookType, CategoryType, content } from "@/types";
 import { checkSubsequence } from "@/utils/CheckSubsequence";
+import DriveLink from "@/utils/DriveLink";
+import DriveLinkDownload from "@/utils/DriveLinkDownload";
 import { Transition } from "@headlessui/react";
 import { Head } from "@inertiajs/react";
 import { useEffect, useState } from "react";
@@ -155,7 +157,7 @@ export default function Buku({
                                     } transition-all`}
                                 >
                                     <img
-                                        src={`/storage/${book.cover}`}
+                                        src={DriveLink(book.cover)}
                                         alt={book.title}
                                         className={`rounded-md transition-all w-full`}
                                     />
@@ -189,13 +191,15 @@ export default function Buku({
                                             </div>
                                             <div className="flex flex-col justify-center items-center text-accent dark:text-accentDark">
                                                 <a
-                                                    href={`/storage/${book.file}`}
+                                                    href={DriveLinkDownload(
+                                                        book.file
+                                                    )}
                                                     download={`${book.title}.pdf`}
                                                 >
                                                     Download
                                                 </a>
                                                 <a
-                                                    href={`/storage/${book.file}`}
+                                                    href={DriveLink(book.file)}
                                                     target="blank"
                                                 >
                                                     Baca online
@@ -249,13 +253,12 @@ export default function Buku({
                         </button>
                         <h2 className="text-3xl">Book Information</h2>
                         <img
-                            src={
-                                "/storage/" +
+                            src={DriveLink(
                                 books.filter(
                                     (book) => book.id.toString() == id
                                 )[0]?.cover
-                            }
-                            alt=""
+                            )}
+                            alt="Cover buku"
                             width={150}
                             className="rounded-md"
                         />
@@ -316,13 +319,12 @@ export default function Buku({
                             <div className="mt-4 flex flex-row gap-x-3 justify-center">
                                 <SecondaryButton>
                                     <a
-                                        href={
-                                            "/storage/" +
+                                        href={DriveLinkDownload(
                                             books.filter(
                                                 (book) =>
                                                     book.id.toString() == id
                                             )[0]?.file
-                                        }
+                                        )}
                                         download={`${
                                             books.filter(
                                                 (book) =>
@@ -335,13 +337,12 @@ export default function Buku({
                                 </SecondaryButton>
                                 <SecondaryButton>
                                     <a
-                                        href={
-                                            "/storage/" +
+                                        href={DriveLink(
                                             books.filter(
                                                 (book) =>
                                                     book.id.toString() == id
                                             )[0]?.file
-                                        }
+                                        )}
                                         target="_blank"
                                     >
                                         Baca Online

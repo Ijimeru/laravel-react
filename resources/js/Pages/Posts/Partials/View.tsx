@@ -10,6 +10,7 @@ import { BsChatDots, BsTwitter, BsWhatsapp } from "react-icons/bs";
 import { BiCategory } from "react-icons/bi";
 import { CgFacebook } from "react-icons/cg";
 import { FaCircle } from "react-icons/fa";
+import DriveLink from "@/utils/DriveLink";
 dayjs.extend(relativeTime);
 export default function View({
     auth,
@@ -43,7 +44,7 @@ export default function View({
                 <main className="flex-1">
                     <header>
                         <img
-                            src={`/storage/${post.image}`}
+                            src={DriveLink(post.image)}
                             alt="Hero Image"
                             className="rounded-md"
                         />
@@ -127,6 +128,7 @@ export default function View({
                                     href={route("berita", {
                                         category: category.name,
                                     })}
+                                    key={category.id}
                                 >
                                     <li className="border-b flex flex-row items-center justify-between">
                                         <span>{category.name}</span>
@@ -140,7 +142,7 @@ export default function View({
                     </div>
                     {categories.filter(
                         (category) => category.name == "Pengumuman"
-                    )[0].posts?.length! > 0 && (
+                    )[0].posts!.length! > 0 && (
                         <div className="border-t">
                             <h2 className="mt-4 text-lg mb-6">Pengumuman</h2>
                             <ul className="flex flex-col text-lg gap-y-2">
@@ -155,6 +157,7 @@ export default function View({
                                                 "posts.show",
                                                 post.slug
                                             )}
+                                            key={post.id}
                                             className="border p-4 rounded-md"
                                         >
                                             <h2 className="font-semibold">
@@ -177,7 +180,7 @@ export default function View({
                     )}
                     {categories.filter(
                         (category) => category.name == "Akademik"
-                    )[0].posts?.length! > 0 && (
+                    )[0].posts!.length! > 0 && (
                         <div className="border-t">
                             <h2 className="mt-4 text-lg mb-6">Akademik</h2>
                             <ul className="flex flex-col text-lg gap-y-2">
@@ -186,7 +189,7 @@ export default function View({
                                         (category) =>
                                             category.name == "Akademik"
                                     )[0]
-                                    .posts?.map((post) => (
+                                    .posts!.map((post) => (
                                         <Link
                                             href={route(
                                                 "posts.show",

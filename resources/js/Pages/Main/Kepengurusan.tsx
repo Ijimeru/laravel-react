@@ -25,10 +25,6 @@ export default function Kepengurusan({
     kontak: content;
     data: { name: string; kepengurusan: string };
 }) {
-    useEffect(() => {
-        document.body.style.backgroundImage = "url('img/3458.jpg')";
-        document.body.style.backgroundPosition = "center";
-    }, []);
     const Card = ({ data }: { data: OrganizationTree[] }) => {
         return (
             <>
@@ -74,7 +70,7 @@ export default function Kepengurusan({
         <>
             <Head title="Kepengurusan" />
             <Main logo={logo} visi={visi} kontak={kontak}>
-                <div className="w-full overflow-auto bg-[url('img/3458.jpg')] bg-center">
+                <div className="w-full overflow-auto bg-[url('/img/backgroundkepengurusan.jpg')] bg-center">
                     {/* <PrimaryButton className="w-fitself-start">
                         <Link as="a" href={route("home")}>
                             x

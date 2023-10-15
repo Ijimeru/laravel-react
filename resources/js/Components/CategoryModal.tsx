@@ -8,6 +8,8 @@ import SuccessButton from "./SuccessButton";
 import { toast } from "react-toastify";
 import { useAppSelector } from "@/store/store";
 import SelectComponent from "./SelectComponent";
+import { CategoryType } from "@/types";
+import ToCapitalCase from "@/utils/ToCapitalCase";
 
 export default function CategoryModal({
     show,
@@ -16,14 +18,12 @@ export default function CategoryModal({
     type,
     method,
     categories,
-    value,
 }: {
     show: boolean;
     setShow: Dispatch<SetStateAction<boolean>>;
     type: string;
     method: string;
-    categories?: string[];
-    value: number[];
+    categories?: CategoryType[];
     setSelectedOptions?: Dispatch<SetStateAction<string[]>>;
 }) {
     const {
@@ -31,6 +31,7 @@ export default function CategoryModal({
         setData,
         data,
         errors,
+        clearErrors,
         delete: destroy,
     } = useForm<{
         name: string;
@@ -39,31 +40,44 @@ export default function CategoryModal({
         name: "",
         meta_category_id: type == "Post" ? 1 : 2,
     });
+    const [error, setError] = useState<string>("");
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
-        method == "post"
-            ? post(route("categories.store"), {
-                  preserveScroll: true,
-                  onSuccess: () => {
-                      toast.success("Category berhasil dibuat");
-                      setCategory("");
-                      setData("name", "");
-                      setShow(false);
-                  },
-              })
-            : destroy(route("categories.destroy", category), {
-                  preserveScroll: true,
-                  onSuccess: () => {
-                      toast.success("Category berhasil dihapus");
-                      console.log(category);
-                      setSelectedOptions &&
-                          setSelectedOptions((prev) =>
-                              prev.filter((p) => p != category)
-                          );
-                      setCategory("");
-                      setShow(false);
-                  },
-              });
+
+        if (method == "post") {
+            post(route("categories.store"), {
+                preserveScroll: true,
+                onSuccess: () => {
+                    toast.success("Category berhasil dibuat");
+                    setCategory("");
+                    setData("name", "");
+                    setShow(false);
+                },
+            });
+        } else {
+            if (category == "") {
+                setError("Category wajib diisi");
+                return;
+            }
+            destroy(route("categories.destroy", category), {
+                preserveScroll: true,
+                onSuccess: () => {
+                    toast.success("Category berhasil dihapus");
+                    setSelectedOptions &&
+                        setSelectedOptions((prev) =>
+                            prev.filter(
+                                (p) =>
+                                    p !=
+                                    categories?.filter(
+                                        (cat) => cat.id == parseInt(category)
+                                    )[0].name
+                            )
+                        );
+                    setCategory("");
+                    setShow(false);
+                },
+            });
+        }
     }
     const mode = useAppSelector((state) => state.mode.mode);
     const [category, setCategory] = useState<string>("");
@@ -84,17 +98,23 @@ export default function CategoryModal({
                 ) : (
                     <SelectComponent
                         label="Categories"
-                        option={categories!}
-                        value={value}
+                        option={categories!.map((category) => category.name)}
+                        value={categories!.map((category) => category.id)}
                         data={category}
                         setState={setCategory}
                     />
                 )}
 
-                <p className="text-red-600 text-sm">{errors.name}</p>
+                <p className="text-red-600 text-sm">
+                    {ToCapitalCase(error ? error : errors.name)}
+                </p>
                 <div className="flex flex-row gap-x-3 self-center">
                     <SecondaryButton
-                        onClick={() => setShow(false)}
+                        onClick={() => {
+                            setError("");
+                            clearErrors();
+                            setShow(false);
+                        }}
                         type="button"
                     >
                         Batal

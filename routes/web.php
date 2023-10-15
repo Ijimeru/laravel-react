@@ -49,21 +49,24 @@ Route::get('/web-settings',function(){
             'visi'=> \App\Models\Setting::find(2),
             'misi'=> \App\Models\Setting::find(3),
             'logo' => \App\Models\Setting::find(4),
-            'kontak' => \App\Models\Setting::find(5)
+            'kontak' => \App\Models\Setting::find(5),
+            'secret' => \App\Models\Setting::find(6),
+            'kontakreset' => \App\Models\Setting::find(7)
         ]);
     }
     
 )->name('websettings')->middleware(['auth','verified','role:super_admin']);
 
 Route::patch('/change-settings/{id}',function(Request $request,int $id){
-    if($id ==4){
-        $validatedData= $request->validate([
-            'content'=>'required|file|image'
-        ]);
-        $settings = \App\Models\Setting::find($id);
-        $settings->update($validatedData);
-        return redirect(route("websettings")); 
-    }
+    // ddd($id);
+    // if($id ==4){
+    //     $validatedData= $request->validate([
+    //         'content'=>'required|file|image'
+    //     ]);
+    //     $settings = \App\Models\Setting::find($id);
+    //     $settings->update($validatedData);
+    //     return redirect(route("websettings")); 
+    // }
     $settings = \App\Models\Setting::find($id);
     $settings->update(['content'=>$request->content]);
     return redirect(route("websettings"));
@@ -72,13 +75,27 @@ Route::patch('/change-settings/{id}',function(Request $request,int $id){
 Route::post('/change-logo',function(Request $request){
     $settings = \App\Models\Setting::find(4);
     // $request->file->move(public_path('img/'),"logo.png");
-    $validatedData = $request->validate([
-        'file'=> 'required|image|file|max:1024'
+    $validated = $request->validate([
+        'file'=> 'required'
     ]);
-    File::delete(public_path('storage/'.$settings->content));
-    $validatedData['file'] = $request->file('file')->store('logo');
-    $settings->update(['content'=>$validatedData['file']]);
-    // dd(\App\Models\Setting::find(4));
+    if (strpos($validated['file'], 'https://drive.google.com')!==false){
+        $link = explode("/file/d/", $validated['file']);
+        if (count($link) >= 2){
+            $validated['file'] = $link[1];
+            $check_view = strpos($validated['file'], '/view');
+            $check_preview = strpos($validated['file'], '/preview');
+            if ($check_view !== false){
+                $validated['file'] = substr($validated['file'], 0, $check_view);
+            }elseif ($check_preview !== false){
+                $validated['file'] = substr($validated['file'], 0, $check_preview);
+            }else{
+                $validated['file'] = $request->file;
+            }
+        }
+    }else{
+        $validated['file'] = $request->file;
+    }
+    $settings->update(['content'=>$validated['file']]);
     return redirect(route("websettings"));
 });
 
@@ -203,6 +220,11 @@ Route::resource('users',UserController::class)->only(['index', 'store', 'update'
 Route::resource('roles',RoleController::class)->only(['index','store','update','destroy','create','edit']);
 Route::resource('categories',CategoryController::class)->only(['store','destroy']);
 Route::resource('comments',CommentController::class)->only(['store','destroy','update']);
+Route::get('/tutorial',function(){
+    return Inertia::render('Tutorial',[
+        'logo'=>\App\Models\Setting::find(4)
+    ]);
+})->name("tutorial");
 
 
 require __DIR__.'/auth.php';

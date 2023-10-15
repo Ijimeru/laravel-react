@@ -28,8 +28,8 @@ class StoreBookRequest extends FormRequest
             'tahun' =>['numeric'],
             'categories'=> 'required',
             'penerbit' => ['max:50'],
-            'cover'=>['image','required'],
-            'file'=>['mimes:pdf','required']
+            'cover'=>['required'],
+            'file'=>['required']
         ];
     }
 }

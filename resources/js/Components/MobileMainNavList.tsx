@@ -70,7 +70,10 @@ export default function MobileMainNavList() {
                                                         (ccnav, cckey) => (
                                                             <Link
                                                                 href={route(
-                                                                    ccnav.href
+                                                                    ccnav.href,
+                                                                    {
+                                                                        name: ccnav.name,
+                                                                    }
                                                                 )}
                                                                 key={cckey}
                                                             >

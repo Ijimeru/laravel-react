@@ -5,9 +5,10 @@ import SuccessButton from "@/Components/SuccessButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { BookType, CategoryType, PageProps, content } from "@/types";
 import CamelToTitle from "@/utils/CamelToTitle";
-import { Head, useForm, router, usePage } from "@inertiajs/react";
+import DriveLink from "@/utils/DriveLink";
+import GetLinkId from "@/utils/GetLinkId";
+import { Head, useForm, router, usePage, Link } from "@inertiajs/react";
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
-import { toast } from "react-toastify";
 export default function Edit({
     logo,
     auth,
@@ -17,9 +18,9 @@ export default function Edit({
     const { errors } = usePage().props;
     interface BookPostType {
         title: string;
-        cover: File | string;
+        cover: string;
         categories: string[];
-        file: File | string;
+        file: string;
         author: string;
         tahun: string;
         penerbit: string;
@@ -34,8 +35,6 @@ export default function Edit({
         tahun: book.tahun,
         penerbit: book.penerbit,
     });
-    const [src, setSrc] = useState<string>("/img/noimage.jpg");
-
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
         router.post(
@@ -53,30 +52,6 @@ export default function Edit({
             { preserveScroll: true }
         );
     };
-    function handleCoverChange(e: ChangeEvent<HTMLInputElement>) {
-        const file = e.target.files![0];
-        if (!file) {
-            setSrc("/img/noimage.jpg");
-            setData("cover", book.cover);
-            return;
-        }
-        // const target = e.target as typeof e.target & {
-        //   previousSibling: { src: string | ArrayBuffer | null; style: React.CSSProperties };
-        // };
-        var img = new Image();
-        var _URL = window.URL || window.webkitURL;
-        var objectUrl = _URL.createObjectURL(file);
-        img.onload = () => {
-            _URL.revokeObjectURL(objectUrl);
-        };
-        img.src = objectUrl;
-        const oFReader = new FileReader();
-        oFReader.readAsDataURL(file);
-        oFReader.onload = function (oFREvent) {
-            setSrc(oFREvent.target!.result as string);
-        };
-        setData("cover", file);
-    }
 
     const [selectedOptions, setSelectedOptions] = useState<string[]>(
         book.categories.map((category) => category.name)
@@ -101,6 +76,12 @@ export default function Edit({
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg text-gray-900 dark:text-gray-100">
                         <form onSubmit={handleSubmit}>
+                            <Link
+                                href={route("posts.index")}
+                                className="text-2xl ml-3 hover:text-red-600"
+                            >
+                                &larr;
+                            </Link>
                             <header className="w-full text-center mt-3 text-2xl font-semibold">
                                 Edit Book Infromation
                             </header>
@@ -167,43 +148,47 @@ export default function Edit({
                                                 </p>
                                                 <SecondaryButton className="w-fit">
                                                     <a
-                                                        href={`/storage/${value}`}
+                                                        href={DriveLink(
+                                                            value as string
+                                                        )}
                                                         target="_blank"
                                                     >
                                                         File Sekarang
                                                     </a>
                                                 </SecondaryButton>
                                                 <input
-                                                    type="file"
-                                                    className="cursor-pointer dark:bg-slate-500 rounded-md bg-secondary border w-full"
+                                                    type="text"
+                                                    placeholder={`Masukkan link drive untuk ${key}`}
+                                                    value={value as string}
                                                     onChange={(e) => {
-                                                        if (
-                                                            e.target.files!
-                                                                .length == 0
-                                                        ) {
-                                                            setData(
-                                                                "file",
-                                                                book.file
-                                                            );
-                                                        } else {
-                                                            setData(
-                                                                "file",
-                                                                e.target
-                                                                    .files![0]
-                                                            );
-                                                        }
+                                                        setData(
+                                                            key,
+                                                            e.target.value
+                                                        );
                                                     }}
+                                                    className="rounded-lg h-8 w-full border border-gray-400 hover:border-gray-800  dark:bg-secondaryButtonDark dark:border-[#4a4a4d] bg-primaryDark
+                                    focus:border-primary dark:hover:border-primaryDark dark:focus:border-primaryDark dark:placeholder:text-[rgb(187,187,187)] px-3"
+                                                    id={key}
                                                 />
+                                                <small className="text-sm">
+                                                    Tutorial upload file
+                                                    menggunakan link drive,{" "}
+                                                    <Link
+                                                        href={route("tutorial")}
+                                                        className="underline hover:text-blue-600"
+                                                    >
+                                                        Klik di sini
+                                                    </Link>
+                                                </small>
                                             </>
                                         ) : key == "cover" ? (
                                             <div className="flex flex-col items-center gap-y-3">
                                                 <div className="flex flex-row w-full">
                                                     <div className="flex-1 flex items-center flex-col gap-y-4 justify-between">
                                                         <img
-                                                            src={
-                                                                "/storage/" +
+                                                            src={DriveLink(
                                                                 book.cover
-                                                            }
+                                                            )}
                                                             alt="cover buku"
                                                             width={200}
                                                             className="rounded-md"
@@ -214,7 +199,11 @@ export default function Edit({
                                                     </div>
                                                     <div className="flex-1 flex items-center flex-col gap-y-4 justify-between">
                                                         <img
-                                                            src={src}
+                                                            src={DriveLink(
+                                                                GetLinkId(
+                                                                    data.cover
+                                                                )!
+                                                            )}
                                                             alt="cover buku"
                                                             width={200}
                                                             className="rounded-md"
@@ -229,10 +218,29 @@ export default function Edit({
                                                     {errors[key]}
                                                 </p>
                                                 <input
-                                                    type="file"
-                                                    className="cursor-pointer dark:bg-slate-500 rounded-md bg-secondary border w-full"
-                                                    onChange={handleCoverChange}
+                                                    type="text"
+                                                    placeholder={`Masukkan link drive untuk ${key}`}
+                                                    value={value as string}
+                                                    onChange={(e) => {
+                                                        setData(
+                                                            key,
+                                                            e.target.value
+                                                        );
+                                                    }}
+                                                    className="rounded-lg h-8 w-full border border-gray-400 hover:border-gray-800  dark:bg-secondaryButtonDark dark:border-[#4a4a4d] bg-primaryDark
+                                    focus:border-primary dark:hover:border-primaryDark dark:focus:border-primaryDark dark:placeholder:text-[rgb(187,187,187)] px-3"
+                                                    id={key}
                                                 />
+                                                <small className="text-sm">
+                                                    Tutorial upload cover
+                                                    menggunakan link drive,{" "}
+                                                    <Link
+                                                        href={route("tutorial")}
+                                                        className="underline hover:text-blue-600"
+                                                    >
+                                                        Klik di sini
+                                                    </Link>
+                                                </small>
                                             </div>
                                         ) : key == "tahun" ? (
                                             <>
@@ -290,8 +298,8 @@ export default function Edit({
                 setShow={setShow}
                 type="Book"
                 method={method}
-                value={categories.map((category) => category.id)}
-                categories={categories.map((category) => category.name)}
+                setSelectedOptions={setSelectedOptions}
+                categories={categories}
             />
         </AuthenticatedLayout>
     );

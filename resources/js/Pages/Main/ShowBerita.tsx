@@ -16,6 +16,7 @@ import { FaCircle } from "react-icons/fa";
 import { MdOutlineAccountCircle } from "react-icons/md";
 import AddComment from "./Partials/AddComment";
 import Comment from "./Partials/Comment";
+import DriveLink from "@/utils/DriveLink";
 
 export default function ShowBerita({
     logo,
@@ -51,7 +52,7 @@ export default function ShowBerita({
                 <main className="flex-1">
                     <header>
                         <img
-                            src={`/storage/${post.image}`}
+                            src={DriveLink(post!.image)}
                             alt="Hero Image"
                             className="rounded-md"
                         />

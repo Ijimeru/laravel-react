@@ -8,6 +8,8 @@ import ChangeMisi from "./Partials/ChangeMisi";
 import ChangeLogo from "./Partials/ChangeLogo";
 import ChangeKontak from "./Partials/ChangeKontak";
 import ChangeTheme from "@/Components/ChangeTheme";
+import ChangeSecret from "./Partials/ChangeSecret";
+import ChangeKontakReset from "./Partials/ChangeKontakReset";
 
 interface content {
     content: string;
@@ -19,12 +21,16 @@ export default function WebSettings({
     misi,
     logo,
     kontak,
+    secret,
+    kontakreset,
 }: PageProps<{
     sejarah: content;
     visi: content;
     misi: content;
     logo: content;
     kontak: content;
+    secret: content;
+    kontakreset: content;
 }>) {
     return (
         <AuthenticatedLayout
@@ -38,11 +44,16 @@ export default function WebSettings({
         >
             <Head title="Web Settings" />
             <div className="py-12 text-primary dark:text-primaryDark">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+                {/* <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     <ChangeFavicon />
-                </div>
+                </div> */}
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg flex flex-col gap-y-6 mt-3 items-center">
+                        <div>
+                            <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                                Ubah Tema
+                            </h2>
+                        </div>
                         <ChangeTheme className="flex w-fit" />
                     </div>
                 </div>
@@ -60,6 +71,12 @@ export default function WebSettings({
                 </div>
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 mt-3">
                     <ChangeKontak kontak={kontak} />
+                </div>
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 mt-3">
+                    <ChangeSecret secret={secret} />
+                </div>
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 mt-3">
+                    <ChangeKontakReset kontakreset={kontakreset} />
                 </div>
             </div>
         </AuthenticatedLayout>

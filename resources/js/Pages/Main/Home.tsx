@@ -2,6 +2,7 @@ import Cards from "@/Components/Cards";
 import Main from "@/Layouts/MainLayout";
 import { CategoryType, PageProps, PostType, content } from "@/types";
 import { checkSubsequence } from "@/utils/CheckSubsequence";
+import DriveLink from "@/utils/DriveLink";
 import { Head, Link, usePage } from "@inertiajs/react";
 import React, { useEffect } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
@@ -54,7 +55,13 @@ export default function Home({
     const page = usePage<PageProps>();
     return (
         <Main logo={logo} visi={visi} kontak={kontak}>
-            <Head title="Home" />
+            <Head title="Home">
+                <meta
+                    head-key="description"
+                    name="description"
+                    content="This is the default description"
+                />
+            </Head>
 
             <section>
                 <div className="bg-[url('/img/hero-img.jpg')] h-[24rem] bg-cover bg-center bg-no-repeat bg-white relative flex justify-center items-center flex-col text-center">
@@ -399,7 +406,7 @@ export default function Home({
                                     key={key}
                                 >
                                     <img
-                                        src={`/storage/${val.image}`}
+                                        src={DriveLink(val.image)}
                                         alt="dummy"
                                         className="rounded-lg hover:scale-110 transition-transform duration-300 group-hover:scale-110"
                                     />

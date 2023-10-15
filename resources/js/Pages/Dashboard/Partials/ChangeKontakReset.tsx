@@ -1,43 +1,44 @@
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import { useAppSelector } from "@/store/store";
+import GeneratePassword from "@/utils/GeneratePassword";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { useForm } from "@inertiajs/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { BsFillDice6Fill } from "react-icons/bs";
 import { toast } from "react-toastify";
 
-export default function ChangeSejarah({
-    sejarah,
+export default function ChangeKontakReset({
+    kontakreset,
 }: {
-    sejarah: { content: string };
+    kontakreset: { content: string };
 }) {
     const [editing, setEditing] = useState<boolean>(false);
     const { patch, setData, data } = useForm<{ content: string }>({
-        content: sejarah.content,
+        content: kontakreset.content,
     });
-    const mode = useAppSelector((state) => state.mode.mode);
     return (
         <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg flex flex-col gap-y-6">
             <section className="flex flex-col">
                 <div>
                     <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        Sejarah
+                        Kontak Reset
                     </h2>
                 </div>
                 <div
-                    className={`text-primary rounded-lg overflow-hidden mt-4 editor min-h-[48px] ${
-                        mode == "light" ? "" : "dark"
-                    }`}
+                    className={`text-primary rounded-lg overflow-hidden mt-4 min-h-[48px]`}
                 >
                     {editing ? (
-                        <CKEditor
-                            editor={ClassicEditor}
-                            data={sejarah.content}
-                            onChange={(event, editor) => {
-                                const data = editor.getData();
-                                setData("content", data);
+                        <input
+                            type="text"
+                            value={data.content}
+                            placeholder={`Masukkan secret key`}
+                            onChange={(e) => {
+                                setData("content", e.target.value);
                             }}
+                            className="rounded-lg h-8 w-full border dark:text-primaryDark border-gray-400 hover:border-gray-800  dark:bg-secondaryButtonDark dark:border-[#4a4a4d] bg-primaryDark
+    focus:border-primary dark:hover:border-primaryDark dark:focus:border-primaryDark dark:placeholder:text-[rgb(187,187,187)] px-3"
                         />
                     ) : (
                         <p
@@ -45,19 +46,25 @@ export default function ChangeSejarah({
                             dangerouslySetInnerHTML={{ __html: data.content }}
                         />
                     )}
+                    <small>
+                        <small className="text-red">*</small>
+                        Gunakanlah kode negara di awal nomor, contoh
+                        +62898XXXXXXX
+                    </small>
                 </div>
                 <div className="flex flex-row gap-x-4">
                     <PrimaryButton
                         onClick={() => {
                             if (editing) {
-                                patch("/change-settings/1", {
+                                patch("/change-settings/7", {
                                     preserveScroll: true,
                                     onSuccess: () => {
                                         toast.success(
-                                            "Sejarah berhasil di update!"
+                                            "Kontak reset berhasil di update!"
                                         );
                                     },
                                 });
+
                                 setEditing(false);
                             } else {
                                 setEditing(true);

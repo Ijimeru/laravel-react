@@ -112,11 +112,12 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-        'posts'=> \App\Models\Post::where("status","published")->get()->load(['author','categories']),
+        'posts'=> \App\Models\Post::where("status","published")->orderBy('created_at','desc')->get()->load(['author','categories']),
         'categories'=>\App\Models\Category::where('meta_category_id',1)->get()->load('posts'),
         'logo'=>\App\Models\Setting::find(4),
         'visi'=>\App\Models\Setting::find(2),
-        'kontak'=>\App\Models\Setting::find(5)
+        'kontak'=>\App\Models\Setting::find(5),
+        'sejarah'=>\App\Models\Setting::find(1)
     ]);
 })->name("home");
 Route::get('/sejarah-visi-misi',fn()=>
@@ -142,7 +143,7 @@ Route::get('/kepengurusan',function(Request $request){
 Route::get('/buku',fn(Request $request)=>
 
     Inertia::render("Main/Buku",[
-        "books"=>\App\Models\Book::all()->load('categories'),
+        "books"=>\App\Models\Book::orderBy('created_at', 'desc')->get()->load('categories'),
         "categories"=>\App\Models\Category::whereHas('meta_category',function(\Illuminate\Database\Eloquent\Builder $query){
             $query->where('name','Book');
         })->get(),
@@ -160,7 +161,7 @@ Route::get('/store',fn()=>
 )->name("store");
 Route::get('/berita/',fn()=>
     Inertia::render("Main/Berita",[
-    "posts"=>\App\Models\Post::where("status","published")->get()->load(['author','categories']),
+    "posts"=>\App\Models\Post::where("status","published")->orderBy('created_at', 'desc')->get()->load(['author','categories']),
     "categories"=>\App\Models\Category::whereHas('meta_category',function(\Illuminate\Database\Eloquent\Builder $query){
         $query->where('name',"Post");
     })->get(),

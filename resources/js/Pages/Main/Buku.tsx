@@ -30,7 +30,7 @@ export default function Buku({
 }) {
     const [hover, setHover] = useState<string>("");
 
-    const [jumlahPostPerHalaman, setJumlahPostPerHalaman] = useState<number>(5);
+    const [jumlahPostPerHalaman, setJumlahPostPerHalaman] = useState<number>(8);
     const [current, setCurrent] = useState<number>(1);
     const [bookPage, setBookPage] = useState<BookType[]>(books);
     const [filteredBooks, setFilteredBooks] = useState<BookType[]>(bookPage);
@@ -77,7 +77,7 @@ export default function Buku({
                         setCurrent={setCurrent}
                         jumlahPostPerHalaman={jumlahPostPerHalaman.toString()}
                         jumlahPost={filteredBooks.length}
-                        label="Jumlah berita per halaman"
+                        label="Jumlah buku per halaman"
                         setJumlahPostPerHalaman={setJumlahPostPerHalaman}
                     />
 

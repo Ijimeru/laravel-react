@@ -27,7 +27,7 @@ class BookController extends Controller
         return Inertia::render('Books/Index',[
 
             'logo'=>\App\Models\Setting::find(4),
-            'books'=>\App\Models\Book::all()->load('categories')
+            'books'=>\App\Models\Book::orderBy('created_at', 'desc')->get()->load('categories')
         ]);
     }
 

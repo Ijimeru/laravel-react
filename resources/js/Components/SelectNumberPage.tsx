@@ -55,9 +55,9 @@ export default function SelectNumberPage({
                         }
                     }}
                 >
-                    <MenuItem value={5}>5</MenuItem>
-                    <MenuItem value={10}>10</MenuItem>
-                    <MenuItem value={20}>20</MenuItem>
+                    <MenuItem value={8}>8</MenuItem>
+                    <MenuItem value={16}>16</MenuItem>
+                    <MenuItem value={24}>24</MenuItem>
                 </Select>
             </FormControl>
         </ThemeProvider>

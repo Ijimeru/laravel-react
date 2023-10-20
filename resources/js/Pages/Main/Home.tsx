@@ -18,6 +18,7 @@ export default function Home({
     logo,
     visi,
     kontak,
+    sejarah,
     auth,
 }: PageProps<{
     posts: PostType[];
@@ -25,6 +26,7 @@ export default function Home({
     logo: content;
     visi: content;
     kontak: content;
+    sejarah: content;
 }>) {
     interface CardType {
         icon: React.JSX.Element;
@@ -135,15 +137,11 @@ export default function Home({
                             Himatekia ITERA
                         </h2>
                         <br />
-                        <p>
-                            Teknik Kimia merupakan cabang ilmu teknik yang
-                            mempelajari bagaimana proses dan cara mengubah bahan
-                            baku/mentah dan bahan kimia menjadi sebuah produk
-                            yang lebih bernilai secara komersial dengan
-                            memanfaatkan proses-proses kimia, seperti reaksi
-                            kimia dan biokimia maupun perubahan sifat fisik dan
-                            kimia bahan mentah.
-                        </p>
+                        <p
+                            dangerouslySetInnerHTML={{
+                                __html: sejarah.content,
+                            }}
+                        />
                     </div>
                     <br />
                     <Link

@@ -47,7 +47,7 @@ export default function Berita({
             : posts
     );
 
-    const [jumlahPostPerHalaman, setJumlahPostPerHalaman] = useState<number>(5);
+    const [jumlahPostPerHalaman, setJumlahPostPerHalaman] = useState<number>(8);
     const [current, setCurrent] = useState<number>(1);
 
     return (

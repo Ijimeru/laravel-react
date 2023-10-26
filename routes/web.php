@@ -50,8 +50,6 @@ Route::get('/web-settings',function(){
             'misi'=> \App\Models\Setting::find(3),
             'logo' => \App\Models\Setting::find(4),
             'kontak' => \App\Models\Setting::find(5),
-            'secret' => \App\Models\Setting::find(6),
-            'kontakreset' => \App\Models\Setting::find(7)
         ]);
     }
     
@@ -151,7 +149,7 @@ Route::get('/buku',fn(Request $request)=>
         'kontak'=>\App\Models\Setting::find(5),
         'visi'=>\App\Models\Setting::find(2)
     ])
-)->name("buku")->middleware(['auth','role:default']);
+)->name("buku")->middleware(['auth','role:default','verified']);
 Route::get('/store',fn()=>
     Inertia::render("Main/Store",[
         'logo'=>\App\Models\Setting::find(4),

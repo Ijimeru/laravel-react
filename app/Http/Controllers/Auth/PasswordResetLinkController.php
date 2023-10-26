@@ -20,7 +20,6 @@ class PasswordResetLinkController extends Controller
         return Inertia::render('Auth/ForgotPassword', [
             'status' => session('status'),
             'logo'=>\App\Models\Setting::find(4),
-            'kontak'=>\App\Models\Setting::find(7)
         ]);
     }
 

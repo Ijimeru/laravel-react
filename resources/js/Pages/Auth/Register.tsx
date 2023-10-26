@@ -12,7 +12,6 @@ export default function Register({ logo }: { logo: { content: string } }) {
         email: "",
         password: "",
         password_confirmation: "",
-        secret: "",
     });
 
     useEffect(() => {
@@ -39,6 +38,7 @@ export default function Register({ logo }: { logo: { content: string } }) {
                         id="name"
                         name="name"
                         value={data.name}
+                        placeholder="Masukkan nama lengkap"
                         className="mt-1 block w-full"
                         autoComplete="name"
                         isFocused={true}
@@ -56,6 +56,7 @@ export default function Register({ logo }: { logo: { content: string } }) {
                         id="email"
                         type="email"
                         name="email"
+                        placeholder="Masukkan email teknik kimia itera"
                         value={data.email}
                         className="mt-1 block w-full"
                         autoComplete="username"
@@ -77,6 +78,7 @@ export default function Register({ logo }: { logo: { content: string } }) {
                         id="password"
                         type="password"
                         name="password"
+                        placeholder="Masukkan password"
                         value={data.password}
                         className="mt-1 block w-full"
                         autoComplete="new-password"
@@ -98,6 +100,7 @@ export default function Register({ logo }: { logo: { content: string } }) {
                         id="password_confirmation"
                         type="password"
                         name="password_confirmation"
+                        placeholder="Masukkan password sebelumnya"
                         value={data.password_confirmation}
                         className="mt-1 block w-full"
                         autoComplete="new-password"
@@ -111,26 +114,6 @@ export default function Register({ logo }: { logo: { content: string } }) {
                         message={errors.password_confirmation}
                         className="mt-2"
                     />
-                </div>
-                <div>
-                    <InputLabel
-                        htmlFor="secret"
-                        value="Secret Code"
-                        required={true}
-                    />
-
-                    <TextInput
-                        id="secret"
-                        name="secret"
-                        value={data.secret}
-                        className="mt-1 block w-full"
-                        autoComplete="secret"
-                        isFocused={true}
-                        onChange={(e) => setData("secret", e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.secret} className="mt-2" />
                 </div>
 
                 <div className="flex items-center justify-end mt-4">

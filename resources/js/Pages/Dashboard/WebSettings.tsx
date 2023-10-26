@@ -72,12 +72,6 @@ export default function WebSettings({
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 mt-3">
                     <ChangeKontak kontak={kontak} />
                 </div>
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 mt-3">
-                    <ChangeSecret secret={secret} />
-                </div>
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 mt-3">
-                    <ChangeKontakReset kontakreset={kontakreset} />
-                </div>
             </div>
         </AuthenticatedLayout>
     );

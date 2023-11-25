@@ -49,10 +49,12 @@ export default function MainFooter({
                         </a>
                         <a
                             href={`mailto:${JSON.parse(kontak.content).email}`}
-                            className="flex flex-row items-center gap-x-1 hover:text-accent"
+                            className="flex flex-row items-center gap-x-1 hover:text-accent w-full"
                         >
                             <AiOutlineMail />
-                            {JSON.parse(kontak.content).email}
+                            <span className="w-32 text-ellipsis overflow-hidden">
+                                {JSON.parse(kontak.content).email}
+                            </span>
                         </a>
                     </div>
                     <h5 className="text-accent text-lg font-bold">Alamat</h5>

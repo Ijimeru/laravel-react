@@ -201,7 +201,7 @@ export default function Index({
                                     Author :{" "}
                                     {
                                         books.filter((book) => book.id == id)[0]
-                                            .author
+                                            ?.author
                                     }
                                 </p>
                                 <p>

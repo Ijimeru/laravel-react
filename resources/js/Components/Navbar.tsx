@@ -145,7 +145,7 @@ export default function Navbar({
                         <GiHamburgerMenu className="cursor-pointer block md:hidden" />
                     </button>
                     <section
-                        className={`fixed left-0 top-0 bg-primaryDark dark:bg-secondaryButtonDark pt-3 select-none h-screen ${
+                        className={`fixed left-0 top-0 bg-primaryDark dark:bg-secondaryButtonDark pt-3 select-none h-[100dvh] ${
                             !sidebarActive ? "w-0" : "w-64"
                         } transition-all duration-500 shadow-2xl flex flex-col gap-y-11 overflow-x-hidden z-10`}
                     >

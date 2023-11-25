@@ -52,7 +52,7 @@ export default function MainFooter({
                             className="flex flex-row items-center gap-x-1 hover:text-accent w-full"
                         >
                             <AiOutlineMail />
-                            <span className="w-32 text-ellipsis overflow-hidden">
+                            <span className="w-full text-ellipsis overflow-hidden">
                                 {JSON.parse(kontak.content).email}
                             </span>
                         </a>

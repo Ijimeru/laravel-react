@@ -88,7 +88,7 @@ export default function Navbar({
                                             href={route("profile.edit")}
                                             as="div"
                                             className="text-sm"
-                                            method="post"
+                                            method="get"
                                         >
                                             Profil
                                         </Link>

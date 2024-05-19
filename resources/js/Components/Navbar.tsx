@@ -10,6 +10,7 @@ import MobileMainNavList from "./MobileMainNavList";
 import PrimaryButton from "./PrimaryButton";
 import SecondaryButton from "./SecondaryButton";
 import DriveLink from "@/utils/DriveLink";
+import DriveLinkThumbnail from "@/utils/DriveLinkThumbnail";
 
 export default function Navbar({
     logo,
@@ -39,7 +40,7 @@ export default function Navbar({
             >
                 <Link href={route("home")}>
                     <img
-                        src={DriveLink(logo.content)}
+                        src={DriveLinkThumbnail(logo.content)}
                         alt="logo"
                         className="w-10"
                     />

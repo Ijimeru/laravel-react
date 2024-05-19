@@ -17,6 +17,7 @@ import { MdOutlineAccountCircle } from "react-icons/md";
 import AddComment from "./Partials/AddComment";
 import Comment from "./Partials/Comment";
 import DriveLink from "@/utils/DriveLink";
+import DriveLinkThumbnail from "@/utils/DriveLinkThumbnail";
 
 export default function ShowBerita({
     logo,
@@ -37,7 +38,10 @@ export default function ShowBerita({
     return (
         <Main logo={logo} visi={visi} kontak={kontak}>
             <Head title={post.title}>
-                <meta name="og:image" content={DriveLink(post.image)} />
+                <meta
+                    name="og:image"
+                    content={DriveLinkThumbnail(post.image)}
+                />
                 <meta
                     head-key="description"
                     name="description"
@@ -59,9 +63,9 @@ export default function ShowBerita({
                 <main className="flex-1">
                     <header>
                         <img
-                            src={DriveLink(post!.image)}
+                            src={DriveLinkThumbnail(post!.image) + "&sz=w1024"}
                             alt="Hero Image"
-                            className="rounded-md"
+                            className="rounded-md aspect-video w-full"
                         />
                         <h2 className="mt-4 text-3xl font-medium dark:text-accentDark text-accent">
                             {post.title}

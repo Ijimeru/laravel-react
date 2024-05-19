@@ -13,6 +13,7 @@ import "react-toastify/ReactToastify.css";
 import { changeBook } from "@/store/features/bookSlice";
 import CheckRole from "@/utils/CheckRole";
 import DriveLink from "@/utils/DriveLink";
+import DriveLinkThumbnail from "@/utils/DriveLinkThumbnail";
 
 export default function Authenticated({
     user,
@@ -54,7 +55,9 @@ export default function Authenticated({
                                     <Link href="/">
                                         <img
                                             className="block h-9 w-auto"
-                                            src={DriveLink(logo.content)}
+                                            src={DriveLinkThumbnail(
+                                                logo.content
+                                            )}
                                             alt="Logo Himatekia"
                                         />
                                     </Link>

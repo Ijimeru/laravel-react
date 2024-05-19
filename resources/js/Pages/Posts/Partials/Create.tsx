@@ -7,6 +7,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { CategoryType, PageProps, content } from "@/types";
 import CamelToTitle from "@/utils/CamelToTitle";
 import DriveLink from "@/utils/DriveLink";
+import DriveLinkThumbnail from "@/utils/DriveLinkThumbnail";
 import GetLinkId from "@/utils/GetLinkId";
 import ToCapitalCase from "@/utils/ToCapitalCase";
 import { Head, Link, useForm } from "@inertiajs/react";
@@ -173,7 +174,7 @@ export default function Create({
                                                                 0
                                                             ) {
                                                                 setSrc(
-                                                                    DriveLink(
+                                                                    DriveLinkThumbnail(
                                                                         GetLinkId(
                                                                             e
                                                                                 .target

@@ -1,3 +1,3 @@
 export default function DriveLink(id: string) {
-    return `https://drive.google.com/uc?export=view&id=${id}`;
+    return `https://drive.google.com/file/d/${id}/view?usp=drive_link`;
 }

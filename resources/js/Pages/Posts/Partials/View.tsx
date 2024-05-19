@@ -11,6 +11,7 @@ import { BiCategory } from "react-icons/bi";
 import { CgFacebook } from "react-icons/cg";
 import { FaCircle } from "react-icons/fa";
 import DriveLink from "@/utils/DriveLink";
+import DriveLinkThumbnail from "@/utils/DriveLinkThumbnail";
 dayjs.extend(relativeTime);
 export default function View({
     auth,
@@ -44,9 +45,10 @@ export default function View({
                 <main className="flex-1">
                     <header>
                         <img
-                            src={DriveLink(post.image)}
+                            src={DriveLinkThumbnail(post.image) + "&sz=w1024"}
                             alt="Hero Image"
                             className="rounded-md"
+                            width="100%"
                         />
                         <h2 className="mt-4 text-3xl font-medium dark:text-accentDark text-accent">
                             {post.title}

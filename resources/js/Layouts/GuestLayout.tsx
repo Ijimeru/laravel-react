@@ -1,5 +1,6 @@
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import DriveLink from "@/utils/DriveLink";
+import DriveLinkThumbnail from "@/utils/DriveLinkThumbnail";
 import { Link } from "@inertiajs/react";
 import { PropsWithChildren } from "react";
 
@@ -12,7 +13,7 @@ export default function Guest({
             <div>
                 <Link href="/">
                     <img
-                        src={DriveLink(logo!.content)}
+                        src={DriveLinkThumbnail(logo!.content)}
                         alt="Logo-Himatekia"
                         width={200}
                     />

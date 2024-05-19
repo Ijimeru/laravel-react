@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/id";
 import DriveLink from "@/utils/DriveLink";
+import DriveLinkThumbnail from "@/utils/DriveLinkThumbnail";
 dayjs.extend(relativeTime);
 export default function Card({
     childClassName,
@@ -17,7 +18,7 @@ export default function Card({
             <div className="">
                 <img
                     className="rounded-t-md"
-                    src={DriveLink(post!.image)}
+                    src={DriveLinkThumbnail(post!.image) + "&sz=w1024"}
                     alt="dummy"
                 />
             </div>

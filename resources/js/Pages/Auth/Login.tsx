@@ -5,8 +5,9 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import Main from "@/Layouts/MainLayout";
+import { PageProps } from "@/types";
 
 export default function Login({
     status,
@@ -22,6 +23,7 @@ export default function Login({
         password: "",
         remember: false,
     });
+    const page = usePage<PageProps>();
 
     useEffect(() => {
         return () => {
@@ -42,6 +44,11 @@ export default function Login({
             {status && (
                 <div className="mb-4 font-medium text-sm text-green-600">
                     {status}
+                </div>
+            )}
+            {page.props.flash.type == "danger" && (
+                <div className="mb-4 font-medium text-sm text-rose-600">
+                    {page.props.flash.message}
                 </div>
             )}
 
@@ -120,6 +127,19 @@ export default function Login({
                     </PrimaryButton>
                 </div>
             </form>
+            <a href="/auth/google/redirect/">
+                <div className="flex items-center justify-center dark:bg-gray-800">
+                    <button className="px-4 py-2 border flex gap-2 border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 hover:border-slate-400 dark:hover:border-slate-500 hover:text-slate-900 dark:hover:text-slate-300 hover:shadow transition duration-150">
+                        <img
+                            className="w-6 h-6"
+                            src="https://www.svgrepo.com/show/475656/google-color.svg"
+                            loading="lazy"
+                            alt="google logo"
+                        />
+                        <span>Login with Google</span>
+                    </button>
+                </div>
+            </a>
         </GuestLayout>
     );
 }

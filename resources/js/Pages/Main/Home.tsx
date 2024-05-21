@@ -3,6 +3,7 @@ import Main from "@/Layouts/MainLayout";
 import { CategoryType, PageProps, PostType, content } from "@/types";
 import { checkSubsequence } from "@/utils/CheckSubsequence";
 import DriveLink from "@/utils/DriveLink";
+import DriveLinkThumbnail from "@/utils/DriveLinkThumbnail";
 import { Head, Link, usePage } from "@inertiajs/react";
 import React, { useEffect } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
@@ -405,7 +406,7 @@ export default function Home({
                                     key={key}
                                 >
                                     <img
-                                        src={DriveLink(val.image)}
+                                        src={DriveLinkThumbnail(val.image)}
                                         alt="dummy"
                                         className="rounded-lg hover:scale-110 transition-transform duration-300 group-hover:scale-110"
                                     />
